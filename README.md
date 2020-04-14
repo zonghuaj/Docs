@@ -12,3 +12,8 @@ Angular—OnPush策略怎样影响变更检测过程 https://zhuanlan.zhihu.com/
 观察者模式  https://segmentfault.com/a/1190000015640618
 
 UI   https://mp.weixin.qq.com/s/iuavg_w3uhcjDov4tL-B9Q
+
+
+JS 继承方式：
+
+1. 原型链继承 2. 构造继承 3. 实例继承 4. 拷贝继承 5. 组合继承 6. 寄生组合继承
