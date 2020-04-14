@@ -59,3 +59,5 @@ function unique(array) {
 
 console.log(unique(array)); // [1, "1"]
 
+
+
