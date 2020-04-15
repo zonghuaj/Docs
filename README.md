@@ -41,3 +41,5 @@ new 操作符做了哪些事情
 ES5环境下实现let
 
 ES5环境下实现const
+
+手写call
