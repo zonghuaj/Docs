@@ -1,0 +1,63 @@
+<div nz-row [nzGutter]="24">
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="服务概览">
+      <div echarts [options]="servSummaryOpt" style="height: 130px; position: relative">
+      </div>
+      <div *ngIf="servSummary"
+           style="display: inline-block; position: absolute; top: 80px; left: 50%; transform: translate(-50%, 0)">
+        <span style="display: block; text-align: center; color: #AAA; font-size: 13px">服务总数</span>
+        <span style="display: block; text-align: center; color: #444; font-size: 18px">{{servSummary.total}}</span>
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="资源使用率">
+      <div nz-row nzType="flex" nzJustify="space-around" nzAlign="middle">
+        <dashboard-water-wave *ngFor="let d of usageData" [data]="d"></dashboard-water-wave>
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="告警" [nzExtra]="alertList">
+      <dashboard-alert-list [data]="alertData"></dashboard-alert-list>
+    </nz-card>
+    <ng-template #alertList><a routerLink="/alert/all">查看更多</a></ng-template>
+  </div>
+  <div nz-col nzSpan="24">
+    <nz-card nzTitle="API请求时间 Top10" [nzExtra]="reqTime">
+      <div class="dashboard-bchart" echarts [options]="requestTimeTop10Opt">
+      </div>
+    </nz-card>
+    <ng-template #reqTime><span>单位：毫秒</span></ng-template>
+  </div>
+  <!--  <div nz-col nzSpan="12">-->
+  <!--    <nz-card nzTitle="API请求次数 Top10" [nzExtra]="reqCount">-->
+  <!--      <div class="dashboard-bchart" echarts [options]="requestTop10Opt">-->
+  <!--      </div>-->
+  <!--    </nz-card>-->
+  <!--    <ng-template #reqCount><span>单位：次</span></ng-template>-->
+  <!--  </div>-->
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="CPU占用百分比 Top10 (一小时内)">
+      <div class="dashboard-bchart">
+        <dashboard-z-list [data]="cpuTop10Data"
+                          [isPercent]="true"></dashboard-z-list>
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="内存占用百分比 Top10 (一小时内)">
+      <div class="dashboard-bchart">
+        <dashboard-z-list [data]="memoryTop10Data"
+                          [isPercent]="true"></dashboard-z-list>
+      </div>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="QPS Top10 (一小时内)">
+      <div class="dashboard-bchart">
+        <dashboard-z-list [data]="qpsTop10Data"></dashboard-z-list>
+      </div>
+    </nz-card>
+  </div>
+</div>

@@ -1,0 +1,221 @@
+<form
+  nz-form
+  (ngSubmit)="savePipeLine()"
+  [nzLayout]="'inline'"
+  [formGroup]="form"
+  class="search__form"
+>
+  <nz-card [nzExtra]="extraTemplate" nzTitle="创建流水线">
+    <se-container col="1" labelWidth="100">
+      <se 
+        label="名称"
+        error="只允许输入英文、数字、-，以英文字母开头，长度不超过20位"
+        required
+      >
+        <input 
+          nz-input 
+          formControlName="pipeLineName"
+          [(ngModel)]="pipelineSaveData.name"
+          placeholder="请输入名称，只允许输入英文、数字、-，以英文字母开头，长度不超过20位"
+          style="width: 500px;"
+        />
+      </se>
+      <se
+        label="Jenkins"
+        error="只允许输入英文、数字、-，以英文字母开头，长度不超过20位"
+        required
+      >
+        <nz-select  [nzDisabled]="!senceCanSee"
+          style="width: 500px;"
+          [(ngModel)]="pipelineSaveData.jenkins"
+          formControlName="pipeLineJenkinsId"
+        >
+          <nz-option
+            *ngFor="let option of pipeLineJenkins"
+            [nzLabel]="option.url"
+            [nzValue]="option.id"
+          ></nz-option>
+        </nz-select>
+      </se>
+
+      <se label="开发场景" error="" [ngClass]="{ hidden: !senceCanSee }">
+        <nz-radio-group
+          [(ngModel)]="vlvalue"
+          formControlName="radioValue"
+          (ngModelChange)="radioChange()"
+        >
+          <label nz-radio nzValue="Base_Sence">基本</label>
+          <label nz-radio nzValue="Micropaas_Sence">Maven微服务</label>
+          <label nz-radio nzValue="Micropaas_Gradle_Sence">Gradle微服务</label>
+          <label nz-radio nzValue="Npm_Sence">Node.js</label>
+        </nz-radio-group>
+      </se>
+    </se-container>
+  </nz-card>
+
+  <nz-card [nzBordered]="false" nzTitle="" [nzExtra]="">
+    <nz-card-tab>
+      <nz-tabset
+        nzSize="large"
+        [(nzSelectedIndex)]="tabIndex"
+        (nzSelectChange)="onTabChanged($event.index)"
+      >
+        <nz-tab nzTitle="流水线"></nz-tab>
+        <nz-tab nzTitle="触发器"></nz-tab>
+      </nz-tabset>
+    </nz-card-tab>
+
+    <div *ngIf="tabIndex === 0">
+      <div nz-row>
+        <div
+          nz-col
+          nzSpan="4"
+          class="stage-list"
+          *ngFor="let item of pipelineSaveData.stages; let i = index"
+        >
+          <!--let item of stageList-->
+          <addNode
+            [stage]="item"
+            [errorArray] ="errorArray"
+            [isNeedHighLight]="false"
+            [stageIndex]="i"
+            [ClickstageIndex]="ClickstageIndex"
+            [parent]="pipelineSaveData.stages"
+            (itemClick$)="onItemClick($event)"
+            (addAt$)="add($event)"
+            (removeAt$)="remove($event)"
+          ></addNode>
+          <span
+            *ngIf="i < pipelineSaveData.stages.length - 1"
+            class="arrow"
+          ></span
+          ><!--stageList.length - 1-->
+        </div>
+      </div>
+
+      <div nz-row nzType="flex" nzJustify="center" class="mt-lg">
+        <!--button
+          nz-button
+          nzType="default"
+          type="default"
+          class="pl-lg pr-lg"
+          (click)="location.back()"
+        >
+          取消
+        </button-->
+        <!-- <ng-template #extraTemplate>
+        <button
+          nz-button
+          nzType="primary"
+          type="submit"
+          class="pl-lg pr-lg"
+          [nzLoading]="submitLoading"
+          [disabled]="!form.valid"
+          
+        >
+          保存
+        </button>
+      </ng-template> -->
+      </div>
+
+      <div nz-row nzGutter="16">
+        <div nz-col nzSpan="8" class="stage-list"></div>
+      </div>
+    </div>
+
+    <div *ngIf="tabIndex === 1">
+      <se-container col="1" labelWidth="150">
+        <se label="是否开启自动触发">
+          <nz-switch
+            formControlName="isTrigger"
+            [(ngModel)]="isTrigger"
+            (ngModelChange)="onTriggerChange($event)"
+          ></nz-switch>
+          自动触发只针对当前项目
+        </se>
+
+        <se label="代码仓库" [required]="isTriggerdis">
+          <nz-select
+            [nzDisabled]="!isTriggerdis"
+            formControlName="pipeLineCodeStoreId"
+            [(ngModel)]="pipelineSaveData.trigger.express.pipeLineCodeStoreId"
+            name="pipeLineCodeStoreId"
+            (ngModelChange)="onPipeLineCodeStoeChange($event)"
+            style="width: 500px;"
+          >
+            <nz-option
+              *ngFor="let r of pipeLineCodeStores"
+              [nzLabel]="r.url"
+              [nzValue]="r.id"
+            ></nz-option>
+          </nz-select>
+        </se>
+
+        <se label="代码地址（Git）" col="2" error="请选择代码地址" [required]="isTriggerdis">
+          <nz-select
+            name="pipeLineCodeUrlId"
+            formControlName="pipeLineCodeUrlId"
+            [(ngModel)]="pipelineSaveData.trigger.express.pipeLineCodeUrlId"
+            [nzLoading]="gitLoading"
+            [nzDisabled]="!isTriggerdis"
+            (ngModelChange)="onPipeLineCodeUrlChange($event)"
+            style="width: 500px;"
+          >
+            <nz-option
+              *ngFor="let option of pipeLineCodeUrls"
+              [nzLabel]="option.ssh_url_to_repo"
+              [nzValue]="option.id"
+            ></nz-option>
+            <nz-option *ngIf="gitLoading" nzDisabled nzCustomContent>
+              <i nz-icon type="loading" class="loading-icon"></i> Loading
+              Data...
+            </nz-option>
+          </nz-select>
+        </se>
+        <se label="触发器" [required]="isTriggerdis">
+          <nz-select
+            [nzMaxTagCount]="3"
+            nzMode="multiple"
+            nzPlaceHolder="请选择"
+            formControlName="listOfSelectedValue"
+            [nzDisabled]="!isTriggerdis"
+            style="width: 500px;"
+            [(ngModel)]="pipelineSaveData.trigger.express.listOfSelectedValue"
+          >
+            <nz-option
+              *ngFor="let option of listOfOption"
+              [nzLabel]="option.label"
+              [nzValue]="option.value"
+            ></nz-option>
+          </nz-select>
+        </se>
+        <se label="分支" col="2" error="请选择分支" [required]="isTriggerdis">
+          <nz-select
+            formControlName="triggerBranch"
+            style="width: 180px;"
+            [nzDisabled]="!isTriggerdis"
+            [(ngModel)]="pipelineSaveData.trigger.express.triggerBranch"
+          >
+            <nz-option
+              *ngFor="let option of pipeLineCodeBranchs"
+              [nzLabel]="option.name"
+              [nzValue]="option.name"
+            ></nz-option>
+          </nz-select>
+        </se>
+      </se-container>
+    </div>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <button
+      nz-button
+      nzType="primary"
+      type="submit"
+      class="pl-lg pr-lg"
+      [nzLoading]="submitLoading"
+      [disabled]="!form.valid"
+    >
+      保存
+    </button>
+  </ng-template>
+</form>

@@ -1,0 +1,43 @@
+<form nz-form [formGroup]="form" [nzLayout]="'vertical'" (ngSubmit)="submitForm()">
+  <nz-card [nzTitle]="title" [nzExtra]="addBtn" [nzBordered]="false">
+    <nz-table [nzData]="[{}]" #tb [nzShowPagination]="false" [nzFrontPagination]="false" [formArrayName]="formKey">
+      <thead>
+      <tr>
+        <th style="width: 100px">No.</th>
+        <th style="width: 200px">{{isFileParam ? '文件路径' : '键'}}</th>
+        <th style="width: 200px">描述信息</th>
+        <th style="width: 400px">默认值</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of itemControls.controls; let i = index" [formGroupName]="i">
+        <td class="top-align-td">{{i + 1}}</td>
+        <td class="top-align-td">
+          <nz-form-control>
+            <input nz-input formControlName="key">
+            <nz-form-explain *ngIf="keyItem(i).dirty && keyItem(i).errors">
+              {{ isFileParam ? '路径' : '键值'}}必须唯一
+            </nz-form-explain>
+          </nz-form-control>
+        </td>
+        <td class="top-align-td"><input nz-input formControlName="comment"></td>
+        <td class="top-align-td">
+          <input nz-input formControlName="value" *ngIf="!isFileParam else bigValueV">
+          <ng-template #bigValueV>
+            <textarea rows="4" nz-input formControlName="value"></textarea>
+          </ng-template>
+        </td>
+        <td style="vertical-align: top"><a [class.link-disable]="itemControls.length === 1" (click)="delFItem(i)">删除</a>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+
+    <ng-template #addBtn>
+      <div>
+        <button nz-button nzType="primary" type="button" (click)="addFItem()">添加</button>
+      </div>
+    </ng-template>
+  </nz-card>
+</form>

@@ -1,0 +1,62 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card [nzBordered]="!simpleList">
+  <form nz-form [nzLayout]="'inline'" class="search__form">
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label>名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="q.name" name="name"
+                   placeholder="要查询的名称">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="10" nzOffset="1">
+        <button nz-button type="button" nzType="primary" [nzLoading]="loading" (click)="getData()">
+          <i nz-icon nzType="search" nzTheme="outline"></i>查询
+        </button>
+        <button nz-button type="button" nzType="primary" class="ml-md" *ngIf="!simpleList"
+        (click)="router.navigateByUrl('/artifactory/template/create');">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>新增
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <nz-table #listTable nzShowPagination [nzFrontPagination]="false"
+            [nzData]="datas" [nzLoading]="loading"
+            [nzTotal]="totalCount" (nzPageIndexChange)="onPageIndexChange($event)">
+    <thead>
+    <tr>
+      <th style="width: 160px">{{'artifactory.list.name' | translate}}</th>
+      <th style="width: 160px;">{{'artifactory.list.desc' | translate}}</th>
+      <th>{{'artifactory.list.status' | translate}}</th>
+      <th>操作</th>
+      <th>{{'artifactory.list.time' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let d of listTable.data">
+      <tr>
+        <td [attr.rowspan]="2">
+          <a (click)="toDetail(d)">{{d.name}}</a>
+        </td>
+      </tr>
+      <ng-container>
+        <tr>
+          <td>{{d.desc}}</td>
+          <td>
+            <af-stage-line style="width: 400px;" [statusList]="getVersionStages(d)"></af-stage-line>
+          </td>
+          <td>
+            <a (click)="toDetail(d)">编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="toDetail(d)">删除</a>
+          </td>
+          <td>{{getLastTime(d) | date:'yyyy-MM-dd HH:mm'}}</td>
+        </tr>
+      </ng-container>
+    </ng-container>
+    </tbody>
+  </nz-table>
+</nz-card>

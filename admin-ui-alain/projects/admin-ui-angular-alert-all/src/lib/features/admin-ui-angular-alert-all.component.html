@@ -1,0 +1,85 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card [nzBordered]="true">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitFilter()" class="search__form">
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label class="form-label" nzFor="timerange">起止时间</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker nzShowTime nzFormat="yy-MM-dd HH:mm:ss" ngModel [ngModelOptions]="{standalone: true}" [(ngModel)]="q.times"></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzSpan="6" nzOffset="1">
+        <nz-form-item>
+          <nz-form-label nzFor="no">告警级别</nz-form-label>
+          <nz-form-control>
+            <nz-select nzAllowClear nzMode="multiple" nzMaxTagCount="1" [(ngModel)]="q.level" [ngModelOptions]="{standalone: true}" nzPlaceHolder="选择级别">
+              <nz-option nzLabel="高" nzValue="h">
+              </nz-option>
+              <nz-option nzLabel="中" nzValue="m">
+              </nz-option>
+              <nz-option nzLabel="低" nzValue="l">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzSpan="6" nzOffset="1">
+        <nz-form-item>
+          <nz-form-label nzFor="no">状态</nz-form-label>
+          <nz-form-control>
+            <nz-select nzAllowClear nzMaxTagCount="1" nzMode="multiple" [(ngModel)]="q.status" [ngModelOptions]="{standalone: true}" nzPlaceHolder="选择状态">
+              <nz-option nzLabel="未处理" nzValue="0">
+              </nz-option>
+              <nz-option nzLabel="处理中" nzValue="1">
+              </nz-option>
+              <nz-option nzLabel="已处理" nzValue="2">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label nzFor="no">告警搜索</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.keyword" name="keyword" placeholder="输入关键字">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col>
+        <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
+        <!--        <button nz-button type="41" (click)="reset()" class="mx-sm">重置</button>-->
+      </div>
+    </div>
+  </form>
+
+  <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)" [ps]="q.ps" [pi]="q.pi" [total]="totalCount" [page]="page">
+    <!--    <ng-template st-row="summary" let-i>-->
+    <!--      <a (click)="showDetailConfirmModal(i)">{{i.summary}}</a>-->
+    <!--    </ng-template>-->
+
+    <ng-template st-row="summary" let-i>
+      <span>{{i.summary}}</span>
+    </ng-template>
+    <ng-template st-row="status" let-i>
+      <span>{{i.statusText}}</span>
+    </ng-template>
+    <ng-template st-row="level" let-i>
+      <span>{{i.levelText}}</span>
+    </ng-template>
+    <ng-template st-row="operations" let-i>
+      <a (click)="showDetailConfirmModal(i)">
+        {{i.status === 0 ? '认领' : i.status === 1 ? '结束' : '查看'}}
+      </a>
+    </ng-template>
+  </st>
+</nz-card>

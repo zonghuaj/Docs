@@ -1,0 +1,54 @@
+.panel {
+  position: relative;
+  padding: 8px;
+  border: 1px solid #E8E8E8;
+  border-radius: 2px;
+
+  .loading {
+    position: absolute;
+    top: 4px;
+    left: 8px;
+  }
+
+  .title {
+    position: absolute;
+    width: calc(100% - 16px);
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    color: #444;
+    font-weight: 600;
+  }
+
+  .close {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+
+  .pilot {
+    margin-top: 24px;
+    width: 100%;
+  }
+
+  .error {
+    position: absolute;
+    top: calc(50% + 8px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    font-size: 25px;
+    color: #bc0021;
+  }
+
+  .nodata {
+    position: absolute;
+    top: calc(50% + 8px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    font-size: 25px;
+    color: #a9b2aa;
+  }
+}

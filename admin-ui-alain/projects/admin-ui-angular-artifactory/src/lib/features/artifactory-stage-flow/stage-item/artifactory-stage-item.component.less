@@ -1,0 +1,111 @@
+@btnLen: 24px;
+
+.outter {
+  position: relative;
+  padding: 12px 24px;
+
+  [class^='add-btn'] {
+    cursor: pointer;
+    z-index: 10;
+    position: absolute;
+    font-size: 16px;
+    font-weight: 600;
+    height: @btnLen;
+    line-height: @btnLen;
+    width: @btnLen;
+    text-align: center;
+    background: #217EF2;
+    color: white;
+    display: none;
+  }
+
+  [class^='add-btn']:hover {
+    background: #44A2f2;
+  }
+
+  .add-btn-top {
+    top: 0;
+    left: calc(50% - @btnLen / 2);
+  }
+
+  .add-btn-bottom {
+    bottom: 0;
+    left: calc(50% - @btnLen / 2);
+  }
+
+  .del-btn {
+    cursor: pointer;
+    z-index: 10;
+    position: absolute;
+    font-size: @btnLen;
+    font-weight: 600;
+    height: @btnLen;
+    line-height: @btnLen;
+    width: @btnLen;
+    text-align: center;
+    background: #EE0000;
+    border-radius: @btnLen / 2;
+    color: white;
+    display: none;
+    right: 14px;
+    top: 2px;
+  }
+
+  .del-btn:hover {
+    background: #EE6666;
+  }
+
+  &:hover {
+    [class^='add-btn'], .del-btn {
+      display: block;
+    }
+  }
+
+  .sign-icon {
+    font-size: 16px;
+    font-weight: 600;
+    display: inline-block;
+    right: 12px;
+    top: -2px;
+    position: absolute;
+    color: white;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 16px;
+  }
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  padding: 24px 12px;
+  background: white;
+  border: 1px solid #e8e8e8;
+  min-height: 80px;
+  border-radius: 4px;
+}
+
+.title {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.content {
+  display: block;
+  margin-top: 2px;
+  text-align: center;
+}
+
+.approved {
+  color: #09bb07 !important;
+}
+
+.rejected {
+  color: red !important;
+}

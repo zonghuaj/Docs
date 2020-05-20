@@ -1,0 +1,15 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card nzTitle="集群管理">
+  <input nz-input [(ngModel)]="params.ip" nzPlaceHolder="请输入ip" style="width: 200px; margin-right: 10px;">
+  <button nz-button (click)="userSt.load(1,params)" [nzType]="'primary'">搜索</button>
+  <button nz-button (click)="openAdd()" [nzType]="'primary'">
+    <i nz-icon nzType="plus"></i>
+    <span>新建</span>
+  </button>
+  <st #userSt [data]="url" [columns]="columns" [req]="req" [res]="res" [page]="stPage">
+    <ng-template st-row="comment" let-i>
+      <div class="ell" style="max-width: 200px">{{i.comment}}</div>
+    </ng-template>
+  </st>
+</nz-card>

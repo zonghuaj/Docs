@@ -1,0 +1,39 @@
+<div class="rk-trace-detail" *ngIf="currentSpan">
+  <div nz-row class="mb-10">
+    <span nz-col nzSpan="6" class="grey">端点:</span>
+    <span nz-col nzSpan="18">{{this.currentSpan.label}}</span>
+  </div>
+  <div nz-row class="mb-10">
+    <span nz-col nzSpan="6" class="grey">跨度类型:</span>
+    <span nz-col nzSpan="18">{{this.currentSpan.type}}</span>
+  </div>
+  <div nz-row class="mb-10">
+    <span nz-col nzSpan="6" class="grey">组件:</span>
+    <span nz-col nzSpan="18">{{this.currentSpan.component}}</span>
+  </div>
+  <div nz-row class="mb-10">
+    <span nz-col nzSpan="6" class="grey">Peer:</span>
+    <span nz-col nzSpan="18">{{this.currentSpan.peer || '无'}}</span>
+  </div>
+  <div nz-row class="mb-10">
+    <span nz-col nzSpan="6" class="grey">失败:</span>
+    <span nz-col nzSpan="18">{{this.currentSpan.isError}}</span>
+  </div>
+
+  <div nz-row class="mb-10" *ngFor="let i of currentSpan.tags">
+    <span nz-col nzSpan="6" class="grey">{{i.key}}:</span>
+    <span nz-col nzSpan="18">{{i.value}}</span>
+  </div>
+
+  <h4 nz-row class="h4 mb-10 pb-sm border-bottom-1" *ngIf="currentSpan.logs && currentSpan.logs.length > 0">日志信息</h4>
+  <div nz-row *ngFor="let log of currentSpan.logs">
+    <div nz-row class="mb-10 sm">
+      <span nz-col nzSpan="6" class="mr-10 grey">时间:</span>
+      <span nz-col nzSpan="18">{{log.time | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+    </div>
+    <div class="mb-10 clear" *ngFor="let i of log.data">
+      <div class="mb-10 grey">{{i.key}}:</div>
+      <pre class="g-sm-8 mt-0 mb-0 sm" style="overflow:auto">{{i.value}}</pre>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+.item-list {
+  display: flex;
+  align-items: center;
+}
+
+.item:not(:last-of-type) {
+  margin-left: 8px;
+
+  &:after {
+    height: 100%;
+    margin: 8px;
+    border-right: solid 1px #ccc;
+    content: '';
+  }
+}

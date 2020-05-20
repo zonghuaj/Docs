@@ -1,0 +1,104 @@
+<form nz-form [nzLayout]="'inline'" class="search__form">
+  <div nz-row nzGutter="16">
+    <div nz-col nzMd="5">
+      <nz-form-item>
+        <nz-form-label class="form-label">指标</nz-form-label>
+        <nz-form-control>
+          <nz-select nzAllowClear [(ngModel)]="q.type"
+                     [nzPlaceHolder]="'请选择'"
+                     [ngModelOptions]="{standalone: true}">
+            <nz-option nzLabel="CPU" nzValue="cpu"></nz-option>
+            <nz-option nzLabel="内存" nzValue="memory"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="5">
+      <nz-form-item>
+        <nz-form-label class="form-label">是否剩余</nz-form-label>
+        <nz-form-control>
+          <nz-select nzAllowClear [(ngModel)]="q.isRemaining"
+                     [nzPlaceHolder]="'请选择'"
+                     [ngModelOptions]="{standalone: true}">
+            <nz-option nzLabel="是" nzValue="1"></nz-option>
+            <nz-option nzLabel="否" nzValue="0"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="5">
+      <nz-form-item>
+        <nz-form-label class="form-label">使用率</nz-form-label>
+        <nz-form-control>
+          <nz-select nzAllowClear [(ngModel)]="q.operator"
+                     [nzPlaceHolder]="'请选择'"
+                     [ngModelOptions]="{standalone: true}">
+            <nz-option nzLabel="<" nzValue="<"></nz-option>
+            <nz-option nzLabel=">" nzValue=">"></nz-option>
+            <nz-option nzLabel="=" nzValue="="></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="4">
+      <nz-form-item>
+        <nz-form-label class="form-label">数值</nz-form-label>
+        <nz-form-control>
+          <nz-input-number class="width100" [(ngModel)]="q.value"
+                           nzMin="0"
+                           nzMax="100"
+                           [ngModelOptions]="{standalone: true}"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="4" class="ml-lg">
+      <button nz-button type="button"
+              [nzType]="'primary'"
+              [nzLoading]="listLoading"
+              (click)="getData()">查询
+      </button>
+      <button nz-button type="button"
+              nzType="default"
+              [nzLoading]="listLoading"
+              (click)="clearQuery()">清空
+      </button>
+    </div>
+  </div>
+</form>
+
+<nz-table
+  #groupingTable
+  [nzData]="monitorDatas"
+  nzBordered
+  [nzWidthConfig]="widthConfig"
+  [nzShowPagination]="false"
+  [nzLoading]="listLoading">
+  <thead>
+  <tr>
+    <th rowspan="2">项目名称</th>
+    <th colspan="3">CPU（单位：核）</th>
+    <th colspan="3">内存（单位：Mib）</th>
+  </tr>
+  <tr>
+    <th>全量</th>
+    <th>已分配</th>
+    <th>最高使用率</th>
+    <th>全量</th>
+    <th>已分配</th>
+    <th>最高使用率</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of groupingTable.data">
+    <td>{{ data.projectCode }}</td>
+    <td>{{ data.cpuTotal }}</td>
+    <td>{{ data.cpuUsage }}</td>
+    <td>{{ data.cpuMaxRate + '%'}}</td>
+    <td>{{ data.memoryTotal }}</td>
+    <td>{{ data.memoryUsage }}</td>
+    <td>{{ data.memoryMaxRate + '%' }}</td>
+  </tr>
+  </tbody>
+</nz-table>

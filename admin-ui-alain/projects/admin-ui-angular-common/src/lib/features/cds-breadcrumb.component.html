@@ -1,0 +1,8 @@
+<nz-breadcrumb *ngIf="paths && paths.length > 0" style="margin-bottom: 16px">
+  <nz-breadcrumb-item *ngFor="let i of paths">
+    <ng-container *ngIf="i.url">
+      <a [routerLink]="i.url">{{ i.title || i.i18n }}</a>
+    </ng-container>
+    <ng-container *ngIf="!i.url">{{ i.title || i.i18n }}</ng-container>
+  </nz-breadcrumb-item>
+</nz-breadcrumb>

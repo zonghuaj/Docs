@@ -1,0 +1,141 @@
+<nz-card [nzLoading]="loading" style="padding-bottom: 24px" [nzBordered]="boarded">
+  <nz-card [nzBordered]="false">
+    <div class="title2" *ngIf="project">
+      <span style="color: #999">
+        <svg height="16" version="1.1" viewBox="0 0 16 16" width="16"
+             xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink"
+             style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 1.41421;"><path d="M14.985 13.988L1 14.005 1.02 5h13.966v8.988h-.001zM1.998 5.995l.006 7.02L14.022 13 14 6.004l-12.002-.01v.001zM3 4.5V4h9.996l.004.5h1l-.005-1.497-11.98.003L2 4.5h1zm1-2v-.504h8.002L12 2.5h1l-.004-1.495H3.003L3 2.5h1z" style="fill: rgb(75, 159, 213);"></path></svg>
+        {{project.name}}
+      </span>
+      <span *ngIf="qualityGateStatus" class="gate-status"
+            [style.background]="qualityGateStatus === 'OK' ? '#00D700' : '#aa0000'">
+        {{qualityGateStatus === 'OK' ? '通过' : '失败'}}
+      </span>
+
+      <a class="sonar-link" [href]="project.url" target="_blank">在Sonar中查看更多</a>
+    </div>
+
+    <div nz-row *ngIf="overviews.length > 0" style="margin-top: 4px">
+      <qgate-project-detail-scard style="margin-right: 12px" *ngFor="let item of overviews"
+                                  [item]="item"></qgate-project-detail-scard>
+    </div>
+  </nz-card>
+
+  <div *ngIf="measures" style="margin-top: 20px">
+    <nz-card [nzTitle]="titleT1" [nzBordered]="false">
+      <ng-template #titleT1>
+        <div class="row">
+          <div class="title2 row-left">
+            <span style="width: 100%;margin-left: 16px;">Bugs & 漏洞</span>
+          </div>
+          <div class="row-right" style="height: 40px;flex-direction: column">
+            <div style="color: #666; font-size: 14px">最新代码：从上一个版本</div>
+            <div style="color: #999; font-size: 12px">更新时间：{{lastCheckedDate | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="row">
+        <div class="row-left">
+          <!-- Bugs -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('bugs')"
+                                      [item]="getMetric('bugs')"
+                                      [extra]="getMetric('reliability_rating')"></qgate-project-detail-index>
+          <!-- Vulnerabilities -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('vulnerabilities')"
+                                      [item]="getMetric('vulnerabilities')"
+                                      [extra]="getMetric('security_rating')">
+          </qgate-project-detail-index>
+        </div>
+
+        <div class="row-right">
+          <!-- New Bugs -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('new_bugs')"
+                                      [item]="getMetric('new_bugs')"
+                                      [extra]="getMetric('new_reliability_rating')"></qgate-project-detail-index>
+          <!-- New Vulnerabilities -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('new_vulnerabilities')"
+                                      [item]="getMetric('new_vulnerabilities')"
+                                      [extra]="getMetric('new_security_rating')"></qgate-project-detail-index>
+        </div>
+      </div>
+    </nz-card>
+
+    <nz-card [nzTitle]="titleT2" [nzBordered]="false">
+      <ng-template #titleT2>
+        <div class="title2">代码异味</div>
+      </ng-template>
+
+      <div class="row">
+        <div class="row-left">
+          <!-- Debt -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('sqale_index')"
+                                      [item]="getMetric('sqale_index')"
+                                      [extra]="getMetric('sqale_rating')"
+          ></qgate-project-detail-index>
+          <!-- Code Smells -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('code_smells')"
+                                      [item]="getMetric('code_smells')"></qgate-project-detail-index>
+        </div>
+
+        <div class="row-right">
+          <!-- New Debt -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('new_technical_debt')"
+                                      [item]="getMetric('new_technical_debt')"
+                                      [extra]="getMetric('new_maintainability_rating')"></qgate-project-detail-index>
+          <!-- New Code Smells -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('new_code_smells')"
+                                      [item]="getMetric('new_code_smells')"></qgate-project-detail-index>
+        </div>
+      </div>
+    </nz-card>
+
+    <nz-card [nzTitle]="titleT3" [nzBordered]="false">
+      <ng-template #titleT3>
+        <div class="title2">代码覆盖率</div>
+      </ng-template>
+
+      <div class="row">
+        <div class="row-left">
+          <!-- Coverage -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('coverage')"
+                                      [item]="getMetric('coverage')"></qgate-project-detail-index>
+          <!-- Unit Tests -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('tests')"
+                                      [item]="getMetric('tests')"></qgate-project-detail-index>
+        </div>
+
+        <div class="row-right">
+          <!-- Coverage on new lines -->
+          <qgate-project-detail-index class="index-item"
+                                      [item]="getMetric('new_coverage')"
+                                      [extra]="getMetric('new_lines_to_cover')"></qgate-project-detail-index>
+        </div>
+      </div>
+    </nz-card>
+
+    <nz-card [nzTitle]="titleT4" [nzBordered]="false">
+      <ng-template #titleT4>
+        <div class="title2">代码重复率</div>
+      </ng-template>
+
+      <div class="row">
+        <div class="row-left">
+          <!-- Duplications -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('duplicated_lines_density')"
+                                      [item]="getMetric('duplicated_lines_density')"></qgate-project-detail-index>
+          <!-- Duplicated Blocks -->
+          <qgate-project-detail-index class="index-item" *ngIf="getMetric('duplicated_blocks')"
+                                      [item]="getMetric('duplicated_blocks')"></qgate-project-detail-index>
+        </div>
+
+        <div class="row-right">
+          <!-- Duplications on new lines -->
+          <qgate-project-detail-index class="index-item"
+                                      [item]="getMetric('new_duplicated_lines_density')"
+                                      [extra]="getMetric('new_lines')"></qgate-project-detail-index>
+        </div>
+      </div>
+    </nz-card>
+  </div>
+</nz-card>

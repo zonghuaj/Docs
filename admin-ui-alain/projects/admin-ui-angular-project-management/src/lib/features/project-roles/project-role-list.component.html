@@ -1,0 +1,66 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card>
+  <nz-card-tab>
+    <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="onTabChanged($event.index)">
+      <nz-tab nzTitle="管理角色"></nz-tab>
+      <nz-tab nzTitle="项目角色"></nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+
+  <div *ngIf="tabIndex === 0">
+    <nz-row class="mb-md">
+      <button nz-button (click)="addRole('tenant-console')" [nzType]="'primary'">
+        <i nz-icon nzType="plus"></i>
+        <span>新建</span>
+      </button>
+    </nz-row>
+    <st #tst [data]="troles" (change)="tstChange($event)"
+        [ps]="10" [pi]="tpi"
+        [columns]="tcolumns"
+        [page]="stPage"
+        [total]="ttotal">
+      <ng-template st-row="operations" let-i>
+        <a (click)="editRole(i)">编辑</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span nz-tooltip *ngIf="isRoleDisabled(i) else del" nzTitle="该角色不能删除">
+          <a disabled>删除</a>
+        </span>
+        <ng-template #del>
+          <nz-popconfirm [nzTitle]="'确认删除当前角色？'" (nzOnConfirm)="deleteRole('t', i)">
+            <a nz-popconfirm>删除</a>
+          </nz-popconfirm>
+        </ng-template>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="bindUser(i)">绑定用户</a>
+      </ng-template>
+    </st>
+  </div>
+
+  <div *ngIf="tabIndex === 1">
+    <nz-row class="mb-md">
+      <button nz-button (click)="addRole('project-console')" [nzType]="'primary'">
+        <i nz-icon nzType="plus"></i>
+        <span>新建</span>
+      </button>
+    </nz-row>
+    <st #pst [data]="proles" (change)="pstChange($event)"
+        [ps]="10" [pi]="ppi"
+        [columns]="pcolumns"
+        [page]="stPage"
+        [total]="ptotal">
+      <ng-template st-row="operations" let-i>
+        <a (click)="editRole(i)">编辑</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <span nz-tooltip *ngIf="isRoleDisabled(i) else del" nzTitle="该角色不能删除">
+          <a disabled>删除</a>
+        </span>
+        <ng-template #del>
+          <nz-popconfirm [nzTitle]="'确认删除当前角色？'" (nzOnConfirm)="deleteRole('p', i)">
+            <a nz-popconfirm>删除</a>
+          </nz-popconfirm>
+        </ng-template>
+      </ng-template>
+    </st>
+  </div>
+
+</nz-card>

@@ -1,0 +1,28 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card>
+  <nz-row class="mb-md">
+    <input nz-input [(ngModel)]="params.username" nzPlaceHolder="请输入姓名" style="width: 200px; margin-right: 10px;">
+    <button nz-button (click)="userSt.load(1,params)" [nzType]="'primary'">搜索</button>
+    <button nz-button (click)="openAdd()" [nzType]="'primary'">
+      <i nz-icon nzType="plus"></i>
+      <span>新建</span>
+    </button>
+  </nz-row>
+  <st #userSt [data]="url" [columns]="columns" [req]="req" [res]="res" [page]="stPage">
+    <ng-template st-row="operations" let-i>
+      <a (click)="openEdit(i)">编辑</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span nz-tooltip *ngIf="isUserDisabled(i) else del" nzTitle="该用户为管理员">
+        <a disabled>删除</a>
+      </span>
+      <ng-template #del>
+        <nz-popconfirm [nzTitle]="'确认删除当前成员？'" (nzOnConfirm)="deleteUser(i)">
+          <a nz-popconfirm>删除</a>
+        </nz-popconfirm>
+      </ng-template>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a (click)="resetPassword(i)">重置密码</a>
+    </ng-template>
+  </st>
+</nz-card>

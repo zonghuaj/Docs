@@ -1,0 +1,78 @@
+<form nz-form
+      [formGroup]="form"
+      [nzLayout]="'vertical'"
+      (ngSubmit)="addMember()">
+
+  <nz-card [nzBordered]="false" nzTitle="添加项目成员">
+    <nz-row nzGutter="16">
+      <nz-col nzSpan="16">
+        <nz-form-item>
+          <nz-form-label nzFor="serviceName">输入成员名称：</nz-form-label>
+          <nz-form-control>
+            <!--            <nz-select style="width: 100%" formControlName="users"-->
+            <!--                       nzMode="multiple"-->
+            <!--                       nzPlaceHolder="请输入用户名"-->
+            <!--                       [nzServerSearch]="true"-->
+            <!--                       (nzOpenChange)="onUserOpenChanged($event)"-->
+            <!--                       (nzOnSearch)="onUserTyped($event)">-->
+            <!--              <nz-option *ngFor="let option of possibleUsers" [nzLabel]="option.username"-->
+            <!--                         [nzValue]="option.id"></nz-option>-->
+            <!--              <nz-option *ngIf="userLoading" nzDisabled nzCustomContent>-->
+            <!--                <span><i nz-icon nzType="loading" class="loading-icon"></i> 正在查询...</span>-->
+            <!--              </nz-option>-->
+            <!--            </nz-select>-->
+            <nz-select
+              class="width100"
+              nzMode="multiple"
+              nzPlaceHolder="选择用户"
+              formControlName="users">
+              <nz-option *ngFor="let u of fullUsers" [nzLabel]="u.name" [nzValue]="u.id"></nz-option>
+            </nz-select>
+
+            <nz-form-explain *ngIf="(users.dirty || users.touched) && users.errors">
+              请输入用户名
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="8">
+        <nz-form-item>
+          <nz-form-label nzFor="serviceName">选择角色：</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="roles" [nzPlaceHolder]="'请选择角色'"
+                       [nzShowSearch]="true"
+                       nzMode="multiple">
+              <nz-option *ngFor="let r of selectRoles" [nzLabel]="r.name" [nzValue]="r.id"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="(roles.dirty || roles.touched) && roles.errors">
+              请输入服务名称，3-15个字符，不能包含特殊符号
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+    <nz-row>
+      <nz-col>
+        <button nz-button nzType="primary" [disabled]="users.value.length === 0 || roles.value.length === 0"
+                [nzLoading]="addLoading">添加成员
+        </button>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+</form>
+
+<nz-card nzTitle="当前项目成员" [nzBordered]="false">
+  <st #st [columns]="columns" [data]="data" [loading]="loading" [ps]="q.ps" [pi]="q.pi"
+      [total]="totalCount" [page]="page">
+    <!--    <ng-template st-row="roles" let-i>-->
+    <!--      <span class="pre">{{i.role}}</span>-->
+    <!--    </ng-template>-->
+    <ng-template st-row="operations" let-i>
+      <a (click)="showEditModal(i)">编辑</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <nz-popconfirm [nzTitle]="'确认删除当前成员？'" (nzOnConfirm)="deleteMember(i)">
+        <a nz-popconfirm>删除</a>
+      </nz-popconfirm>
+    </ng-template>
+  </st>
+</nz-card>

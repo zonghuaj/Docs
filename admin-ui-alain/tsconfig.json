@@ -1,0 +1,205 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@shared": [
+        "src/app/shared/index"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@core": [
+        "src/app/core/index"
+      ],
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ],
+      "@angular/platform-browser/*": [
+        "node_modules/@angular/platform-browser/*"
+      ],
+      "@ngx-translate/*": [
+        "node_modules/@ngx-translate/*"
+      ],
+      "core-js/es7/reflect": [
+        "node_modules/core-js/proposals/reflect-metadata"
+      ],
+      "admin-ui-angular-common": [
+        "dist/admin-ui-angular-common"
+      ],
+      "admin-ui-angular-common/*": [
+        "dist/admin-ui-angular-common/*"
+      ],
+      "admin-ui-angular-platform-dashboard": [
+        "dist/admin-ui-angular-platform-dashboard"
+      ],
+      "admin-ui-angular-platform-dashboard/*": [
+        "dist/admin-ui-angular-platform-dashboard/*"
+      ],
+      "admin-ui-angular-tenant-management": [
+        "dist/admin-ui-angular-tenant-management"
+      ],
+      "admin-ui-angular-tenant-management/*": [
+        "dist/admin-ui-angular-tenant-management/*"
+      ],
+      "admin-ui-angular-log-summary": [
+        "dist/admin-ui-angular-log-summary"
+      ],
+      "admin-ui-angular-log-summary/*": [
+        "dist/admin-ui-angular-log-summary/*"
+      ],
+      "admin-ui-angular-service-trace": [
+        "dist/admin-ui-angular-service-trace/"
+      ],
+      "admin-ui-angular-service-trace/*": [
+        "dist/admin-ui-angular-service-trace/*"
+      ],
+      "admin-ui-angular-config-center": [
+        "dist/admin-ui-angular-config-center"
+      ],
+      "admin-ui-angular-config-center/*": [
+        "dist/admin-ui-angular-config-center/*"
+      ],
+      "admin-ui-angular-service-traffic": [
+        "dist/admin-ui-angular-service-traffic"
+      ],
+      "admin-ui-angular-service-traffic/*": [
+        "dist/admin-ui-angular-service-traffic/*"
+      ],
+      "admin-ui-angular-service-autoscaler": [
+        "dist/admin-ui-angular-service-autoscaler"
+      ],
+      "admin-ui-angular-service-autoscaler/*": [
+        "dist/admin-ui-angular-service-autoscaler/*"
+      ],
+      "admin-ui-angular-monitor-all": [
+        "dist/admin-ui-angular-monitor-all"
+      ],
+      "admin-ui-angular-monitor-all/*": [
+        "dist/admin-ui-angular-monitor-all/*"
+      ],
+      "admin-ui-angular-alert-rules": [
+        "dist/admin-ui-angular-alert-rules"
+      ],
+      "admin-ui-angular-alert-rules/*": [
+        "dist/admin-ui-angular-alert-rules/*"
+      ],
+      "admin-ui-angular-alert-all": [
+        "dist/admin-ui-angular-alert-all"
+      ],
+      "admin-ui-angular-alert-all/*": [
+        "dist/admin-ui-angular-alert-all/*"
+      ],
+      "admin-ui-angular-notice-way": [
+        "dist/admin-ui-angular-notice-way"
+      ],
+      "admin-ui-angular-notice-way/*": [
+        "dist/admin-ui-angular-notice-way/*"
+      ],
+      "admin-ui-angular-image-template": [
+        "dist/admin-ui-angular-image-template"
+      ],
+      "admin-ui-angular-image-template/*": [
+        "dist/admin-ui-angular-image-template/*"
+      ],
+      "admin-ui-angular-quality-gate": [
+        "dist/admin-ui-angular-quality-gate"
+      ],
+      "admin-ui-angular-quality-gate/*": [
+        "dist/admin-ui-angular-quality-gate/*"
+      ],
+      "admin-ui-angular-itest-platform": [
+        "dist/admin-ui-angular-itest-platform"
+      ],
+      "admin-ui-angular-itest-platform/*": [
+        "dist/admin-ui-angular-itest-platform/*"
+      ],
+      "admin-ui-angular-artifactory": [
+        "dist/admin-ui-angular-artifactory/"
+      ],
+      "admin-ui-angular-artifactory/*": [
+        "dist/admin-ui-angular-artifactory/*"
+      ],
+      "admin-ui-angular-service-management": [
+        "dist/admin-ui-angular-service-management/"
+      ],
+      "admin-ui-angular-service-management/*": [
+        "dist/admin-ui-angular-service-management/*"
+      ],
+      "admin-ui-angular-service-topo": [
+        "dist/admin-ui-angular-service-topo/"
+      ],
+      "admin-ui-angular-service-topo/*": [
+        "dist/admin-ui-angular-service-topo/*"
+      ],
+      "admin-ui-angular-pipeline-management": [
+        "dist/admin-ui-angular-pipeline-management/"
+      ],
+      "admin-ui-angular-pipeline-management/*": [
+        "dist/admin-ui-angular-pipeline-management/*"
+      ],
+      "admin-ui-angular-project-management": [
+        "dist/admin-ui-angular-project-management/"
+      ],
+      "admin-ui-angular-project-management/*": [
+        "dist/admin-ui-angular-project-management/*"
+      ],
+      "admin-ui-angular-platform-node-list": [
+        "dist/admin-ui-angular-platform-node-list/"
+      ],
+      "admin-ui-angular-platform-node-list/*": [
+        "dist/admin-ui-angular-platform-node-list/*"
+      ],
+      "admin-ui-angular-platform-os": [
+        "dist/admin-ui-angular-platform-os/"
+      ],
+      "admin-ui-angular-platform-os/*": [
+        "dist/admin-ui-angular-platform-os/*"
+      ],
+      "admin-ui-angular-user-management": [
+        "dist/admin-ui-angular-user-management/"
+      ],
+      "admin-ui-angular-user-management/*": [
+        "dist/admin-ui-angular-user-management/*"
+      ],
+      "admin-ui-angular-service-dashboard": [
+        "dist/admin-ui-angular-service-dashboard/"
+      ],
+      "admin-ui-angular-service-dashboard/*": [
+        "dist/admin-ui-angular-service-dashboard/*"
+      ],
+      "admin-ui-angular-event-management": [
+        "dist/admin-ui-angular-event-management/"
+      ],
+      "admin-ui-angular-event-management/*": [
+        "dist/admin-ui-angular-event-management/*"
+      ]
+    }
+  }
+}

@@ -1,0 +1,56 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card [nzBordered]="true">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitFilter()" class="search__form">
+    <div nz-row nzGutter="16">
+      <div nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label class="form-label" nzFor="service">服务</nz-form-label>
+          <nz-form-control>
+            <service-select (select$)="q.serv = $event.serviceName" [name]="q.serv"></service-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label class="form-label" nzFor="eskwd">关键字</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.keyword" name="eskwd" placeholder="请输入" id="eskwd">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label class="form-label" nzFor="timerange">起止时间</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker nzShowTime nzFormat="yy-MM-dd HH:mm:ss" ngModel [ngModelOptions]="{standalone: true}" (ngModelChange)="onDatePicked($event)" [nzDisabledDate]="disabledDate"></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="4">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="default" (click)="reset()" class="mx-sm">重置</button>
+      </div>
+    </div>
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+
+    </div>
+  </form>
+
+  <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)" [ps]="10" [pi]="q.pi" [total]="totalCount" [page]="page" style="margin-top: 24px">
+    <ng-template st-row="timeT" let-i>
+      <span class="log-item">{{i.timestamp | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+    </ng-template>
+    <ng-template st-row="contentT" let-i>
+      <span class="log-item">{{i.content}}</span>
+    </ng-template>
+    <ng-template st-row="serviceT" let-i>
+      <span class="log-item">{{i.service}}</span>
+    </ng-template>
+    <ng-template st-row="podT" let-i>
+      <span class="log-item">{{i.pod}}</span>
+    </ng-template>
+  </st>
+</nz-card>

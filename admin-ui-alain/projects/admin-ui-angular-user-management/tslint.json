@@ -1,0 +1,17 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "adminUiAngular",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "admin-ui-angular",
+      "kebab-case"
+    ]
+  }
+}

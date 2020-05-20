@@ -1,0 +1,31 @@
+<form #f nz-form [formGroup]="form" [nzLayout]="'vertical'" style="width: 600px; margin-left: 48px; margin-top: 24px">
+  <se-container col="1" labelWidth="100">
+    <se label="模板名称" required>
+      <input nz-input formControlName="name">
+    </se>
+    <se label="描述" error="请输入正确的数字" required>
+      <textarea nz-input formControlName="description"></textarea>
+    </se>
+  </se-container>
+  <div class="mt-lg"></div>
+  <se-container col="1" labelWidth="100">
+    <se label="是否构建镜像">
+      <nz-switch formControlName="isGenerateImage"></nz-switch>
+      <span class="ml-sm">选择镜像模板</span>
+      <nz-select formControlName="imageTemplateId" style="width: 355px;" class="ml-sm">
+        <nz-option *ngFor="let t of imageTemplates" [nzLabel]="t.name" [nzValue]="t.id"></nz-option>
+      </nz-select>
+    </se>
+  </se-container>
+  <div class="mt-lg"></div>
+<!--  <se-container col="1" labelWidth="100">-->
+<!--    <se label="是否发布服务">-->
+<!--      <nz-switch formControlName="isDeploy"></nz-switch>-->
+<!--    </se>-->
+<!--  </se-container>-->
+</form>
+
+<div nz-row nzType="flex" nzJustify="center" class="mt-lg">
+  <button nz-button nzType="default" type="button" (click)="location.back()">取消</button>
+  <button nz-button nzType="primary" type="button" (click)="next()" [disabled]="!enableSubmit">下一步</button>
+</div>

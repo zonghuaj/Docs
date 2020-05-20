@@ -1,0 +1,597 @@
+<div *ngIf="sourceType === 0"
+     nz-row nzType="flex" nzJustify="center" nzAlign="middle"
+     style="height: 300px;">
+  <button nz-button
+          type="button"
+          nzType="default"
+          class="huge-button"
+          style="margin-left: 64px"
+          (click)="onTypeSelected(4);">
+    从制品版本创建
+    <i nz-icon nzType="hdd" nzTheme="outline"></i>
+  </button>
+  <!-- <button nz-button
+          type="button"
+          nzType="default"
+          class="huge-button"
+          (click)="onTypeSelected(3)">
+    从流水线模板创建
+    <i nz-icon nzType="ci" nzTheme="outline"></i>
+  </button> -->
+  <button nz-button
+          type="button"
+          nzType="default"
+          class="huge-button"
+          style="margin-left: 64px"
+          (click)="onTypeSelected(2)">
+    从镜像创建
+    <i nz-icon nzType="hdd" nzTheme="outline"></i>
+  </button>
+
+</div>
+
+<form nz-form *ngIf="sourceType > 0"
+      (ngSubmit)="submitForm()"
+      [formGroup]="form"
+      [nzLayout]="'vertical'">
+  <nz-card [nzBordered]="false" nzTitle="基础信息">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="7" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>版本号</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="version" placeholder="请输入版本号"/>
+            <nz-form-explain *ngIf="(version.dirty || version.touched) && version.errors">
+              {{namePlaceHolder}}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+
+    <nz-row nzGutter="16">
+      <nz-col nzLg="7" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>版本描述</nz-form-label>
+          <nz-form-control>
+            <textarea maxlength="255" nz-input formControlName="versionDesc" placeholder="请输入版本描述"
+                      style="height: 80px"></textarea>
+            <nz-form-explain *ngIf="(versionDesc.dirty || versionDesc.touched) && versionDesc.errors">
+              请输入描述
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card *ngIf="sourceType === 3" [nzBordered]="false" nzTitle="代码配置">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>Git仓库</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="gitUrl" placeholder="请输入仓库地址">
+            <nz-form-explain *ngIf="(gitUrl.dirty || gitUrl.touched) && gitUrl.errors">
+              请输入仓库地址
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>分支</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="gitBrunch" placeholder="请输入分支名">
+            <nz-form-explain *ngIf="(gitBrunch.dirty || gitBrunch.touched) && gitBrunch.errors">
+              请输入分支名
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card *ngIf="sourceType === 3" [nzBordered]="false" nzTitle="Jenkins配置">
+    <nz-row nzGutter="16">
+      <nz-col nzSpan="6">
+        <nz-form-item>
+          <nz-form-label nzRequired>Jenkins配置</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="jenkinsId" [nzShowSearch]="true">
+              <nz-option *ngFor="let i of jenkinsList" [nzLabel]="i.name" [nzValue]="i.id">
+              </nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="(jenkinsId.dirty || jenkinsId.touched) && jenkinsId.errors">
+              请选择Jenkins配置
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="6" nzOffset="2">
+        <nz-form-item>
+          <nz-form-label nzRequired>选择流水线模板</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="pipelineTemplateId" [nzShowSearch]="true"
+                       (ngModelChange)="onPipelineTemplateSelected($event)">
+              <nz-option *ngFor="let i of pipelineTemplates" [nzLabel]="i.name" [nzValue]="i.id">
+              </nz-option>
+            </nz-select>
+            <nz-form-explain
+              *ngIf="(pipelineTemplateId.dirty || pipelineTemplateId.touched) && pipelineTemplateId.errors">
+              请选择流水线模板
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card *ngIf="sourceType === 4 && !id" [nzBordered]="false" nzTitle="制品配置">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>制品</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="arti">
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>制品版本</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="artiVer">
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>
+            操作
+          </nz-form-label>
+          <nz-form-control>
+            <a href="javasrcipt:;" (click)="openArtiSelect()"> 选择</a>
+
+
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card nzTitle="镜像参数" [nzBordered]="false"
+           *ngIf="false && selectedPipelineTemplate && selectedPipelineTemplate.isGenerateImage">
+    <nz-row nzGutter="16">
+      <nz-col nzSpan="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>镜像参数</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="imageTemplateParam" placeholder="请输入镜像参数" style="width: 600px;">
+          </nz-form-control>
+          <nz-form-explain
+            *ngIf="(imageTemplateParam.dirty || imageTemplateParam.touched) && imageTemplateParam.errors">
+            请输入镜像参数
+          </nz-form-explain>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card nzTitle="流水线参数" [nzBordered]="false" *ngIf="showPipelineParams">
+    <nz-row nzGutter="16">
+      <nz-col nzSpan="24" formGroupName="pipelineParams">
+        <nz-form-item *ngFor="let p of pipelineTemplateItems">
+          <nz-form-label class="inline-label">
+            <b>{{p.key}}</b>{{' - ' + p.label }}
+            <span *ngIf="p.promptMessage">{{' （注：' + p.promptMessage + '）'}}</span>
+          </nz-form-label>
+          <nz-form-control class="inline-control">
+            <input class="param-label" nz-input [formControlName]="p.key">
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card *ngIf="sourceType === 2 || sourceType === 4" [nzBordered]="false" nzTitle="镜像配置">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>镜像地址</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="imageAddr" placeholder="请输入镜像地址">
+            <!--            <nz-form-explain *ngIf="(imageAddr.dirty || imageAddr.touched) && imageAddr.errors">-->
+            <!--              请输入镜像地址-->
+            <!--            </nz-form-explain>-->
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>镜像标签</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="imageTag" placeholder="请输入镜像标签">
+            <!--            <nz-form-explain *ngIf="(imageTag.dirty || imageTag.touched) && imageTag.errors">-->
+            <!--              请输入镜像标签-->
+            <!--            </nz-form-explain>-->
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <!--  <nz-card *ngIf="sourceType === 1" [nzBordered]="false" nzTitle="构建配置">-->
+  <!--    <nz-row nzGutter="16">-->
+  <!--      <nz-col nzLg="6" nzMd="12" nzSm="24">-->
+  <!--        <nz-form-item>-->
+  <!--          <nz-form-label>运行环境</nz-form-label>-->
+  <!--          <nz-form-control>-->
+  <!--            <nz-select formControlName="operatingEnv" [nzPlaceHolder]="'请选择运行环境'" [nzShowSearch]="true">-->
+  <!--              <nz-option *ngFor="let i of scriptEnv" [nzLabel]="i.label" [nzValue]="i.value">-->
+  <!--              </nz-option>-->
+  <!--            </nz-select>-->
+  <!--            <nz-form-explain *ngIf="(operatingEnv.dirty || operatingEnv.touched) && operatingEnv.errors">-->
+  <!--              请选择运行环境-->
+  <!--            </nz-form-explain>-->
+  <!--          </nz-form-control>-->
+  <!--        </nz-form-item>-->
+  <!--      </nz-col>-->
+  <!--      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">-->
+  <!--        <nz-form-item>-->
+  <!--          <nz-form-label>构建工具</nz-form-label>-->
+  <!--          <nz-form-control>-->
+  <!--            <nz-select formControlName="buildType" [nzPlaceHolder]="'请选择构建工具'">-->
+  <!--              <nz-option *ngFor="let i of buildEnv" [nzLabel]="i.label" [nzValue]="i.value">-->
+  <!--              </nz-option>-->
+  <!--            </nz-select>-->
+  <!--            <nz-form-explain *ngIf="(buildType.dirty || buildType.touched) && buildType.errors">-->
+  <!--              请选择构建工具-->
+  <!--            </nz-form-explain>-->
+  <!--          </nz-form-control>-->
+  <!--        </nz-form-item>-->
+  <!--      </nz-col>-->
+  <!--      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">-->
+  <!--        <nz-form-item>-->
+  <!--          <nz-form-label>工程路径</nz-form-label>-->
+  <!--          <nz-form-control>-->
+  <!--            <input nz-input formControlName="packagePath" placeholder="工程路径" value="1">-->
+  <!--            <nz-form-explain *ngIf="(packagePath.dirty || packagePath.touched) && packagePath.errors">-->
+  <!--              请输入工程路径-->
+  <!--            </nz-form-explain>-->
+  <!--          </nz-form-control>-->
+  <!--        </nz-form-item>-->
+  <!--      </nz-col>-->
+  <!--    </nz-row>-->
+  <!--    <nz-row nzGutter="16">-->
+  <!--      <nz-col nzLg="6" nzMd="12" nzSm="24">-->
+  <!--        <nz-form-item>-->
+  <!--          <nz-form-label>目标文件</nz-form-label>-->
+  <!--          <nz-form-control>-->
+  <!--            <input nz-input formControlName="targetFile" placeholder="目标文件" value="1">-->
+  <!--            <nz-form-explain *ngIf="(targetFile.dirty || targetFile.touched) && targetFile.errors">-->
+  <!--              请输入目标文件-->
+  <!--            </nz-form-explain>-->
+  <!--          </nz-form-control>-->
+  <!--        </nz-form-item>-->
+  <!--      </nz-col>-->
+  <!--    </nz-row>-->
+  <!--  </nz-card>-->
+
+  <nz-card [nzBordered]="false" nzTitle="存储配置">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>挂载路径(如:/ftp)</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="mountPath" placeholder="挂载路径" value="1">
+            <nz-form-explain *ngIf="(mountPath.dirty || mountPath.touched) && mountPath.errors">
+              请输入挂载路径
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>挂载类型</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="mountType" [nzPlaceHolder]="'请选择挂载类型'">
+              <nz-option *ngFor="let i of mountTypes" [nzLabel]="i.label" [nzValue]="i.value">
+              </nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="(mountType.dirty || mountType.touched) && mountType.errors">
+              请选择挂载类型
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>挂载存储上限(单位:mib)</nz-form-label>
+          <nz-form-control>
+            <nz-input-group nzAddOnAfter="MiB" class="input100">
+              <nz-input-number nz-input formControlName="mountLimit" nzMin="0"></nz-input-number>
+            </nz-input-group>
+            <nz-form-explain *ngIf="(mountLimit.dirty || mountLimit.touched) && mountLimit.errors">
+              请输入挂载存储上限
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card [nzBordered]="false" nzTitle="资源配额">
+    <nz-row nzGutter="1">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>CPU上限(单位:核)</nz-form-label>
+          <nz-form-control>
+            <nz-input-number class="input100" nz-input formControlName="cpuLimit" nzMin="0"
+                             [nzFormatter]="cpuUnit" [nzParser]="cpuParse" [nzStep]="0.1"></nz-input-number>
+            <nz-form-explain>
+              已使用cpu(核): {{this.resourceLimit.currentCpu}} 剩余cpu(核):{{cpuAvailed}}
+            </nz-form-explain>
+            <nz-form-explain *ngIf="(cpuLimit.dirty || cpuLimit.touched) && cpuLimit.errors">
+              {{cpuError}}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="2">
+        <nz-form-item>
+          <nz-form-label>内存上限(单位:mib)</nz-form-label>
+          <nz-form-control>
+            <nz-input-number class="input100" nz-input formControlName="memoryLimit" placeholder="内存上限" nzMin="0"
+                             [nzFormatter]="memoryUnit" [nzParser]="memoryParse"></nz-input-number>
+            <nz-form-explain>
+              已使用内存(mib): {{this.resourceLimit.currentMemory}} 剩余内存(mib):{{memoryAvailed}}
+            </nz-form-explain>
+            <nz-form-explain *ngIf="(memoryLimit.dirty || memoryLimit.touched) && memoryLimit.errors">
+              {{memoryError}}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+  <nz-card [nzBordered]="false" nzTitle="运行配置">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24" *ngIf="sourceType !== 4">
+        <nz-form-item>
+          <nz-form-label>运行参数(多个参数以逗号分开，如 a,b)</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="appArgs" placeholder="运行参数" value="1">
+            <nz-form-explain *ngIf="(appArgs.dirty || appArgs.touched) && appArgs.errors">
+              请输入运行参数
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>服务依赖(多个参数以逗号分开,如a,b,c)</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="dependencies" placeholder="服务依赖" value="1">
+            <nz-form-explain *ngIf="(dependencies.dirty || dependencies.touched) && dependencies.errors">
+              请输入正确的服务依赖
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="2">
+        <nz-form-item>
+          <nz-form-label>实例数量</nz-form-label>
+          <nz-form-control>
+            <nz-input-number class="input100" nz-input formControlName="replica" placeholder="请输入实例数量"
+                             [nzMin]="1" [nzMax]="10">1
+            </nz-input-number>
+            <nz-form-explain *ngIf="(replica.dirty || replica.touched) && replica.errors">
+              请输入实例数量
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+    <nz-row nzGutter="16">
+      <nz-col *ngIf="sourceType === 3" nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>JVM参数（多个参数以逗号分割）</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="jvmArgs" placeholder="JVM参数" value="1">
+            <nz-form-explain *ngIf="(jvmArgs.dirty || jvmArgs.touched) && jvmArgs.errors">
+              请输入JVM参数
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+  <!-- configMap -->
+  <!-- configMap -->
+  <!-- configMap -->
+  <!-- configMap -->
+  <!-- configMap -->
+  <nz-card [nzBordered]="false" nzTitle="环境变量" formArrayName="envInfo_new">
+    <!-- {{ form.value | json }} -->
+
+    <nz-row nzGutter="16">
+      <nz-col nzLg="9" nzMd="12" nzSm="24">
+        <nz-form-label>变量名称</nz-form-label>
+      </nz-col>
+
+      <nz-col nzLg="9" nzOffset="2" nzMd="12" nzSm="24">
+        <nz-form-label>变量值</nz-form-label>
+      </nz-col>
+    </nz-row>
+
+    <nz-row nzGutter="16" *ngFor="let item of envInfo_new.controls; let i = index" [formGroupName]="i">
+      <nz-col nzLg="9" nzMd="12" nzSm="24">{{name}}
+        <input nz-input formControlName="name">
+      </nz-col>
+      <nz-col *ngIf="!item.ifConfigMap" nzLg="9" nzOffset="2" nzMd="12" nzSm="64">
+        <nz-radio-group formControlName="flag" (ngModelChange)="onEnvChange($event)" ngModel="1" [nzName]="name" class="input100">
+          <nz-row >
+            <nz-col nzSpan="1">
+              <label nz-radio nzValue="1"></label>
+            </nz-col>
+            <nz-col nzSpan="23"><input nz-input formControlName="value"></nz-col>
+          </nz-row>
+          <nz-row >
+            <nz-col nzSpan="1">
+              <label nz-radio nzValue="2"></label>
+            </nz-col>
+            <nz-col nzSpan="23">
+              <nz-select [nzDropdownMatchSelectWidth]="false" style="width: 50%;" formControlName="configName"
+                         (nzOpenChange)="onConfigNameNewOpen($event)"
+                         (ngModelChange)="configNameChange_new($event,item)">
+                <nz-option *ngFor="let p of configMapName" [nzValue]="p" [nzLabel]="p"></nz-option>
+              </nz-select>
+              <nz-select [nzDropdownMatchSelectWidth]="false" style="width: 50%;" formControlName="configItem">
+                <nz-option *ngFor="let c of configItems[item.configName]" [nzValue]="c" [nzLabel]="c"></nz-option>
+              </nz-select>
+            </nz-col>
+          </nz-row>
+        </nz-radio-group>
+      </nz-col>
+      <nz-form-explain *ngIf="checkNewItem(item)">
+        <label style="color: red">请完善配置信息</label>
+      </nz-form-explain>
+      <br/>
+      <nz-row></nz-row>
+    </nz-row>
+
+    <nz-row nzGutter="16" *ngFor="let item of envInfo">
+      <nz-col nzLg="9" nzMd="12" nzSm="24">
+        <input nz-input [(ngModel)]="item.name" [ngModelOptions]="{standalone: true}">
+      </nz-col>
+      <nz-col *ngIf="!item.ifConfigMap" nzLg="9" nzOffset="2" nzMd="12" nzSm="24">
+        <input nz-input [(ngModel)]="item.value" [ngModelOptions]="{standalone: true}">
+      </nz-col>
+      <nz-col *ngIf="item.ifConfigMap" nzLg="9" nzOffset="2" nzMd="12" nzSm="24">
+        <nz-select [nzDropdownMatchSelectWidth]="false" style="width: 50%;" [(ngModel)]="item.configName"
+                   (nzOpenChange)="onConfigNameNewOpen($event)"
+                   (ngModelChange)="configNameChange($event,item,2)" [ngModelOptions]="{standalone: true}">
+        <nz-option *ngFor="let p of configMapName" [nzValue]="p" [nzLabel]="p"></nz-option>
+      </nz-select>
+        <nz-select [nzDropdownMatchSelectWidth]="false" style="width: 50%;" [(ngModel)]="item.configItem"
+                   [ngModelOptions]="{standalone: true}">
+          <nz-option *ngFor="let c of configItems[item.configName]" [nzValue]="c" [nzLabel]="c"></nz-option>
+        </nz-select>
+      </nz-col>
+      <div>
+        <button nz-button style="border: #FFFFFF" type="button" (click)="delEnvItem(item)"><i nz-icon
+                                                                                              nzType="minus-circle"
+                                                                                              nzTheme="outline"></i>
+        </button>
+      </div>
+      <nz-form-explain *ngIf="checkEnvInfoItem(item)">
+        <font style="color: red">请完善配置信息</font>
+      </nz-form-explain>
+      <br/>
+      <nz-row nzGutter="16">
+      </nz-row>
+    </nz-row>
+
+    <div>
+      <button nz-button [nzType]="'primary'" type="button" (click)="addEvnItem()">添加变量</button>
+      <button nz-button [nzType]="'primary'" type="button" (click)="addEvnItemC()">从配置中添加变量</button>
+    </div>
+
+  </nz-card>
+  <nz-card [nzBordered]="false" nzTitle="配置文件" formArrayName="configInfo_new">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="9" nzMd="12" nzSm="24">
+        <nz-form-label>配置名称</nz-form-label>
+      </nz-col>
+      <!--      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">-->
+      <!--        <nz-form-label>配置挂载路径</nz-form-label>-->
+      <!--      </nz-col>-->
+      <nz-col nzLg="9" nzMd="12" nzSm="24" nzOffset="2">
+        <nz-form-label>配置项名称</nz-form-label>
+      </nz-col>
+      <!--      <nz-form-label>操作</nz-form-label>-->
+    </nz-row>
+
+    <nz-row nzGutter="16" *ngFor="let item of configInfo_new.controls; let i = index" [formGroupName]="i">
+      <nz-col nzLg="9" nzMd="12" nzSm="24">{{name}}
+        <input nz-input formControlName="name">
+      </nz-col>
+      <!--      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">{{path}}-->
+      <!--        <input nz-input formControlName="path">-->
+      <!--      </nz-col>-->
+      <nz-col *ngIf="!item.ifConfigMap" nzLg="9" nzOffset="2" nzMd="64" nzSm="64">
+        <nz-radio-group formControlName="flag" (ngModelChange)="onEnvChange($event)" ngModel="1" [nzName]="name" class="input100">
+          <nz-row >
+            <nz-col nzSpan="1">
+              <label nz-radio nzValue="1"></label>
+            </nz-col>
+            <nz-col nzSpan="23">
+              <textarea rows="1" nz-input formControlName="data"></textarea>
+            </nz-col>
+          </nz-row>
+          <nz-row >
+            <nz-col nzSpan="1">
+              <label nz-radio nzValue="2" ></label>
+            </nz-col>
+            <nz-col nzSpan="23">
+
+              <nz-select [nzDropdownMatchSelectWidth]="false" style="width: 50%;" formControlName="configName"
+                         (nzOpenChange)="onConfigNameNewOpen($event)"
+                         (ngModelChange)="configNameChange_new($event,item)">
+                <nz-option *ngFor="let p of configMapName" [nzValue]="p" [nzLabel]="p"></nz-option>
+              </nz-select>
+
+              <nz-select [nzDropdownMatchSelectWidth]="false" style="width: 50%;" formControlName="configItem">
+                <nz-option *ngFor="let c of configItems[item.configName]" [nzValue]="c" [nzLabel]="c"></nz-option>
+              </nz-select>
+            </nz-col>
+          </nz-row>
+        </nz-radio-group>
+      </nz-col>
+
+      <nz-form-explain *ngIf="checkNewItem(item)">
+        <label style="color: red">请完善配置信息</label>
+      </nz-form-explain>
+      <br/>
+      <nz-row></nz-row>
+    </nz-row>
+
+    <nz-row nzGutter="16" *ngFor="let item of configInfo">
+      <nz-col nzLg="9" nzMd="12" nzSm="24">
+        <input nz-input [(ngModel)]="item.name" [ngModelOptions]="{standalone: true}">
+      </nz-col>
+      <!--      <nz-col nzLg="6" nzOffset="2" nzMd="12" nzSm="24">-->
+      <!--        <input nz-input [(ngModel)]="item.path" [ngModelOptions]="{standalone: true}">-->
+      <!--      </nz-col>-->
+      <nz-col nzLg="9" nzMd="12" nzSm="24" nzOffset="2">
+        <!--        <input nz-input [(ngModel)]="item.itemName" [ngModelOptions]="{standalone: true}">-->
+        <nz-select style="width: 50%;" [(ngModel)]="item.itemName.configName"
+                   (nzOpenChange)="onConfigNameNewOpen($event)"
+                   (ngModelChange)="configNameChange($event,item, 1)" [ngModelOptions]="{standalone: true}">
+          <nz-option *ngFor="let p of configMapName" [nzValue]="p" [nzLabel]="p"></nz-option>
+        </nz-select>
+        <nz-select style="width: 50%;" [(ngModel)]="item.itemName.configItemName"
+                   [ngModelOptions]="{standalone: true}">
+          <nz-option *ngFor="let c of configItems[item.itemName.configName]" [nzValue]="c" [nzLabel]="c"></nz-option>
+        </nz-select>
+      </nz-col>
+      <div>
+        <!--        <button nz-button style="border: #FFFFFF" type="button" (click)="addConfig()"><i nz-icon nzType="plus-circle" nzTheme="outline"></i></button>-->
+        <button nz-button style="border: #FFFFFF" type="button" (click)="delConfig(item)"><i nz-icon
+                                                                                             nzType="minus-circle"
+                                                                                             nzTheme="outline"></i>
+        </button>
+      </div>
+      <nz-form-explain *ngIf="checkConfigInfoItem(item)">
+        <label style="color: red">请完善配置信息</label>
+      </nz-form-explain>
+      <br/>
+    </nz-row>
+    <div>
+
+      <button nz-button [nzType]="'primary'" type="button" (click)="addConfig()">添加配置</button>
+    </div>
+  </nz-card>
+</form>
+

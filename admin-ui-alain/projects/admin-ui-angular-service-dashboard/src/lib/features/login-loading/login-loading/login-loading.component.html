@@ -1,0 +1,15 @@
+<div nz-row style="background: white;">
+  <div nz-col nzSpan="8"></div>
+  <div nz-col nzSpan="8">
+    <nz-card nzTitle="请选择要登录的项目" nzBordered="false">
+      <nz-tag class="login-loading-tag" *ngFor="let project of projectList" nzMode="checkable" [nzChecked]="project.checked" (nzCheckedChange)="checkChange('project', project.projectId)">{{project.projectName}}</nz-tag>
+    </nz-card>
+    <nz-card nzTitle="请选择要登录的环境" nzBordered="false">
+      <nz-tag class="login-loading-tag" *ngFor="let env of envList" nzMode="checkable" [nzChecked]="env.checked" (nzCheckedChange)="checkChange('env', env.environmentId)">{{env.environmentName}}</nz-tag>
+    </nz-card>
+    <nz-card nzBordered="false" style="text-align: center;">
+      <button nz-button nzType="primary" (click)="doLogin()">登录</button>
+    </nz-card>
+  </div>
+  <div nz-col nzSpan="8"></div>
+</div>

@@ -1,0 +1,11 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card nzTitle="自动伸缩">
+  <div class="mb-md">
+    <button nz-button (click)="create()" [nzType]="'primary'">新建</button>
+  </div>
+  <st #st [data]="url" [req]="{params: params}" [res]="res" [columns]="columns">
+    <ng-template st-row="customStatus" let-item let-index="index">
+      <nz-switch [(ngModel)]="item.autoscale.enable" nzCheckedChildren="开" nzUnCheckedChildren="关" [nzDisabled]="true"></nz-switch>
+    </ng-template>
+  </st>
+</nz-card>

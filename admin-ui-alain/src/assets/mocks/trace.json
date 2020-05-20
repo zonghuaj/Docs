@@ -1,0 +1,189 @@
+{
+  "data": {
+    "traces": {
+      "data": [
+        {
+          "key": "108.37.15596964000020350",
+          "endpointNames": [
+            "/materialCode/getMaterialCodeApi"
+          ],
+          "duration": 498,
+          "start": "1559696400002",
+          "isError": false,
+          "traceIds": [
+            "108.37.15596964000020351"
+          ]
+        },
+        {
+          "key": "108.48.15596951493970034",
+          "endpointNames": [
+            "/contract/getDetail"
+          ],
+          "duration": 34,
+          "start": "1559695149397",
+          "isError": false,
+          "traceIds": [
+            "108.48.15596951493970035"
+          ]
+        },
+        {
+          "key": "108.47.15596951431370030",
+          "endpointNames": [
+            "/contract/query/inquiry"
+          ],
+          "duration": 28,
+          "start": "1559695143137",
+          "isError": false,
+          "traceIds": [
+            "108.47.15596951431370031"
+          ]
+        },
+        {
+          "key": "108.37.15596955000030340",
+          "endpointNames": [
+            "/vendorBasicData/getVendorBasicDataApi"
+          ],
+          "duration": 19,
+          "start": "1559695500003",
+          "isError": false,
+          "traceIds": [
+            "108.37.15596955000030341"
+          ]
+        },
+        {
+          "key": "108.37.15596964005230358",
+          "endpointNames": [
+            "/vendorBasicData/getVendorBasicDataApi"
+          ],
+          "duration": 14,
+          "start": "1559696400523",
+          "isError": false,
+          "traceIds": [
+            "108.37.15596964005230359"
+          ]
+        },
+        {
+          "key": "108.48.15596951053950032",
+          "endpointNames": [
+            "/chart"
+          ],
+          "duration": 12,
+          "start": "1559695105395",
+          "isError": false,
+          "traceIds": [
+            "108.48.15596951053950033"
+          ]
+        },
+        {
+          "key": "108.43.15596962644190038",
+          "endpointNames": [
+            "/template/inquiry"
+          ],
+          "duration": 9,
+          "start": "1559696264419",
+          "isError": false,
+          "traceIds": [
+            "108.43.15596962644190039"
+          ]
+        },
+        {
+          "key": "108.39.15596951511900034",
+          "endpointNames": [
+            "/contract/create/init/step1"
+          ],
+          "duration": 8,
+          "start": "1559695151190",
+          "isError": true,
+          "traceIds": [
+            "108.39.15596951511900035"
+          ]
+        },
+        {
+          "key": "108.45.15596962718090034",
+          "endpointNames": [
+            "/template/create/init/step1"
+          ],
+          "duration": 8,
+          "start": "1559696271809",
+          "isError": false,
+          "traceIds": [
+            "108.45.15596962718090035"
+          ]
+        },
+        {
+          "key": "108.44.15596951417260036",
+          "endpointNames": [
+            "/template/inquiry"
+          ],
+          "duration": 8,
+          "start": "1559695141726",
+          "isError": false,
+          "traceIds": [
+            "108.44.15596951417260037"
+          ]
+        },
+        {
+          "key": "108.45.15596951129220032",
+          "endpointNames": [
+            "/template/create/init/step4"
+          ],
+          "duration": 8,
+          "start": "1559695112922",
+          "isError": false,
+          "traceIds": [
+            "108.45.15596951129220033"
+          ]
+        },
+        {
+          "key": "108.42.15596951090640030",
+          "endpointNames": [
+            "/template/inquiry"
+          ],
+          "duration": 8,
+          "start": "1559695109064",
+          "isError": false,
+          "traceIds": [
+            "108.42.15596951090640031"
+          ]
+        },
+        {
+          "key": "108.43.15596951115370036",
+          "endpointNames": [
+            "/template/create/init/step1"
+          ],
+          "duration": 7,
+          "start": "1559695111537",
+          "isError": false,
+          "traceIds": [
+            "108.43.15596951115370037"
+          ]
+        },
+        {
+          "key": "108.40.15596951524420032",
+          "endpointNames": [
+            "/contract/create/init/step4"
+          ],
+          "duration": 5,
+          "start": "1559695152442",
+          "isError": false,
+          "traceIds": [
+            "108.40.15596951524420033"
+          ]
+        },
+        {
+          "key": "108.44.15596962732100038",
+          "endpointNames": [
+            "/template/create/init/step4"
+          ],
+          "duration": 5,
+          "start": "1559696273210",
+          "isError": false,
+          "traceIds": [
+            "108.44.15596962732100039"
+          ]
+        }
+      ],
+      "total": 60
+    }
+  }
+}

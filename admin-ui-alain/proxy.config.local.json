@@ -1,0 +1,40 @@
+{
+  "/api": {
+    "target": "http://localhost:7001",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  },
+  "/api/alert": {
+    "target": "http://localhost:3000",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/alert": ""
+    }
+  },
+  "/demo": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/demo": ""
+    }
+  },
+  "/ac": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/ac": ""
+    }
+  },
+  "/prod": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/prod": ""
+    }
+  },
+  "/master": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/master": ""
+    }
+  }
+}

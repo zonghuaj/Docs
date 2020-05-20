@@ -1,0 +1,12 @@
+<div class="time-charts-item mr-10"
+     nz-row nzType="flex" nzAlign="middle"
+     *ngFor="let i of list; let idx = index"
+     [style.color]="computedScale(idx)">
+  <svg class="icon">
+    <circle cx="5" cy="9" r="4"></circle>
+  </svg>
+  <span class="text ml-5">{{i}}</span>
+</div>
+
+<div class="t-list-container trace-list" #container>
+</div>

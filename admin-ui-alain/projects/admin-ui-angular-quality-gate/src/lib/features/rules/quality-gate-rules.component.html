@@ -1,0 +1,68 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card>
+  <div nz-row>
+    <div nz-col nzSpan="4" class="left-list border-right-1">
+      <nz-list class="gate-list"
+               [nzDataSource]="datas"
+               [nzItemLayout]="'horizontal'"
+               [nzLoading]="initLoading"
+               [nzRenderItem]="itemT"
+               [nzHeader]="header">
+        <ng-template #header>
+          <nz-list-item class="lheader">
+            <button nz-button nzType="primary" type="button" (click)="add()">
+              添加质量门禁
+            </button>
+          </nz-list-item>
+        </ng-template>
+        <ng-template #itemT let-item let-i="index">
+          <nz-list-item class="litem" [class.lselected]="isCurrent(item)" (click)="onItemClicked(item)">
+            {{item.name}}
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </div>
+
+    <nz-card nz-col nzSpan="20" [nzBordered]="false" [nzExtra]="detailHeader"
+             [nzTitle]="current ? '编辑 ' + current.name: '代码质量门禁'">
+      <ng-template #detailHeader>
+        <div *ngIf="current" class="ml-md" style="display: inline-block">
+<!--          <button nz-button nzType="default" nzSize="small" type="default" class="mr-sm" (click)="editName()">-->
+<!--            修改名称-->
+<!--          </button>-->
+          <nz-popconfirm [nzTitle]="'确认删除当前质量门？'" (nzOnConfirm)="delCurr()">
+            <button nz-button nzType="danger" nzSize="small" type="default" class="mr-sm" nz-popconfirm>
+              删除
+            </button>
+          </nz-popconfirm>
+        </div>
+      </ng-template>
+
+      <nz-spin [nzSpinning]="detailLoading">
+        <div *ngIf="current">
+          <se-container class="mt-md" col="1" labelWidth="80">
+            <se label="条件" *ngIf="metrics" style="margin-top: 12px">
+              <qgate-rules-condition-rules-table [metrics]="metrics" [qg]="current"
+                                                 (ruleChange$)="getQGateDetail()"></qgate-rules-condition-rules-table>
+            </se>
+            <se label="工程" *ngIf="selectableProjects">
+              <nz-transfer
+                [nzDataSource]="selectableProjects"
+                [nzCanMove]=""
+                [nzTitles]="['工程列表', '已选工程']"
+                (nzChange)="onProjTransferChange($event)">
+                <!--                (nzSelectChange)="select($event)"-->
+
+              </nz-transfer>
+            </se>
+          </se-container>
+        </div>
+      </nz-spin>
+
+      <div *ngIf="!current" class="empty">
+        <p class="empty-click-list">点击左侧列表项进行查看和编辑</p>
+      </div>
+    </nz-card>
+  </div>
+</nz-card>

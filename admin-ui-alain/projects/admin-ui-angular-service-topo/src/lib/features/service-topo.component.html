@@ -1,0 +1,43 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card>
+  <div class="topo-container">
+    <nz-spin [nzSpinning]="loading">
+      <div class="topograph">
+        <topo-graph #topograph (itemSelect$)="onTopGraphItemSelect($event)"></topo-graph>
+        <nz-empty *ngIf="nodata" [nzNotFoundContent]="'无数据'"></nz-empty>
+      </div>
+    </nz-spin>
+    <div class="actions" nz-row nzType="flex" nzAlign="top">
+      <button type="button" nz-button (click)="refresh()"
+              style="margin-right: 16px" [disabled]="loading">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+        刷新
+      </button>
+      <nz-range-picker
+        [disabled]="loading"
+        style="margin-right: 16px"
+        nzShowTime
+        nzFormat="yy-MM-dd HH:mm:ss"
+        [(ngModel)]="times"
+        [ngModelOptions]="{standalone: true}"
+        (nzOnOk)="onDatePicked($event)"
+      ></nz-range-picker>
+
+      <button type="button" nz-button (click)="togglePanel()">
+        <i nz-icon nzType="{{panelExpanded ? 'eye-invisible' : 'eye'}}" nzTheme="outline"></i>
+        {{panelExpanded ? '隐藏面板' : '显示面板'}}
+      </button>
+    </div>
+    <div class="topo-panel-aside" [@slideInOut] *ngIf="!nodata && panelExpanded">
+      <ng-container [ngSwitch]="panelShowing">
+        <service-topo-panel-servdetail *ngSwitchCase="'1'" [serv]="showingDetail">
+        </service-topo-panel-servdetail>
+        <service-topo-panel-dp *ngSwitchCase="'2'" [datas]="showingDPChartData">
+        </service-topo-panel-dp>
+        <service-topo-panel-servlist *ngSwitchDefault [servList]="allServices">
+        </service-topo-panel-servlist>
+      </ng-container>
+    </div>
+  </div>
+</nz-card>

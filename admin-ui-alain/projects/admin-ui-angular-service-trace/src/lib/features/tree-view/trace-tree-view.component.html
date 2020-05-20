@@ -1,0 +1,18 @@
+<div class="time-charts-item mr-10"
+     nz-row nzType="flex" nzAlign="middle"
+     *ngFor="let i of list; let idx = index"
+     [style.color]="computedScale(idx)">
+  <svg class="icon">
+    <circle cx="5" cy="9" r="4"></circle>
+  </svg>
+  <span class="text ml-5">{{i}}</span>
+</div>
+
+<div style="margin-top: 4px">
+  <a class="trace-tree-btn mr-10" (click)="tree.setDefault()">Default</a>
+  <a class="trace-tree-btn mr-10" (click)="tree.getTopSlow()">Top 5 of slow</a>
+  <a class="trace-tree-btn mr-10" (click)="tree.getTopChild()">Top 5 of children</a>
+</div>
+
+<div class="t-list-container trace-list" #container>
+</div>

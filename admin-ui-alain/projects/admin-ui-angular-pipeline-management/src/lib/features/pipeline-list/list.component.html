@@ -1,0 +1,20 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card [nzBordered]="true" nzTitle="流水线列表"  [nzExtra]="extraTemplate">
+
+<!--  <nz-row class="mb-md">-->
+<!--    <input nz-input [(ngModel)]="params.name" nzPlaceHolder="请输入流水线名称" style="width: 200px; margin-right: 10px;">-->
+<!--    <button nz-button (click)="this.getData()" [nzType]="'primary'">搜索</button>-->
+<!--  </nz-row>-->
+  <st #userSt [data]="data" [columns]="columns" [loading]="loading"  [page]="stPage" (change)="stChange($event)" [ps]="q.ps" [pi]="q.pi">
+<!--    <ng-template st-row="tenantDesc" let-i>-->
+<!--      <div class="ell" style="max-width: 200px">{{i.tenantDesc}}</div>-->
+<!--    </ng-template>-->
+  </st>
+</nz-card>
+<ng-template #extraTemplate>
+    <button nz-button type="button" nzType="primary" class="ml-md"
+          (click)="router.navigateByUrl('/devops/pipeline/list/edit');">
+    <i nz-icon nzType="plus" nzTheme="outline"></i>创建
+  </button>
+  </ng-template>

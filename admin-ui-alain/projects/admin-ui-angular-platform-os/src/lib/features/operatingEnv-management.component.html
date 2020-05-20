@@ -1,0 +1,77 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card>
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitFilter()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">运行环境查询</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.projectType" name="name" placeholder="请输入" id="name">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="41" [nzType]="'primary'" (click)="showDockerfileModal()" class="mx-sm">新增</button>
+      </div>
+    </div>
+  </form>
+
+  <nz-table #editDockerfileTable [nzData]="listOfDockerfile" [nzPageSize]="5">
+    <thead>
+    <tr>
+      <th nzWidth="15%">运行环境名称</th>
+      <th nzWidth="55%" ngClass="ell2">运行环境内容</th>
+      <th nzWidth="15%">更新日期</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of editDockerfileTable.data">
+      <td>
+        <ng-container>
+          {{ data.projectType }}
+        </ng-container>
+      </td>
+      <td>
+        <ng-container>
+          {{ data.content | ellipsis: 60 }}
+        </ng-container>
+      </td>
+      <td>
+        {{ data.updateDate | date:"yyyy-MM-dd HH:mm:ss" }}
+      <td>
+        <div class="editable-row-operations">
+          <!--          <ng-container *ngIf="!dockerEditCache[data.dockerfileId].edit; else saveTpl">-->
+          <ng-container>
+            <a (click)="startDockerEdit(data)">编辑</a>&nbsp;<a nz-popconfirm nzTitle="确定删除这条记录么？"
+                                                                           (nzOnConfirm)="delDockerfileData(data.dockerfileId)">删除</a>
+          </ng-container>
+          <!--          <ng-template #saveTpl>-->
+          <!--            <a (click)="saveDockerEdit(data.dockerfileId)">保存</a>&nbsp;-->
+          <!--            <a nz-popconfirm nzTitle="是否确定取消?" (nzOnConfirm)="cancelDockerfileEdit(data.dockerfileId)">取消</a>-->
+          <!--          </ng-template>-->
+        </div>
+      </td>
+
+    </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal [(nzVisible)]="isAddDockerfileVisible" nzTitle="添加运行环境模板" (nzOnCancel)="addhandleDockerCancel()"
+            (nzOnOk)="createDockerTpl()">
+    <p>运行环境名称</p>
+    <input nz-input placeholder="如: java-springboot" [(ngModel)]="projectType"/>
+    <p>运行环境内容</p>
+    <textarea rows="16" cols="10" nz-input [(ngModel)]="content"></textarea>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isEditDockerfileVisible" nzTitle="编辑运行环境模板"
+            (nzOnCancel)="edithandleDockerCancel()"
+            (nzOnOk)="saveDockerEdit()">
+    <p>运行环境名称</p>
+    <input nz-input placeholder="如: java-springboot"
+           [(ngModel)]="updateDocker.projectType"/>
+    <p>运行环境内容</p>
+    <textarea rows="16" nz-input [(ngModel)]="updateDocker.content"></textarea>
+  </nz-modal>
+</nz-card>
+

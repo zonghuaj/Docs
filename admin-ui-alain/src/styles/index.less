@@ -1,0 +1,79 @@
+@import './theme.less';
+
+.alain-default__aside {
+  margin-top: 0;
+}
+
+.alain-default__nav-item,
+.alain-default__nav nz-badge {
+  color: @text-color;
+}
+
+.alain-default__nav-item:hover,
+.alain-default__nav nz-badge:hover {
+  color: @primary-color;
+}
+
+.alain-default__aside:after {
+  border-right: 0 !important;
+}
+
+// remove all the content margins, copied from _layout.less
+@{alain-default-prefix} {
+
+  &__content {
+    margin: 0px;
+  }
+}
+
+@media (min-width: @mobile-min) {
+  @{alain-default-prefix}__content {
+    margin-left: (@alain-default-aside-wd);
+  }
+
+  @{alain-default-prefix}__collapsed {
+    @{alain-default-prefix} {
+      &__sidebar {
+        width: @alain-default-aside-collapsed-wd;
+      }
+
+      &__content {
+        margin-left: @alain-default-aside-collapsed-wd;
+      }
+    }
+  }
+}
+
+// when executing 'npm run build', the section/header will add __fixed class automatically
+// disable this fixed style for temp, reason unknown 
+@{alain-default-prefix}__fixed {
+  @{alain-default-prefix} {
+    &__header {
+      position: static;
+      top: 0;
+      left: 0;
+    }
+
+    &__aside {
+      position: fixed;
+    }
+
+    &__content {
+      margin-top: 0px;
+    }
+  }
+}
+
+.sidebar-nav {
+  margin-top: -16px;
+}
+
+.sidebar-nav__group-title {
+  font-size: 13px;
+  padding: 16px 8px 8px 8px;
+  border-bottom: 0.5px solid #CCCCCC44;
+}
+
+.sidebar-nav__sub {
+  margin: 0;
+}

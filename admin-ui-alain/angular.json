@@ -1,0 +1,1096 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "admin-ui-angular": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@cds/framework/assets/",
+                "output": "./assets/"
+              }
+            ],
+            "styles": [
+              "src/styles.less",
+              "node_modules/codemirror/lib/codemirror.css",
+              "node_modules/codemirror/theme/material.css"
+            ],
+            "scripts": [
+              "node_modules/ajv/dist/ajv.bundle.js",
+              "node_modules/@antv/g2/dist/g2.min.js",
+              "node_modules/@antv/data-set/dist/data-set.min.js",
+              "node_modules/@antv/g2-plugin-slider/dist/g2-plugin-slider.min.js",
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/echarts/map/js/china.js",
+              "node_modules/echarts/dist/extension/bmap.js"
+            ],
+            "es5BrowserSupport": true,
+            "preserveSymlinks": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "12mb"
+                }
+              ]
+            },
+            "hmr": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "admin-ui-angular:build",
+            "proxyConfig": "./proxy.config.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "admin-ui-angular:build:production"
+            },
+            "hmr": {
+              "browserTarget": "admin-ui-angular:build:hmr",
+              "hmr": true
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "admin-ui-angular:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
+            "styles": [
+              "src/styles.less"
+            ],
+            "scripts": [
+              "node_modules/ajv/dist/ajv.bundle.js",
+              "node_modules/@antv/g2/dist/g2.min.js",
+              "node_modules/@antv/data-set/dist/data-set.min.js",
+              "node_modules/@antv/g2-plugin-slider/dist/g2-plugin-slider.min.js"
+            ],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "package.json"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "admin-ui-angular:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "admin-ui-angular:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-platform-dashboard": {
+      "root": "projects/admin-ui-angular-platform-dashboard",
+      "sourceRoot": "projects/admin-ui-angular-platform-dashboard/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-platform-dashboard/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-platform-dashboard/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-platform-dashboard/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-platform-dashboard/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-platform-dashboard/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-platform-dashboard/tsconfig.lib.json",
+              "projects/admin-ui-angular-platform-dashboard/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-common": {
+      "root": "projects/admin-ui-angular-common",
+      "sourceRoot": "projects/admin-ui-angular-common/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-common/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-common/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-common/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-common/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-common/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-common/tsconfig.lib.json",
+              "projects/admin-ui-angular-common/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-tenant-management": {
+      "root": "projects/admin-ui-angular-tenant-management",
+      "sourceRoot": "projects/admin-ui-angular-tenant-management/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-tenant-management/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-tenant-management/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-tenant-management/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-tenant-management/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-tenant-management/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-tenant-management/tsconfig.lib.json",
+              "projects/admin-ui-angular-tenant-management/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-log-summary": {
+      "root": "projects/admin-ui-angular-log-summary",
+      "sourceRoot": "projects/admin-ui-angular-log-summary/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-log-summary/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-log-summary/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-log-summary/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-log-summary/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-log-summary/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-log-summary/tsconfig.lib.json",
+              "projects/admin-ui-angular-log-summary/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-service-trace": {
+      "root": "projects/admin-ui-angular-service-trace",
+      "sourceRoot": "projects/admin-ui-angular-service-trace/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-service-trace/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-service-trace/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-service-trace/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-service-trace/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-service-trace/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-service-trace/tsconfig.lib.json",
+              "projects/admin-ui-angular-service-trace/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-config-center": {
+      "root": "projects/admin-ui-angular-config-center",
+      "sourceRoot": "projects/admin-ui-angular-config-center/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-config-center/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-config-center/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-config-center/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-config-center/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-config-center/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-config-center/tsconfig.lib.json",
+              "projects/admin-ui-angular-config-center/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-service-traffic": {
+      "root": "projects/admin-ui-angular-service-traffic",
+      "sourceRoot": "projects/admin-ui-angular-service-traffic/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-service-traffic/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-service-traffic/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-service-traffic/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-service-traffic/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-service-traffic/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-service-traffic/tsconfig.lib.json",
+              "projects/admin-ui-angular-service-traffic/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-service-autoscaler": {
+      "root": "projects/admin-ui-angular-service-autoscaler",
+      "sourceRoot": "projects/admin-ui-angular-service-autoscaler/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-service-autoscaler/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-service-autoscaler/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-service-autoscaler/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-service-autoscaler/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-service-autoscaler/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-service-autoscaler/tsconfig.lib.json",
+              "projects/admin-ui-angular-service-autoscaler/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-monitor-all": {
+      "root": "projects/admin-ui-angular-monitor-all",
+      "sourceRoot": "projects/admin-ui-angular-monitor-all/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-monitor-all/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-monitor-all/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-monitor-all/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-monitor-all/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-monitor-all/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-monitor-all/tsconfig.lib.json",
+              "projects/admin-ui-angular-monitor-all/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-alert-rules": {
+      "root": "projects/admin-ui-angular-alert-rules",
+      "sourceRoot": "projects/admin-ui-angular-alert-rules/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-alert-rules/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-alert-rules/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-alert-rules/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-alert-rules/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-alert-rules/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-alert-rules/tsconfig.lib.json",
+              "projects/admin-ui-angular-alert-rules/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-alert-all": {
+      "root": "projects/admin-ui-angular-alert-all",
+      "sourceRoot": "projects/admin-ui-angular-alert-all/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-alert-all/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-alert-all/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-alert-all/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-alert-all/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-alert-all/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-alert-all/tsconfig.lib.json",
+              "projects/admin-ui-angular-alert-all/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-notice-way": {
+      "root": "projects/admin-ui-angular-notice-way",
+      "sourceRoot": "projects/admin-ui-angular-notice-way/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-notice-way/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-notice-way/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-notice-way/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-notice-way/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-notice-way/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-notice-way/tsconfig.lib.json",
+              "projects/admin-ui-angular-notice-way/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-image-template": {
+      "root": "projects/admin-ui-angular-image-template",
+      "sourceRoot": "projects/admin-ui-angular-image-template/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-image-template/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-image-template/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-image-template/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-image-template/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-image-template/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-image-template/tsconfig.lib.json",
+              "projects/admin-ui-angular-image-template/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-quality-gate": {
+      "root": "projects/admin-ui-angular-quality-gate",
+      "sourceRoot": "projects/admin-ui-angular-quality-gate/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-quality-gate/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-quality-gate/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-quality-gate/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-quality-gate/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-quality-gate/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-quality-gate/tsconfig.lib.json",
+              "projects/admin-ui-angular-quality-gate/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-itest-platform": {
+      "root": "projects/admin-ui-angular-itest-platform",
+      "sourceRoot": "projects/admin-ui-angular-itest-platform/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-itest-platform/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-itest-platform/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-itest-platform/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-itest-platform/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-itest-platform/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-itest-platform/tsconfig.lib.json",
+              "projects/admin-ui-angular-itest-platform/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-artifactory": {
+      "root": "projects/admin-ui-angular-artifactory",
+      "sourceRoot": "projects/admin-ui-angular-artifactory/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-artifactory/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-artifactory/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-artifactory/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-artifactory/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-artifactory/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-artifactory/tsconfig.lib.json",
+              "projects/admin-ui-angular-artifactory/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-service-management": {
+      "root": "projects/admin-ui-angular-service-management",
+      "sourceRoot": "projects/admin-ui-angular-service-management/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-service-management/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-service-management/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-service-management/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-service-management/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-service-management/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-service-management/tsconfig.lib.json",
+              "projects/admin-ui-angular-service-management/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-service-topo": {
+      "root": "projects/admin-ui-angular-service-topo",
+      "sourceRoot": "projects/admin-ui-angular-service-topo/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-service-topo/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-service-topo/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-service-topo/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-service-topo/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-service-topo/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-service-topo/tsconfig.lib.json",
+              "projects/admin-ui-angular-service-topo/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-pipeline-management": {
+      "root": "projects/admin-ui-angular-pipeline-management",
+      "sourceRoot": "projects/admin-ui-angular-pipeline-management/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-pipeline-management/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-pipeline-management/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-pipeline-management/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-pipeline-management/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-pipeline-management/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-pipeline-management/tsconfig.lib.json",
+              "projects/admin-ui-angular-pipeline-management/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-project-management": {
+      "root": "projects/admin-ui-angular-project-management",
+      "sourceRoot": "projects/admin-ui-angular-project-management/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-project-management/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-project-management/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-project-management/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-project-management/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-project-management/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-project-management/tsconfig.lib.json",
+              "projects/admin-ui-angular-project-management/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-platform-node-list": {
+      "root": "projects/admin-ui-angular-platform-node-list",
+      "sourceRoot": "projects/admin-ui-angular-platform-node-list/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-platform-node-list/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-platform-node-list/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-platform-node-list/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-platform-node-list/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-platform-node-list/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-platform-node-list/tsconfig.lib.json",
+              "projects/admin-ui-angular-platform-node-list/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-platform-os": {
+      "root": "projects/admin-ui-angular-platform-os",
+      "sourceRoot": "projects/admin-ui-angular-platform-os/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-platform-os/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-platform-os/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-platform-os/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-platform-os/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-platform-os/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-platform-os/tsconfig.lib.json",
+              "projects/admin-ui-angular-platform-os/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-user-management": {
+      "root": "projects/admin-ui-angular-user-management",
+      "sourceRoot": "projects/admin-ui-angular-user-management/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-user-management/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-user-management/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-user-management/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-user-management/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-user-management/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-user-management/tsconfig.lib.json",
+              "projects/admin-ui-angular-user-management/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-service-dashboard": {
+      "root": "projects/admin-ui-angular-service-dashboard",
+      "sourceRoot": "projects/admin-ui-angular-service-dashboard/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-service-dashboard/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-service-dashboard/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-service-dashboard/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-service-dashboard/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-service-dashboard/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-service-dashboard/tsconfig.lib.json",
+              "projects/admin-ui-angular-service-dashboard/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "admin-ui-angular-event-management": {
+      "root": "projects/admin-ui-angular-event-management",
+      "sourceRoot": "projects/admin-ui-angular-event-management/src",
+      "projectType": "library",
+      "prefix": "admin-ui-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/admin-ui-angular-event-management/tsconfig.lib.json",
+            "project": "projects/admin-ui-angular-event-management/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/admin-ui-angular-event-management/src/test.ts",
+            "tsConfig": "projects/admin-ui-angular-event-management/tsconfig.spec.json",
+            "karmaConfig": "projects/admin-ui-angular-event-management/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/admin-ui-angular-event-management/tsconfig.lib.json",
+              "projects/admin-ui-angular-event-management/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "admin-ui-angular",
+  "schematics": {
+    "ng-alain:module": {
+      "routing": true,
+      "spec": false
+    },
+    "ng-alain:list": {
+      "spec": false
+    },
+    "ng-alain:edit": {
+      "spec": false,
+      "modal": true
+    },
+    "ng-alain:view": {
+      "spec": false,
+      "modal": true
+    },
+    "ng-alain:curd": {
+      "spec": false
+    },
+    "@schematics/angular:module": {
+      "routing": true,
+      "spec": false
+    },
+    "@schematics/angular:component": {
+      "spec": false,
+      "flat": false,
+      "inlineStyle": true,
+      "inlineTemplate": false
+    },
+    "@schematics/angular:directive": {
+      "spec": false
+    },
+    "@schematics/angular:service": {
+      "spec": false
+    }
+  }
+}

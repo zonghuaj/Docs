@@ -1,0 +1,43 @@
+{
+  "/api":{
+    "target":"http://admin.micropaas.newit",
+    "changeOrigin": true
+  },
+  "/api/uma":{
+    "target":"http://admin.micropaas.newit",
+    "changeOrigin": true
+  },
+  "/api/artifactory":{
+    "target":"http://admin.micropaas.newit",
+    "changeOrigin": true
+  },
+  "/demo": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/demo": ""
+    }
+  },
+  "/newit": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/newit": ""
+    }
+  },
+  "/master": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/master": ""
+    }
+  },
+  "/prod": {
+    "target": "http://localhost:4200",
+    "pathRewrite": {
+      "^/prod": ""
+    }
+  },
+  "/message/api":{
+    "target":"http://admin.micropaas.newit",
+    "changeOrigin": true
+  }
+}
+

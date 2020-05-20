@@ -1,0 +1,52 @@
+<nz-card class="container scrollbar" *ngIf="data"
+         [nzBodyStyle]="{padding: '12px 16px'}">
+  <div style="position: absolute; top: 8px; right: 8px">
+    <a style="color: #444" (click)="close()"><i nz-icon nzType="close" nzTheme="outline"></i></a>
+  </div>
+  <div *ngIf="isHttp">
+    <div class="d-title">{{data.traffic.type | uppercase}}流量(每秒)
+    </div>
+    <table>
+      <tr>
+        <th>共计</th>
+        <th>成功率%</th>
+        <th>失败率%</th>
+      </tr>
+      <tr>
+        <td>{{data.traffic.rpsTotal}}</td>
+        <td>{{data.traffic.successPercent}}</td>
+        <td>{{data.traffic.errorPercent}}</td>
+      </tr>
+    </table>
+    <div echarts [options]="httpTrafficChartOption" class="chart" style="height: 80px;">
+    </div>
+  </div>
+
+  <div *ngIf="isHttp">
+    <nz-divider nzType="horizontal" style="margin: 8px 0 !important;"></nz-divider>
+    <div class="d-title">{{data.traffic.type | uppercase}}流量 最小/最大值</div>
+    <div class="d-desc">每秒请求次数: {{reqCount.min}} / {{reqCount.max}}
+      <br/>
+      错误率 {{reqErrCount.min || 0.00}} / {{reqErrCount.max || 0.00}}</div>
+    <div echarts [options]="httpReqTrafficMinMaxChartOption" class="chart">
+    </div>
+  </div>
+
+  <div *ngIf="isHttp">
+    <nz-divider nzType="horizontal" style="margin: 8px 0 !important;"></nz-divider>
+    <div class="d-title">{{data.traffic.type | uppercase}}请求返回时间(毫秒)</div>
+    <div echarts [options]="httpResTimeChartOption" class="chart">
+    </div>
+  </div>
+
+  <div *ngIf="isTcp">
+    <div class="d-title">TCP流量 最小/最大值(B/s)</div>
+    <div class="d-desc">
+      发送: {{tcpSentCount.min}} / {{tcpSentCount.max}}
+      <br/>
+      接收：{{tcpRecCount.min}} / {{tcpRecCount.max}}
+    </div>
+    <div echarts [options]="tcpTrafficChartOption" class="chart">
+    </div>
+  </div>
+</nz-card>

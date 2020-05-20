@@ -1,0 +1,69 @@
+<nz-card nzTitle="流水线模板">
+  <form nz-form [nzLayout]="'inline'" class="search__form">
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="4">
+        <nz-form-item>
+          <nz-form-label>名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [ngModelOptions]="{standalone: true}" [(ngModel)]="q.name" name="name" placeholder="要查询的名称">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzSpan="4">
+        <nz-form-item>
+          <nz-form-label nzFor="no">构建镜像</nz-form-label>
+          <nz-form-control>
+            <nz-select class="width100" nzAllowClear
+                       [ngModelOptions]="{standalone: true}" [(ngModel)]="q.isGenerateImage"
+                       [nzShowSearch]="true">
+              <nz-option nzLabel="是" [nzValue]="true"></nz-option>
+              <nz-option nzLabel="否" [nzValue]="false"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+<!--      <div nz-col nzSpan="4">-->
+<!--        <nz-form-item>-->
+<!--          <nz-form-label nzFor="no">部署</nz-form-label>-->
+<!--          <nz-form-control>-->
+<!--            <nz-select class="width100" nzAllowClear-->
+<!--                       [ngModelOptions]="{standalone: true}" [(ngModel)]="q.isDeploy"-->
+<!--                       [nzShowSearch]="true">-->
+<!--              <nz-option nzLabel="是" [nzValue]="true"></nz-option>-->
+<!--              <nz-option nzLabel="否" [nzValue]="false"></nz-option>-->
+<!--            </nz-select>-->
+<!--          </nz-form-control>-->
+<!--        </nz-form-item>-->
+<!--      </div>-->
+      <div nz-col nzSpan="6" nzOffset="1">
+        <button nz-button type="button" nzType="primary" [nzLoading]="loading" (click)="getData()">
+          <i nz-icon nzType="search" nzTheme="outline"></i>查询
+        </button>
+        <button nz-button type="button" nzType="primary" class="ml-md"
+                (click)="router.navigateByUrl('/devops/pipeline/template/create');">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>新增
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <st #st [columns]="columns" [data]="datas" [loading]="loading" (change)="stChange($event)" [ps]="q.ps" [pi]="q.pi"
+      [total]="totalCount" [page]="{front: false}">
+    <ng-template st-row="operations" let-i>
+      <span nz-tooltip nzTitle="该功能尚未开发完成，敬请期待">
+        <a disabled>编辑</a>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span nz-tooltip nzTitle="该功能尚未开发完成，敬请期待">
+        <a disabled>复制</a>
+      </span>
+      <nz-divider nzType="vertical"></nz-divider>
+      <span nz-tooltip nzTitle="该功能尚未开发完成，敬请期待">
+        <a disabled>删除</a>
+      </span>
+      <!--      <nz-popconfirm [nzTitle]="'确认删除当前模板？'">-->
+      <!--        <a nz-popconfirm>删除</a>-->
+      <!--      </nz-popconfirm>-->
+    </ng-template>
+  </st>
+</nz-card>

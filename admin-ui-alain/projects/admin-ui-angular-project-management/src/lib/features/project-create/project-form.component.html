@@ -1,0 +1,237 @@
+<form nz-form (ngSubmit)="submitForm()"
+      [formGroup]="form"
+      [nzLayout]="'vertical'">
+  <nz-card [nzBordered]="false" nzTitle="项目基本信息">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>项目名称（唯一标识）</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="projectCode" placeholder="请输入项目名称（唯一标识）" required="true"/>
+            <nz-form-explain *ngIf="(projectCode.dirty || projectCode.touched) && projectCode.errors">
+              {{namePlaceHolder}}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-form-item>
+          <nz-form-label nzRequired>项目名称（中文）</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="projectName" placeholder="请输入项目名称（中文）">
+            <nz-form-explain *ngIf="(projectName.dirty || projectName.touched) && projectName.errors">
+              请输入中文名称
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+
+    <nz-row nzGutter="16">
+      <nz-col nzLg="13" nzMd="24" nzSm="24">
+        <nz-form-item>
+          <nz-form-label>项目描述</nz-form-label>
+          <nz-form-control>
+            <textarea nz-input formControlName="projectDesc" placeholder="请输入项目描述" style="height: 80px;"></textarea>
+            <nz-form-explain *ngIf="(projectDesc.dirty || projectDesc.touched) && projectDesc.errors">
+              请输入项目描述
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card [nzBordered]="false" nzTitle="项目配额">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>CPU配额</nz-form-label>
+          <nz-form-control>
+            <nz-input-group nzAddOnAfter="核" class="width100">
+              <nz-input-number nz-input formControlName="cpuLimit" nzMin=0></nz-input-number>
+            </nz-input-group>
+            <!--            <nz-form-explain *ngIf="(cpuLimit.dirty || cpuLimit.touched) && cpuLimit.errors">-->
+            <!--              请输入CPU配额-->
+            <!--            </nz-form-explain>-->
+            <nz-form-explain>
+              已使用cpu(核): {{this.resourceLimit.currentCpu}} 剩余cpu(核):{{cpuAvailed}}
+            </nz-form-explain>
+            <nz-form-explain *ngIf="(cpuLimit.dirty || cpuLimit.touched) && cpuLimit.errors">
+              {{cpuError}}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-form-item>
+          <nz-form-label nzRequired>内存配额</nz-form-label>
+          <nz-form-control>
+            <nz-input-group nzAddOnAfter="MiB" class="width100">
+              <nz-input-number nz-input formControlName="memoryLimit" nzMin=0></nz-input-number>
+            </nz-input-group>
+            <!--            <nz-form-explain *ngIf="(memoryLimit.dirty || memoryLimit.touched) && memoryLimit.errors">-->
+            <!--              请输入内存配额-->
+            <!--            </nz-form-explain>-->
+            <nz-form-explain>
+              已使用内存(mib): {{this.resourceLimit.currentMemory}} 剩余内存(mib):{{memoryAvailed}}
+            </nz-form-explain>
+            <nz-form-explain *ngIf="(memoryLimit.dirty || memoryLimit.touched) && memoryLimit.errors">
+              {{memoryError}}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <!--      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">-->
+      <!--        <nz-form-item>-->
+      <!--          <nz-form-label>存储配额</nz-form-label>-->
+      <!--          <nz-form-control>-->
+      <!--            <nz-input-number class="width100" formControlName="storageLimit"></nz-input-number>-->
+      <!--            <nz-form-explain *ngIf="(storageLimit.dirty || storageLimit.touched) && storageLimit.errors">-->
+      <!--              请输入存储配额-->
+      <!--            </nz-form-explain>-->
+      <!--          </nz-form-control>-->
+      <!--        </nz-form-item>-->
+      <!--      </nz-col>-->
+    </nz-row>
+  </nz-card>
+
+  <!-- harbor update start 191105 -->
+  <nz-card [nzBordered]="false" nzTitle="Docker配置">
+
+    <!-- label name -->
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-label nzRequired>仓库地址</nz-form-label>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-form-label nzRequired>用户名</nz-form-label>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-form-label nzRequired>密码</nz-form-label>
+      </nz-col>
+    </nz-row>
+
+    <!-- params -->
+    <nz-row nzGutter="16" *ngFor="let item of harborInfoDetail">
+
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <input nz-input [(ngModel)]="item.addr" required [ngModelOptions]="{standalone: true}" placeholder="请输入仓库地址"/>
+      </nz-col>
+
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <input nz-input [(ngModel)]="item.username" required [ngModelOptions]="{standalone: true}" placeholder="请输入用户名">
+      </nz-col>
+
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-input-group [nzSuffix]="suffixTemplate">
+          <input [(ngModel)]="item.password" required [ngModelOptions]="{standalone: true}" [type]="passwordVisible ? 'text' : 'password'" nz-input/>
+        </nz-input-group>
+      </nz-col>
+      <div>
+        <button nz-button style="border: #FFFFFF" type="button" (click)="delHarborItem(item)">
+          <i nz-icon nzType="minus-circle" nzTheme="outline"></i>
+        </button>
+      </div>
+      <nz-form-explain  *ngIf="isError(item)">
+        <font style="color: red">请完善仓库信息</font>
+      </nz-form-explain>
+      <br/>
+      <nz-row nzGutter="16">
+      </nz-row>
+    </nz-row>
+    <div>
+      <button nz-button [nzType]="'primary'" type="button" (click)="addHarborInfo()">添加配置</button>
+    </div>
+
+  </nz-card>
+  <!-- harbor update end 191105  -->
+
+  <nz-card [nzBordered]="false" nzTitle="APM配置">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>APM CPU配额</nz-form-label>
+          <nz-form-control>
+            <nz-input-group nzAddOnAfter="核" class="width100">
+              <nz-input-number nzMin="0" nz-input formControlName="skywalkingCpu"></nz-input-number>
+            </nz-input-group>
+            <nz-form-explain *ngIf="(skywalkingCpu.dirty || skywalkingCpu.touched) && skywalkingCpu.errors">
+              请完善仓库信息
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-form-item>
+          <nz-form-label nzRequired>APM 内存配额</nz-form-label>
+          <nz-form-control>
+            <nz-input-group nzAddOnAfter="MiB" class="width100">
+              <nz-input-number nzMin="0" nz-input formControlName="skywalkingMemory"></nz-input-number>
+            </nz-input-group>
+            <nz-form-explain *ngIf="(skywalkingMemory.dirty || skywalkingMemory.touched) && skywalkingMemory.errors">
+              请输入Docker用户名
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-form-item>
+          <nz-form-label nzRequired>APM ES存储地址</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="esAddress" placeholder="请输入APM ES存储地址">
+            <nz-form-explain *ngIf="(esAddress.dirty || esAddress.touched) && esAddress.errors">
+              请输入APM ES存储地址
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzRequired>APM ES分片数</nz-form-label>
+          <nz-form-control>
+            <nz-input-group>
+              <nz-input-number nzMin="1" nz-input formControlName="esShards"></nz-input-number>
+            </nz-input-group>
+            <nz-form-explain *ngIf="(esShards.dirty || esShards.touched) && esShards.errors">
+              请输入ES分片数
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzLg="6" nzMd="12" nzSm="24" nzOffset="1">
+        <nz-form-item>
+          <nz-form-label nzRequired>APM ES副本数</nz-form-label>
+          <nz-form-control>
+            <nz-input-group>
+              <nz-input-number nzMin="0" nz-input formControlName="esReplicas"></nz-input-number>
+            </nz-input-group>
+            <nz-form-explain *ngIf="(esReplicas.dirty || esReplicas.touched) && esReplicas.errors">
+              请输入ES副本数
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+
+    <nz-row nzGutter="16">
+      <nz-col nzLg="6" nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-control>
+            <!--            nz-popover nzTitle="应用性能管理(APM, Application Performance Management)" [nzContent]="APM"-->
+            <label nz-checkbox nzDisabled [ngModel]="true" [ngModelOptions]="{standalone: true}"
+                   nz-tooltip nzPlacement="topLeft"
+                   nzTitle="启用APM可以对当前项目的各项指标、系统存活等信息进行监测，同时可以使用服务调用追踪、错误信息查看等功能，您可以在[服务治理]中查看到相应的数据统计。"
+            >启用APM埋点功能</label>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+</form>
+
+<ng-template #APM>
+  <span style="display: inline-block; width: 240px;">启用APM可以对当前项目的各项指标、系统存活等信息进行监测，同时可以使用服务调用追踪、错误信息查看等功能，您可以在[服务治理]中查看到相应的数据统计。</span>
+</ng-template>
+
+

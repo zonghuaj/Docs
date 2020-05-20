@@ -1,0 +1,48 @@
+<nz-card>
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submit()" class="search__form">
+    <div nz-row>
+      <div nz-col nzLg="9" nzMd="24" nzSm="24">
+        <nz-form-item>
+          <nz-form-label class="form-label" nzFor="service">时间</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker nzShowTime nzFormat="yy-MM-dd HH:mm:ss" name="times" [(ngModel)]="times" [nzRanges]="ranges"></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="5" nzSm="24" [hidden]="tabIndex !== 1">
+        <nz-form-item>
+          <nz-form-label class="form-label" nzFor="eskwd">服务</nz-form-label>
+          <nz-form-control>
+            <service-select nz-col (select$)="onServiceSelect($event)" style="padding-left: 0 !important; padding-right: 0 !important;"></service-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="5" nzSm="24" nzOffset="1" [hidden]="tabIndex !== 1">
+        <nz-form-item>
+          <nz-form-label class="form-label" nzFor="eskwd">版本</nz-form-label>
+          <nz-form-control>
+            <version-select nz-col style="padding-left: 0 !important; padding-right: 0 !important;" (select$)="onVersionSelect($event)" [versions]="selectedS.versions"></version-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" nzSm="24" nzOffset="1">
+        <button nz-button nzType="primary" type="submit" [nzLoading]="fakeLoading">查询</button>
+      </div>
+    </div>
+  </form>
+</nz-card>
+
+<nz-card>
+  <nz-card-tab>
+    <nz-tabset nzSize="large" [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="onTabChanged()">
+      <nz-tab nzTitle="资源概览"></nz-tab>
+      <nz-tab nzTitle="服务实例监控"></nz-tab>
+    </nz-tabset>
+  </nz-card-tab>
+
+  <service-monitor-overview *ngIf="tabIndex === 0" [params]="q"></service-monitor-overview>
+  <service-monitor-instance *ngIf="tabIndex === 1" [params]="q"></service-monitor-instance>
+</nz-card>

@@ -1,0 +1,66 @@
+// @import '../../../styles/theme.less';
+
+.alain-default__content {
+  /* '66px' is for cds headbar height(may need a variable),
+     height 100% is not working for the outer label somehow,
+     so i used absolute unit vh for the height measure */
+  height: calc(100vh - 66px) !important;
+}
+
+.content_wrapper {
+  height: 100%;
+  width: 100%;
+  padding: 20px 24px 12px 24px;
+}
+
+layout-header {
+  box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.2);
+}
+
+.alain-default__progress-bar2 {
+  position: fixed;
+  z-index: 29;
+  width: 100vw;
+  height: 4px;
+  overflow: hidden;
+  background: rgba(221, 221, 221, 0.4);
+}
+
+.alain-default__progress-bar2::after {
+  display: block;
+  width: 33.3vw;
+  height: 100%;
+  transform-origin: top left;
+  animation: mpcolors 5s steps(1) infinite, mploadthird 1.5s infinite ease-in;
+  content: ' ';
+}
+
+@keyframes mpcolors {
+  0% {
+    background: #09bb07aa;
+  }
+  20% {
+    background: #09bb07aa;
+  }
+  40% {
+    background: #09bb07aa;
+  }
+  60% {
+    background: #09bb07aa;
+  }
+  80% {
+    background: #09bb07aa;
+  }
+  100% {
+    background: #09bb07aa;
+  }
+}
+
+@keyframes mploadthird {
+  0% {
+    transform: translateX(-33.3vw);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}

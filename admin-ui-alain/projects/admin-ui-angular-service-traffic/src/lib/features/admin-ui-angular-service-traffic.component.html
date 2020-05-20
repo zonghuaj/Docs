@@ -1,0 +1,29 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card>
+  <div class="topo-container">
+    <nz-spin [nzSpinning]="loading">
+      <div class="topograph">
+        <service-traffic-graph #graph (onSelect$)="onGraphSelected($event)"></service-traffic-graph>
+      </div>
+    </nz-spin>
+    <div class="actions-left">
+      <button type="button" nz-button style="margin-right: 16px" (click)="addGateway()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        添加网关
+      </button>
+    </div>
+
+    <div class="actions" nz-row nzType="flex" nzAlign="top">
+      <button type="button" nz-button (click)="refresh()" style="margin-right: 16px" [nzLoading]="loading">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+        刷新
+      </button>
+      <nz-select style="width: 120px;" [(ngModel)]="duration" [disabled]="loading" (ngModelChange)="onTimeChanged($event)">
+        <nz-option *ngFor="let t of timepick" [nzValue]="t.val" [nzLabel]="t.label"></nz-option>
+      </nz-select>
+    </div>
+    <div class="traffic-panel-aside" *ngIf="linePanelVisibility">
+      <traffic-line-panel [duration]="duration" [data]="showingLine" (close$)="showLinePanel(false)"></traffic-line-panel>
+    </div>
+  </div>
+</nz-card>

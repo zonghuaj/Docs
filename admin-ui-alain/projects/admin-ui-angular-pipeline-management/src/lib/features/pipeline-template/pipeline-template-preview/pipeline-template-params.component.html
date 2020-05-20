@@ -1,0 +1,40 @@
+<nz-card nzTitle="流水线步骤" [nzBordered]="false">
+  <nz-steps *ngIf="stages.length > 0 else nostage" nzType="navigation" [nzCurrent]="0" nzSize="small">
+    <nz-step *ngFor="let s of stages" [nzTitle]="s.name" nzStatus="process"></nz-step>
+  </nz-steps>
+  <ng-template #nostage>
+    <h3>未检出流水线步骤</h3>
+  </ng-template>
+</nz-card>
+
+<nz-card nzTitle="自定义变量列表" [nzBordered]="false">
+  <form nz-form [formGroup]="form" [nzLayout]="'vertical'" style="margin-top: 24px">
+    <nz-table #tb [nzData]="params" [nzShowPagination]="false" [nzFrontPagination]="false" formArrayName="dumb">
+      <thead>
+      <tr>
+        <th>变量名</th>
+        <th>标签</th>
+        <th>默认值</th>
+        <th>提示信息</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of dumb.controls; let i = index" [formGroupName]="i">
+        <td>{{getParamVal(i, 'key')}}</td>
+        <td><input nz-input formControlName="label"></td>
+        <td><input nz-input formControlName="defValue"></td>
+        <td><input nz-input formControlName="promptMessage"></td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </form>
+</nz-card>
+
+<div nz-row nzType="flex" nzJustify="center" class="mt-lg">
+  <button nz-button nzType="default" type="default" class="mr-sm"
+          (click)="prev$.emit()">返回
+  </button>
+  <button nz-button nzType="primary" type="button" [nzLoading]="submitLoading"
+          (click)="onSubmit()">提交
+  </button>
+</div>

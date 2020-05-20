@@ -1,0 +1,37 @@
+<nz-card [nzBordered]="false" nzTitle="服务详情" class="mb-lg"
+         [nzExtra]="edit">
+  <div *ngIf="service">
+    <sv-container class="mb-lg" [col]="2">
+      <sv label="服务名称">{{service.serviceName}}</sv>
+      <sv label="服务描述">{{service.serviceDesc}}</sv>
+      <sv label="端口列表">
+        <ul style="list-style: none; margin: 0; padding: 0;">
+          <li *ngFor="let p of service.appPorts">{{'[' + p.protocol + '] ' + p.port}}</li>
+        </ul>
+      </sv>
+    </sv-container>
+
+    <button nz-button nzType="primary"
+            [routerLink]="createVersionUrl">新增版本
+    </button>
+  </div>
+
+  <ng-template #edit>
+    <div *ngIf="service">
+      <a [routerLink]="editServiceUrl">编辑</a>
+      <nz-divider nzType="vertical"></nz-divider>
+
+      <span nz-tooltip *ngIf="cannotRemove" nzTitle="请先删除当前所有的版本">
+        <a disabled>删除</a>
+      </span>
+      <a *ngIf="!cannotRemove" (click)="confirmDelete()">删除</a>
+    </div>
+  </ng-template>
+</nz-card>
+
+<nz-card [nzBordered]="false" nzTitle="版本列表" class="mb-lg" *ngIf="versions">
+  <version-list [data]="versions"
+                [showDetail]="true"
+                [newestStatus]="newestStatusList"
+                (dataChanged$)="onVersionChanged($event)"></version-list>
+</nz-card>

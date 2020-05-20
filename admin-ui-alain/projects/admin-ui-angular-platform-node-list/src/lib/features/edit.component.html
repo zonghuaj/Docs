@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <div class="modal-title">添加节点</div>
+</div>
+<sf #sf mode="edit" [schema]="schema" [formData]="record" button="none">
+  <div class="modal-footer">
+    <button nz-button type="button" (click)="close()">关闭</button>
+    <button nz-button type="button" (click)="test(sf.value)" [disabled]="!sf.valid || loading">测试
+      <span class="loading" *ngIf="loading"><i nz-icon nzType="loading" nzTheme="outline"></i></span>
+
+    </button>
+    <button nz-button type="submit" [nzType]="'primary'" (click)="save(sf.value)" [disabled]="!isConnectSucc">保存</button>
+  </div>
+</sf>

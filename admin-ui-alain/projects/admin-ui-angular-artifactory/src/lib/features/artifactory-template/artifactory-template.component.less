@@ -1,0 +1,48 @@
+.stage-list {
+    width: 66.6667%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stage-list:not(:first-child) {
+    margin-top: 12px;
+  }
+  
+  .arrow {
+    margin-top: -8px; 
+    display: block;
+    width: 6px;
+    height: 20px;
+    background: #CCC;
+  }
+  
+  .arrow:after {
+    display: block;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 15px solid #CCC;
+    border-right: 15px solid transparent;
+    border-left: 15px solid transparent;
+    position: relative;
+    top: 20px;
+    left: -12px;
+  }
+  
+  .prompt {
+    display: block;
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    font-size: 20px;
+  }
+  
+  .current-version {
+    font-size: 18px;
+  }
+  
+  .version-desc {
+    font-size: 14px;
+  }
+  

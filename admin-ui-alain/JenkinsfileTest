@@ -1,0 +1,59 @@
+def label = "slave-${UUID.randomUUID().toString()}"
+podTemplate(label: label, containers: [
+    containerTemplate(
+        name: 'jnlp',
+        image: 'jenkins/jnlp-slave:latest',
+        alwaysPullImage: false,
+        privileged: true,
+        args: '${computer.jnlpmac} ${computer.name}'),
+    containerTemplate(name: 'node', image: 'harbor.atcdevops.accenture.cn/devops/idpbuildtool', command: 'cat', ttyEnabled: true,  privileged: true),
+    containerTemplate(name: 'docker', image: 'docker:latest', command: 'cat', ttyEnabled: true,  privileged: true),
+    containerTemplate(name: 'node1016', image: 'node:10.16.0', command: 'cat', ttyEnabled: true,  privileged: true),
+],
+idleMinutes: 5, activeDeadlineSeconds: 3600, slaveConnectTimeout: 180,
+namespace: 'devops', serviceAccount: 'jenkins',
+imagePullSecrets: [ 'harbor-secret' ],
+volumes: [
+    hostPathVolume(hostPath: '/home/jenkins', mountPath: '/home/jenkins'),
+    hostPathVolume(hostPath: '/home/jenkins/.kube/config', mountPath: '/home/jenkins/.kube/config'),
+    hostPathVolume(hostPath: '/home/jenkins/kubectl', mountPath: '/home/jenkins/kubectl'),
+    hostPathVolume(hostPath: '/user/bin/docker', mountPath: '/user/bin/docker'),
+    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+]) {
+    node(label) {
+        stage('Preparation') {
+
+        }
+        stage('Clone Source') {
+            try{
+                checkout([$class: 'GitSCM', branches: [[name: '*/release-test-sprint14 ']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'SSHGitlabAccess', url: 'git@gitlab.atcdevops.accenture.cn:MicroPaaS/micropaas-admin/admin-ui-alain.git']]])
+            }
+            catch(err){
+                error "${err}"
+            }
+        }
+        stage('Compile') {
+            container("node1016") {
+                sh 'npm install'
+                sh 'npm update'
+                sh 'npm run build --prod'
+            }
+        }
+        stage('Build Image') {
+            container('docker') {
+                sh 'docker build -t harbor.atcdevops.accenture.cn/micropaas/admin_frontend:1.2.0-release-$BUILD_NUMBER .'
+                sh 'docker build -t harbor.atcdevops.accenture.cn/micropaas/admin_frontend:latest .'
+                withCredentials([usernamePassword(credentialsId: 'harbor', passwordVariable: 'password', usernameVariable: 'username')]) {
+                    sh 'docker login harbor.atcdevops.accenture.cn -u $username -p $password'
+                }
+                sh 'docker push harbor.atcdevops.accenture.cn/micropaas/admin_frontend:1.2.0-release-$BUILD_NUMBER'
+                sh 'docker push harbor.atcdevops.accenture.cn/micropaas/admin_frontend:latest'
+            }
+        }
+
+        stage('Deploy') {
+            sh '/home/jenkins/kubectl apply -f deploymentTest.yaml'
+            sh '/home/jenkins/kubectl -n micropaas-release-test set image deploy adminfrontend adminfrontend=harbor.atcdevops.accenture.cn/micropaas/admin_frontend:1.2.0-release-$BUILD_NUMBER'
+        }
+    }
+}

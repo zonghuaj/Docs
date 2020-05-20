@@ -1,0 +1,44 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  .chart {
+    /* since sprint10 CDS framework used bootstrap, this "pos:abs,w:100%" may not
+        compatible with bootstrap grid & gutter system? I dont know why.
+        So I forced move this left for 15px(as its outer container padding.)*/
+    margin-left: -15px;
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    bottom: 0;
+  }
+
+  .gauge {
+    position: absolute;
+    height: 150px;
+    width: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -47.5%);
+  }
+
+  .cvs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -47.5%);
+    display: block;
+  }
+
+  .text {
+    position: absolute;
+    font-size: 25px;
+    font-weight: 600;
+    color: #444;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+}

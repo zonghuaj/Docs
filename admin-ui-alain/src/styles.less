@@ -1,0 +1,291 @@
+// region: PLACEHOLDER, IMPORTANT: don't remove
+@import '~@delon/theme/styles/index';
+@import '~@delon/abc/index';
+@import '~@delon/chart/index';
+@import '~@delon/theme/styles/layout/default/index';
+@import '~@delon/theme/styles/layout/fullscreen/index';
+@import './styles/index';
+// @import './styles/theme'; // duplicated import
+// endregion
+// CDS Framework theme
+@import "~@cds/framework/assets/styles/theme.css";
+
+// CDS theme adopt to ant.d
+.app-menu-wrapper {
+  border-right: 0 !important;
+}
+
+.app-content-width-wrapper {
+  height: 100% !important;
+  min-height: 100% !important;
+}
+
+// hack ant.d
+.alain-default__header {
+  visibility: hidden;
+  opacity: 0;
+}
+
+// bootstrap 4 Grid
+@import "~bootstrap/dist/css/bootstrap-grid.css";
+
+.pre {
+  white-space: pre;
+}
+
+.mb-0 {
+  margin-bottom: 0px !important;
+}
+
+.mr-0 {
+  margin-right: 0px !important;
+}
+
+.mt-0 {
+  margin-top: 0px !important;
+}
+
+.ml-0 {
+  margin-left: 0px !important;
+}
+
+.mb-5 {
+  margin-bottom: 5px !important;
+}
+
+.mr-5 {
+  margin-right: 5px !important;
+}
+
+.mt-5 {
+  margin-top: 5px !important;
+}
+
+.ml-5 {
+  margin-left: 5px !important;
+}
+
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+
+.mr-10 {
+  margin-right: 10px !important;
+}
+
+.wrap200 {
+  max-width: 200px;
+  word-wrap: break-word;
+  word-break: normal;
+}
+
+.width100 {
+  width: 100% !important;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
+}
+
+.ml-10 {
+  margin-left: 10px !important;
+}
+
+.ell {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.width100 {
+  width: 100% !important;
+}
+
+.scroll-hide {
+  -ms-scroll-chaining: chained;
+  -ms-overflow-style: none;
+  -ms-content-zooming: zoom;
+  -ms-scroll-rails: none;
+  -ms-content-zoom-limit-min: 100%;
+  -ms-content-zoom-limit-max: 500%;
+  -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+  -ms-overflow-style: none;
+  overflow: auto;
+}
+
+.scroll_hide::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.nolist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently not supported by any browser */
+}
+
+.link-disable {
+  pointer-events: none;
+  cursor: default;
+  color: #AAAAAA;
+}
+
+.singleline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*--- Service topo start ---*/
+.grey {
+  color: #a7aebb;
+}
+
+.success {
+  color: #52c41a;
+}
+
+.d3-tip,
+.d3-tip-grey {
+  //line-height: 1;
+  padding: 8px;
+  color: #eee;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.d3-tip {
+  background: #252a2f;
+}
+
+.d3-tip-grey {
+  background: #252a2fcc;
+}
+
+.d3-tip-grey:after,
+.d3-tip:after {
+  box-sizing: border-box;
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 0.8;
+  color: #252a2f;
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.d3-tip-grey:after {
+  color: #252a2fcc;
+}
+
+.d3-tip-grey.n:after,
+.d3-tip.n:after {
+  margin: -2px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+/*--- Service topo end---*/
+
+/*--- Service list table inside table start ---*/
+
+service-list table .ant-table-expanded-row > td {
+  padding: 0 !important;
+}
+
+/*--- Service list table inside table end ---*/
+
+/*--- Service trace start ---*/
+.time-charts {
+  overflow: auto;
+  padding: 10px 30px;
+}
+
+.trace-node .group {
+  cursor: pointer;
+  fill-opacity: 0;
+}
+
+.trace-node-container {
+  fill: rgba(0, 0, 0, 0);
+  stroke-width: 5px;
+  cursor: pointer;
+
+  &:hover {
+    fill: rgba(0, 0, 0, 0.05)
+  }
+}
+
+.trace-node .node-text {
+  font: 12.5px sans-serif;
+  pointer-events: none;
+}
+
+.domain {
+  display: none;
+}
+
+.trace-link {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.1);
+  stroke-width: 2px;
+}
+
+.trace-list {
+  fill: rgba(0, 0, 0, 0)
+}
+
+.trace-list .trace-node rect {
+  &:hover {
+    fill: rgba(0, 0, 0, 0.05)
+  }
+}
+
+.tree-link {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.1);
+  stroke-width: 2px;
+}
+
+.small-simple-page {
+  ul {
+    li {
+      min-width: 24px !important;
+      margin-right: 0 !important;
+
+      input {
+        padding: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      span {
+        margin: 0 !important;
+      }
+    }
+  }
+}
+
+/*--- Service trace end ---*/

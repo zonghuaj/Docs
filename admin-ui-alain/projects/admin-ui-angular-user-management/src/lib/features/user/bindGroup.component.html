@@ -1,0 +1,7 @@
+<div class="modal-header">
+  <div class="modal-title">分配角色</div>
+</div>
+<sf #sf mode="edit" [schema]="schema" [formData]="record" button="none" >
+    <button nz-button type="button" (click)="close()">关闭</button>
+    <button nz-button type="submit" [nzType]="'primary'" (click)="submit()" >保存</button>
+</sf>

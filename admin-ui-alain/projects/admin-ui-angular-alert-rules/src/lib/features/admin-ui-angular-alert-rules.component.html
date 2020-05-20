@@ -1,0 +1,38 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card [nzBordered]="true">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitFilter()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">搜索规则</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.keyword" name="keyword" placeholder="要查询的内容">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button class="addbtn" nz-button nzType="primary" type="button" routerLink="/alert/rule/create">新建规则</button>
+      </div>
+    </div>
+  </form>
+
+  <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)" [ps]="q.ps" [pi]="q.pi" [total]="totalCount" [page]="page">
+    <ng-template st-row="description" let-i>
+      <span>{{i.description | ellipsis: 40}}</span>
+    </ng-template>
+    <ng-template st-row="enable" let-i let-index="index">
+      <span [class.success]="i.enable">{{i.enable ? '已开启' : '未启用'}}</span>
+    </ng-template>
+    <ng-template st-row="operations" let-i>
+      <a (click)="toggleStatus(i)">{{i.enable ? '停用' : '启用'}}</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a [routerLink]="getEditUrl(i.id)">编辑</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <nz-popconfirm [nzTitle]="'确认删除当前规则？'" (nzOnConfirm)="deleteRule(i)">
+        <a nz-popconfirm>删除</a>
+      </nz-popconfirm>
+    </ng-template>
+  </st>
+</nz-card>

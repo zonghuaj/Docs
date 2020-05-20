@@ -1,0 +1,19 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card [nzTitle]="stepRef">
+  <ng-container [ngSwitch]="step">
+    <pipeline-template-info *ngSwitchCase="0" (next$)="nextStep()"
+                            (submit)="ppService.setInfo($event)"></pipeline-template-info>
+    <pipeline-template-code *ngSwitchCase="1" (next$)="nextStep()" (prev$)="prevStep()"
+                            (submit)="ppService.setCode($event)"></pipeline-template-code>
+    <pipeline-template-params *ngSwitchCase="2" (prev$)="prevStep()"></pipeline-template-params>
+    <span *ngSwitchDefault>...</span>
+  </ng-container>
+</nz-card>
+
+<ng-template #stepRef>
+  <nz-steps [nzCurrent]="step">
+    <nz-step nzTitle="基本信息" nzDescription="填写模板基本信息"></nz-step>
+    <nz-step nzTitle="流水线脚本" nzDescription="编辑JenkinsFile"></nz-step>
+    <nz-step nzTitle="参数设置" nzDescription="自定义参数配置等"></nz-step>
+  </nz-steps>
+</ng-template>

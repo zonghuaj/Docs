@@ -1,0 +1,12 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card nzTitle="用户组管理">
+  <input nz-input [(ngModel)]="params.groupName" nzPlaceHolder="请输入姓名" style="width: 200px; margin-right: 10px;">
+  <button nz-button (click)="st.load(1,params)" [nzType]="'primary'">搜索</button>
+  <button nz-button (click)="openAdd()" [nzType]="'primary'">
+    <i nz-icon nzType="plus"></i>
+    <span>新建</span>
+  </button>
+
+  <div class="mt-md"></div>
+  <st #groupsSt [data]="url" [columns]="columns" [req]="req" [res]="res" [page]="stPage"></st>
+</nz-card>

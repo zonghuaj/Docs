@@ -1,0 +1,288 @@
+[{
+  "id": "project-console",
+  "name": "运维控制台",
+  "children": [{
+    "id": "service-dashboard",
+    "name": "仪表盘",
+    "url": "/service-dashboard"
+
+  },
+    {
+      "id": "service-management",
+      "name": "服务管理",
+      "url": "/service/all",
+      "children": [{
+        "id": "service-list",
+        "name": "服务列表",
+        "url": "/service/all"
+      },
+        {
+          "id": "service-create",
+          "name": "创建服务",
+          "url": "/service/create"
+        },
+        {
+          "id": "service-edit",
+          "name": "编辑服务",
+          "url": "/service/.*?/edit"
+        },
+        {
+          "id": "service-detail",
+          "name": "服务详情",
+          "url": "/service/.*?/detail"
+        },
+        {
+          "id": "version-create",
+          "name": "创建版本",
+          "url": "/service/.*?/version/create"
+        },
+        {
+          "id": "version-edit",
+          "name": "编辑版本",
+          "url": "/service/.*?/version/.*?/edit"
+        }
+      ]
+    },
+    {
+      "id": "deploy-management",
+      "name": "运维中心",
+      "children": [{
+        "id": "log-summary",
+        "name": "日志查询",
+        "url": "/service/log-summary"
+
+      },
+        {
+          "id": "service-trace",
+          "name": "链路追踪",
+          "url": "/service/trace"
+
+        },
+        {
+          "id": "service-traffic",
+          "name": "流量路由",
+          "url": "/service/traffic"
+
+        },
+        {
+          "id": "service-auto-scale",
+          "name": "自动伸缩",
+          "url": "/service/autoscaler"
+
+        },
+        {
+          "id": "service-config-center",
+          "name": "配置中心",
+          "url": "/service/configCenter"
+
+        }
+      ]
+    },
+    {
+      "id": "monitor-alert",
+      "name": "监控告警",
+      "children": [{
+        "id": "resource-monitor",
+        "name": "资源监控",
+        "url": "/monitor/all"
+
+      },
+        {
+          "id": "alert-rules",
+          "name": "告警规则",
+          "url": "/alert/rule/all"
+
+        },
+        {
+          "id": "alert-rules-edit",
+          "name": "告警规则编辑",
+          "url": "/alert/rule/.*?/edit"
+        },
+        {
+          "id": "alert-list",
+          "name": "告警记录",
+          "url": "/alert/all"
+
+        },
+        {
+          "id": "notice-way",
+          "name": "通知方式",
+          "url": "/alert/notice-way"
+
+        }
+      ]
+    },
+    {
+      "id": "project-configuration",
+      "name": "项目配置",
+      "children": [{
+        "id": "usergroup-management",
+        "name": "用户组管理",
+        "url": "/team/group"
+
+      }]
+    }
+  ]
+},
+  {
+    "id": "develop-console",
+    "name": "开发控制台",
+    "children": [{
+      "id": "pipeline-list-management",
+      "name": "流水线管理",
+      "url": "/devops/pipeline/list"
+
+    },
+      {
+        "id": "artifactory-list",
+        "name": "制品管理",
+        "url": "/artifactory/list"
+
+      },
+      {
+        "id": "image-template-configure",
+        "name": "镜像模板",
+        "children": [
+          {
+            "id": "image-template-list",
+            "name": "镜像模板列表",
+            "url": "/image-template"
+          },
+          {
+            "id": "image-template-create",
+            "name": "镜像模板创建",
+            "url": "/image-template/create"
+          },
+          {
+            "id": "image-template-edit",
+            "name": "镜像模板编辑",
+            "url": "/image-template/.*?/edit"
+          }
+        ]
+      },
+      {
+        "id": "code-quality-configure",
+        "name": "代码质量",
+        "children": [
+          {
+            "id": "code-quality-project-list",
+            "name": "代码质量工程",
+            "url": "/quality-gate/projects"
+          },
+          {
+            "id": "code-quality-project-detail",
+            "name": "代码质量工程详情",
+            "url": "/quality-gate/project/.*?"
+          },
+          {
+            "id": "code-quality-gate-list",
+            "name": "代码质量门禁",
+            "url": "/quality-gate/rules"
+          }
+        ]
+      },
+      {
+        "id": "auto-test-platform",
+        "name": "自动化测试",
+        "url": "/itest"
+      }
+    ]
+  },
+  {
+    "id": "tenant-console",
+    "name": "管理控制台",
+    "children": [{
+      "id": "project-dashboard",
+      "name": "项目监控",
+      "url": "/project/dashboard"
+
+    },
+      {
+        "id": "project-managment",
+        "name": "项目管理",
+        "url": "/project/all",
+        "children": [{
+          "id": "project-list",
+          "name": "项目列表",
+          "url": "/project/all"
+        },
+          {
+            "id": "project-edit",
+            "name": "项目编辑",
+            "url": "/project/.*?/edit"
+          },
+          {
+            "id": "project-detail",
+            "name": "项目详情",
+            "url": "/project/.*?/detail"
+          },
+          {
+            "id": "project-create",
+            "name": "创建项目",
+            "url": "/project/create"
+          }
+        ]
+      },
+      {
+        "id": "team-management",
+        "name": "团队管理",
+        "children": [{
+          "id": "user-management",
+          "name": "用户管理",
+          "url": "/team/user"
+
+        },
+          {
+            "id": "role-management",
+            "name": "角色管理",
+            "url": "/project/role"
+
+          },
+          {
+            "id": "role-edit",
+            "name": "角色编辑",
+            "url": "/project/role/.*?/edit"
+          },
+          {
+            "id": "role-bind-user",
+            "name": "绑定用户",
+            "url": "/project/role/.*?/bind"
+          }
+        ]
+      },
+      {
+        "id": "platform-center",
+        "name": "集成中心",
+        "url": "/project/platform-center"
+
+      }
+    ]
+  },
+  {
+    "id": "platform-console",
+    "name": "平台控制台",
+    "children": [{
+      "id": "platform-dashboard",
+      "name": "平台监控",
+      "url": "platform/dashboard"
+
+    },
+      {
+        "id": "platform-node",
+        "name": "节点管理",
+        "url": "platform/node"
+
+      },
+      {
+        "id": "tenant-management",
+        "name": "租户管理",
+        "url": "platform/tenant"
+      },
+      {
+        "id": "tenant-users",
+        "name": "平台管理员管理",
+        "url": "team/users"
+      }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card [nzBordered]="true" nzTitle="流水线日志" [nzExtra]="addT">
+  <!--  <nz-steps [nzCurrent]="1" nzSize="small" nzLabelPlacement="vertical" nzProgressDot>-->
+  <!--  </nz-steps>-->
+  <nz-steps nzProgressDot>
+    <nz-step *ngFor="let s of pipelineLogs;let i = index" [nzTitle]="s.displayName" [nzStatus]="s.result"></nz-step>
+  </nz-steps>
+  <br/>
+  <br/>
+  <br/>
+  <st #userSt [data]="data" [total]="total" [columns]="columns" [page]="stPage" [ps]="q.ps" [pi]="q.pi" [page]="stPage" (change)="getLogDetail($event)"
+      style="cursor:pointer"></st>
+</nz-card>
+<ng-template #addT>
+  <button nz-button type="button" class="ml-sm" nzType="default" (click)="backToLast()">
+    返回
+  </button>
+  <button nz-button type="button" class="ml-sm" nzType="primary" (click)="refresh()">
+    刷新
+  </button>
+</ng-template>

@@ -1,0 +1,72 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card [nzBordered]="true">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitFilter()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">服务名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.name" name="name" placeholder="要查询的名称">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">服务描述</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.desc" name="desc" placeholder="要查询的描述">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">
+          <i nz-icon nzType="search" nzTheme="outline"></i>查询
+        </button>
+        <button nz-button type="button" nzType="primary" class="ml-md"
+                (click)="router.navigateByUrl('/service/create');">
+          <i nz-icon nzType="plus" nzTheme="outline"></i>新增
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)" [ps]="q.ps" [pi]="q.pi"
+      [total]="totalCount" [page]="page" [expand]="expand">
+    <ng-template st-row="name" let-i>
+      <a (click)="goDetail(i)">{{i.serviceName | ellipsis: 15}}</a>
+    </ng-template>
+    <ng-template st-row="desc" let-i>
+      <div class="wrap200">{{i.serviceDesc}}</div>
+    </ng-template>
+    <ng-template st-row="ports" let-i>
+      <ul class="port-list">
+        <li *ngFor="let p of i.appPorts">{{'[' + p.protocol + '] ' + p.port}}</li>
+      </ul>
+    </ng-template>
+    <ng-template st-row="route" let-i>
+      <a [href]="'//' + i.route" target="_blank"
+         [class.link-disable]="i.route === 'NA' || i.route === 'NANA'">{{formatRoute(i.route) | ellipsis: 30}}</a>
+    </ng-template>
+    <ng-template st-row="operations" let-i>
+      <!--      <nz-popconfirm (nzOnConfirm)="deployServ(i)" [nzTitle]="'确认部署当前服务？'">-->
+      <!--        <a nz-popconfirm>部署</a>-->
+      <!--      </nz-popconfirm>-->
+      <a>创建实例</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <nz-popconfirm *ngIf="i.versions.length === 0 else disabledel"
+                     [nzTitle]="'确认删除当前服务？'">
+        <a nz-popconfirm>删除服务</a>
+      </nz-popconfirm>
+
+      <ng-template #disabledel>
+      <span nz-tooltip nzTitle="需要先删除所有的版本">
+        <a disabled="">删除服务</a>
+      </span>
+      </ng-template>
+    </ng-template>
+    <ng-template #expand let-i>
+      <version-list [data]="data[i.idx].versions" [newestStatus]="newestStatusList" [serviceId]="i.id"></version-list>
+    </ng-template>
+  </st>
+</nz-card>

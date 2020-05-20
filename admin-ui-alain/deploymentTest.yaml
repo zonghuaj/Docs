@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: adminfrontend
+  namespace: micropaas-release-test
+data:
+  keycloak.json: |
+    {
+      "keycloakUrl":"http://sso.test.micropaas.ies/auth"
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminfrontend
+  namespace: micropaas-release-test
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      ambassador_id: default
+      name:  micropaas-release-test_adminfrontend
+      host:  admin.test.micropaas.ies
+      prefix:  /
+      service: adminfrontend.micropaas-release-test:80
+      timeout_ms: 900000
+spec:
+  ports:
+    - name: http-admin-fontend
+      port: 80
+      targetPort: adminfrontend
+  selector:
+    app: adminfrontend
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: adminfrontend
+  namespace: micropaas-release-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminfrontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: adminfrontend
+    spec:
+      imagePullSecrets:
+        - name: regcred-atcdevops
+      containers:
+        - name: adminfrontend
+          image: harbor.atcdevops.accenture.cn/micropaas/admin_frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: adminfrontend
+          volumeMounts:
+            - name: adminfrontend-config
+              mountPath: /usr/share/nginx/html/assets/config/keycloak.json
+              subPath: keycloak.json
+      volumes:
+        - name: adminfrontend-config
+          configMap:
+            name: adminfrontend
+

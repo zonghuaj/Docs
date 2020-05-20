@@ -1,0 +1,58 @@
+<nz-card [nzBordered]="false" [nzTitle]="chartTitle">
+  <nz-row nzType="flex" nzJustify="center">
+    <nz-col nzLg="11" nzMd="11" nzSm="11">
+      <div class="monitor-chart" style="height: 300px;" echarts [options]="cpuChartOpt" class="demo-chart"></div>
+      <div nz-row nzType="flex" nzJustify="center">
+        <span style="font-size: 1.5em">CPU使用状态</span>
+      </div>
+    </nz-col>
+    <nz-divider nzType="vertical" style="height: 300px"></nz-divider>
+    <nz-col nzLg="11" nzMd="11" nzSm="11">
+      <div class="monitor-chart" style="height: 300px;" echarts [options]="memChartOpt" class="demo-chart"></div>
+      <div nz-row nzType="flex" nzJustify="center">
+        <span style="font-size: 1.5em">内存使用状态</span>
+      </div>
+    </nz-col>
+  </nz-row>
+</nz-card>
+<nz-card [nzBordered]="false" nzTitle="自动水平伸缩配置">
+  <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="versions">
+    <!-- (nzCurrentPageDataChange)="currentPageDataChange($event)" -->
+    <thead>
+      <tr>
+        <th>版本</th>
+        <th>CPU上限</th>
+        <th>CPU指标</th>
+        <th>最大实例数</th>
+        <th>最小实例数</th>
+        <th>启用</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of rowSelectionTable.data">
+
+        <!--  [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()" -->
+        <td>{{ data.version }}</td>
+        <td>
+          {{data.cpuLimit}}
+        </td>
+        <td>
+          {{formatterPercent(data.cpuPercent)}}
+        </td>
+        <td>
+            {{formatterNumber(data.maxPod)}}
+        </td>
+        <td>
+            {{formatterNumber(data.minPod)}}
+        </td>
+        <td >
+          <nz-switch  [(ngModel)]="data.enable" nzCheckedChildren="开" nzUnCheckedChildren="关" [nzDisabled]="true"></nz-switch>
+        </td>
+        <td>
+          <a (click)="applyEdit(data)" >编辑</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

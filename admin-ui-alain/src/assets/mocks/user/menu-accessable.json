@@ -1,0 +1,16 @@
+{
+  "platform-console": [
+  ],
+  "tenant-console": [
+    "/project/dashboard"
+  ],
+  "project-console": {
+    "dev": [
+      "/service-dashboard",
+      "/service/all",
+      "/service/.*?/detail"
+    ],
+    "prod": [
+    ]
+  }
+}

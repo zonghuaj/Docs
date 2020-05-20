@@ -1,0 +1,63 @@
+<form nz-form
+      [formGroup]="form"
+      [nzLayout]="'vertical'">
+  <nz-card [nzBordered]="false" nzTitle="基础信息">
+    <nz-row nzGutter="16">
+      <nz-col nzSpan="10">
+        <nz-form-item>
+          <nz-form-label nzFor="serviceName">服务名称</nz-form-label>
+          <nz-form-control>
+            <input [readOnly]="immutable" nz-input formControlName="serviceName" placeholder="请输入最多15位小写字母和数字，首位为英文字母">
+            <nz-form-explain *ngIf="(serviceName.dirty || serviceName.touched) && serviceName.errors">
+              {{namePlaceHolder}}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col nzSpan="10" nzOffset="2">
+        <nz-form-item>
+          <nz-form-label>详细描述</nz-form-label>
+          <nz-form-control>
+            <textarea [readOnly]="immutable" maxlength="255"
+                      nz-input formControlName="serviceDesc" [nzAutosize]="true"
+                      placeholder="请输入详细描述"></textarea>
+            <nz-form-explain *ngIf="(serviceDesc.dirty || serviceDesc.touched) && serviceDesc.errors">
+              请输入详细描述
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+
+    <nz-row>
+      <nz-col nzSpan="10" formArrayName="appPorts">
+        <div class="mb-sm">
+          端口 <i style="margin-top: 4px; cursor: pointer"
+                nz-icon nzType="plus-circle" nzTheme="outline" (click)="addPort()"></i>
+        </div>
+        <nz-form-item *ngFor="let r of appPorts.controls; let i = index" [formGroupName]="i">
+          <nz-form-control>
+            <nz-input-group style="width: 300px;" [nzAddOnBefore]="protocol">
+              <input type="text" nz-input formControlName="port"
+                     pattern="^([0-9]|[1-9]\d|[1-9]\d{2}|[1-9]\d{3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5])$"/>
+            </nz-input-group>
+            <i *ngIf="appPorts.controls.length > 1" style="cursor:pointer; margin-left: 10px"
+               nz-icon nzType="close" nzTheme="outline"
+               (click)="removePort(i)"></i>
+            <nz-form-explain *ngIf="(getPort(i).dirty || getPort(i).touched) && getPort(i).errors">
+              请输入0-65535之间的整数
+            </nz-form-explain>
+          </nz-form-control>
+
+          <ng-template #protocol>
+            <nz-select formControlName="protocol" style="width: 80px;">
+              <nz-option nzLabel="HTTP" nzValue="http"></nz-option>
+              <nz-option nzLabel="TCP" nzValue="tcp"></nz-option>
+            </nz-select>
+          </ng-template>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+</form>

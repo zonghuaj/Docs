@@ -1,0 +1,22 @@
+<nz-card style="margin-top: 24px">
+  <div class="wrapper" nz-row nzType="flex" nzAlign="top">
+    <div style="height: 100%" nz-col nzSpan="14">
+      <ngx-codemirror #codeeditor className="scrollbar"
+                      [(ngModel)]="codes"
+                      [options]="this.option"></ngx-codemirror>
+    </div>
+    <div nz-col nzSpan="10" style="padding: 0 16px; overflow: auto; max-height: 600px" class="scrollbar">
+      <pipeline-constant-table></pipeline-constant-table>
+    </div>
+  </div>
+</nz-card>
+
+<div nz-row nzType="flex" nzJustify="center" class="mt-lg">
+  <button nz-button nzType="default" type="default" class="mr-sm"
+          (click)="prev$.emit()">返回
+  </button>
+  <button nz-button nzType="primary" type="submit"
+          [disabled]="!codes"
+          (click)="next()">下一步
+  </button>
+</div>

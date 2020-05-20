@@ -1,0 +1,153 @@
+<cds-breadcrumb></cds-breadcrumb>
+
+<nz-card>
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitFilter()" class="search__form border-bottom-1">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">服务</nz-form-label>
+          <nz-form-control>
+            <trace-service-select [startTime]="q.times[0]" [endTime]="q.times[1]" (select$)="q.serviceId = $event.key"></trace-service-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">实例</nz-form-label>
+          <nz-form-control>
+            <trace-instance-select [serviceId]="q.serviceId" [startTime]="q.times[0]" [endTime]="q.times[1]" (select$)="q.instanceId = $event.key"></trace-instance-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">状态</nz-form-label>
+          <nz-form-control>
+            <nz-select [nzPlaceHolder]="'请选择状态'" name="state" [(ngModel)]="q.state">
+              <nz-option [nzLabel]="'全部'" [nzValue]="'ALL'"></nz-option>
+              <nz-option [nzLabel]="'成功'" [nzValue]="'SUCCESS'"></nz-option>
+              <nz-option [nzLabel]="'失败'" [nzValue]="'ERROR'"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="6" nzSm="24">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="listLoading">查询</button>
+        <a (click)="filterExpand = !filterExpand" style="margin-left: 16px">
+          <i nz-icon [nzType]="filterExpand ? 'up':'down'" nzTheme="outline"></i>更多</a>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }" *ngIf="filterExpand">
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">端点</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.endPoint" name="endPoint" placeholder="EndPoint">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="6" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">追踪ID</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.traceId" name="traceId" placeholder="TraceId">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="10" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">时长</nz-form-label>
+          <nz-form-control>
+            <nz-input-group nzCompact>
+              <input type="number" nz-input placeholder="最小" [(ngModel)]="q.minDur" name="duramin" style="width:100px; text-align: center;">
+              <input type="text" disabled nz-input placeholder="~" style="width: 40px; border-left: 0px; pointer-events: none; background-color: rgb(255, 255, 255);">
+              <input type="number" nz-input placeholder="最大" [(ngModel)]="q.maxDur" name="duramax" style="width: 100px; text-align: center; border-left: 0px;">
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }" *ngIf="filterExpand">
+      <div nz-col nzMd="12" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">时间</nz-form-label>
+          <nz-range-picker [disabled]="listLoading" nzShowTime nzFormat="yy-MM-dd HH:mm:ss" [(ngModel)]="q.times" [ngModelOptions]="{standalone: true}"></nz-range-picker>
+        </nz-form-item>
+      </div>
+    </div>
+  </form>
+
+  <div nz-row>
+    <div nz-col nzSpan="5" class="border-right-1">
+      <div nz-row nzType="flex" nzJustify="space-between" style="padding: 8px 8px 4px 0;">
+        <nz-pagination nz-col style="display: inline-block" class="small-simple-page" nzSimple nzSize="small" [(nzPageIndex)]="q.pi" [(nzPageSize)]="q.ps" [nzTotal]="total" (nzPageIndexChange)="onPageChanged($event)"></nz-pagination>
+        <nz-select nz-col style="width: 90px; font-size: 12px" [(ngModel)]="q.timeType" [nzSize]="'small'">
+          <nz-option [nzLabel]="'持续时间'" [nzValue]="'BY_DURATION'"></nz-option>
+          <nz-option [nzLabel]="'开始时间'" [nzValue]="'BY_START_TIME'"></nz-option>
+        </nz-select>
+      </div>
+      <nz-list style="max-height: 700px" class="scrollbar" [nzDataSource]="traceList" [nzRenderItem]="listitem" [nzItemLayout]="'vertical'" [nzLoading]="listLoading">
+        <ng-template #listitem let-item>
+          <nz-list-item (click)="selectTraceItem(item)" class="listitem" [class.rk-trace-error]="item.isError" [class.lselected]="current === item">
+            <div class="t-title ell" [class.trace-title-error]="item.isError">
+              <span>{{item.endpointNames[0]}}</span>
+            </div>
+            <div>
+              <span class="t-duration">{{item.duration + 'ms'}}</span>
+              <span class="t-time">{{item.start | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+            </div>
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </div>
+
+    <div nz-col nzSpan="19" *ngIf="current">
+      <div class="border-bottom-1" style="padding: 0 12px 12px 12px;">
+        <div class="rk-trace-detail-wrapper clear" *ngIf="current.endpointNames">
+          <h3 class="mb-5">
+            <i *ngIf="current.isError" style="color: #e54c17" nz-icon nzType="close-circle" nzTheme="fill"></i>
+            <span class="vm ml-sm">{{current.endpointNames[0]}}</span>
+          </h3>
+          <div class="mb-5 blue sm">
+            <nz-dropdown [nzTrigger]="'click'">
+              <a nz-dropdown>{{selectedTraceId}}<i nz-icon type="down"></i> </a>
+              <ul nz-menu nzSelectable>
+                <li class="simple-select" nz-menu-item *ngFor="let i of current.traceIds" (click)="selectedTraceId = i">{{i}}</li>
+              </ul>
+            </nz-dropdown>
+            <!--          <select class="rk-trace-detail-ids">-->
+            <!--            <option *ngFor="let i of current.traceIds">{{i}}</option>-->
+            <!--          </select>-->
+          </div>
+          <div class="desc">
+            <div class="rk-tag mr-5">Start</div>
+            <span class="mr-10 sm">{{current.start | date: 'yyyy-MM-dd HH:mm:ss'}}</span>
+            <div class="rk-tag mr-5">duration</div>
+            <span class="mr-10 sm">{{current.duration}} ms</span>
+            <div class="rk-tag mr-5">spans</div>
+            <span class="sm">{{spans.length}}</span>
+          </div>
+
+          <nz-radio-group [(ngModel)]="showType" class="select-tree">
+            <label nz-radio-button nzValue="L"><i nz-icon nzType="ordered-list" nzTheme="outline"></i>列表</label>
+            <label nz-radio-button nzValue="T"><i nz-icon nzType="fork" nzTheme="outline"></i>树形图</label>
+          </nz-radio-group>
+        </div>
+      </div>
+
+      <nz-spin [nzSpinning]="detailLoading">
+        <div class="t-view">
+          <trace-list-view #traceListView [data]="spans" *ngIf="showType === 'L'" (detailClick$)="onDetailClicked($event)"></trace-list-view>
+          <trace-tree-view #traceTreeView [data]="spans" [traceId]="current.traceIds[0]" *ngIf="showType === 'T'" (detailClick$)="onDetailClicked($event)"></trace-tree-view>
+        </div>
+      </nz-spin>
+    </div>
+  </div>
+</nz-card>

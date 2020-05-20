@@ -1,0 +1,184 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@shared": [
+        "app/shared/index"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@core": [
+        "app/core/index"
+      ],
+      "@core/*": [
+        "app/core/*"
+      ],
+      "@env/*": [
+        "environments/*"
+      ],
+      "@app/*": [
+        "app/*"
+      ],
+      "admin-ui-angular-platform-dashboard": [
+        "../projects/admin-ui-angular-platform-dashboard/src/public-api"
+      ],
+      "admin-ui-angular-platform-dashboard/*": [
+        "../projects/admin-ui-angular-platform-dashboard/src/*"
+      ],
+      "admin-ui-angular-common": [
+        "../projects/admin-ui-angular-common/src/public-api"
+      ],
+      "admin-ui-angular-common/*": [
+        "../projects/admin-ui-angular-common/src/*"
+      ],
+      "admin-ui-angular-tenant-management": [
+        "../projects/admin-ui-angular-tenant-management/src/public-api"
+      ],
+      "admin-ui-angular-tenant-management/*": [
+        "../projects/admin-ui-angular-tenant-management/src/*"
+      ],
+      "admin-ui-angular-log-summary": [
+        "../projects/admin-ui-angular-log-summary/src/public-api"
+      ],
+      "admin-ui-angular-log-summary/*": [
+        "../projects/admin-ui-angular-log-summary/src/*"
+      ],
+      "admin-ui-angular-service-trace": [
+        "../projects/admin-ui-angular-service-trace/src/public-api"
+      ],
+      "admin-ui-angular-service-trace/*": [
+        "../projects/admin-ui-angular-service-trace/src/*"
+      ],
+      "admin-ui-angular-config-center": [
+        "../projects/admin-ui-angular-config-center/src/public-api"
+      ],
+      "admin-ui-angular-config-center/*": [
+        "../projects/admin-ui-angular-config-center/src/*"
+      ],
+      "admin-ui-angular-service-traffic": [
+        "../projects/admin-ui-angular-service-traffic/src/public-api"
+      ],
+      "admin-ui-angular-service-traffic/*": [
+        "../projects/admin-ui-angular-service-traffic/src/*"
+      ],
+      "admin-ui-angular-service-autoscaler": [
+        "../projects/admin-ui-angular-service-autoscaler/src/public-api"
+      ],
+      "admin-ui-angular-service-autoscaler/*": [
+        "../projects/admin-ui-angular-service-autoscaler/src/*"
+      ],
+      "admin-ui-angular-monitor-all": [
+        "../projects/admin-ui-angular-monitor-all/src/public-api"
+      ],
+      "admin-ui-angular-monitor-all/*": [
+        "../projects/admin-ui-angular-monitor-all/src/*"
+      ],
+      "admin-ui-angular-alert-rules": [
+        "../projects/admin-ui-angular-alert-rules/src/public-api"
+      ],
+      "admin-ui-angular-alert-rules/*": [
+        "../projects/admin-ui-angular-alert-rules/src/*"
+      ],
+      "admin-ui-angular-alert-all": [
+        "../projects/admin-ui-angular-alert-all/src/public-api"
+      ],
+      "admin-ui-angular-alert-all/*": [
+        "../projects/admin-ui-angular-alert-all/src/*"
+      ],
+      "admin-ui-angular-notice-way": [
+        "../projects/admin-ui-angular-notice-way/src/public-api"
+      ],
+      "admin-ui-angular-notice-way/*": [
+        "../projects/admin-ui-angular-notice-way/src/*"
+      ],
+      "admin-ui-angular-image-template": [
+        "../projects/admin-ui-angular-image-template/src/public-api"
+      ],
+      "admin-ui-angular-image-template/*": [
+        "../projects/admin-ui-angular-image-template/src/*"
+      ],
+      "admin-ui-angular-quality-gate": [
+        "../projects/admin-ui-angular-quality-gate/src/public-api"
+      ],
+      "admin-ui-angular-quality-gate/*": [
+        "../projects/admin-ui-angular-quality-gate/src/*"
+      ],
+      "admin-ui-angular-itest-platform": [
+        "../projects/admin-ui-angular-itest-platform/src/public-api"
+      ],
+      "admin-ui-angular-itest-platform/*": [
+        "../projects/admin-ui-angular-itest-platform/src/*"
+      ],
+      "admin-ui-angular-artifactory": [
+        "../projects/admin-ui-angular-artifactory/src/public-api"
+      ],
+      "admin-ui-angular-artifactory/*": [
+        "../projects/admin-ui-angular-artifactory/src/*"
+      ],
+      "admin-ui-angular-service-management": [
+        "../projects/admin-ui-angular-service-management/src/public-api"
+      ],
+      "admin-ui-angular-service-management/*": [
+        "../projects/admin-ui-angular-service-management/src/*"
+      ],
+      "admin-ui-angular-service-topo": [
+        "../projects/admin-ui-angular-service-topo/src/public-api"
+      ],
+      "admin-ui-angular-service-topo/*": [
+        "../projects/admin-ui-angular-service-topo/src/*"
+      ],
+      "admin-ui-angular-pipeline-management": [
+        "../projects/admin-ui-angular-pipeline-management/src/public-api"
+      ],
+      "admin-ui-angular-pipeline-management/*": [
+        "../projects/admin-ui-angular-pipeline-management/src/*"
+      ],
+      "admin-ui-angular-project-management": [
+        "../projects/admin-ui-angular-project-management/src/public-api"
+      ],
+      "admin-ui-angular-project-management/*": [
+        "../projects/admin-ui-angular-project-management/src/*"
+      ],
+      "admin-ui-angular-platform-node-list": [
+        "../projects/admin-ui-angular-platform-node-list/src/public-api"
+      ],
+      "admin-ui-angular-platform-node-list/*": [
+        "../projects/admin-ui-angular-platform-node-list/src/*"
+      ],
+      "admin-ui-angular-platform-os": [
+        "../projects/admin-ui-angular-platform-os/src/public-api"
+      ],
+      "admin-ui-angular-platform-os/*": [
+        "../projects/admin-ui-angular-platform-os/src/*"
+      ],
+      "admin-ui-angular-user-management": [
+        "../projects/admin-ui-angular-user-management/src/public-api"
+      ],
+      "admin-ui-angular-user-management/*": [
+        "../projects/admin-ui-angular-user-management/src/*"
+      ],
+      "admin-ui-angular-service-dashboard": [
+        "../projects/admin-ui-angular-service-dashboard/src/public-api"
+      ],
+      "admin-ui-angular-service-dashboard/*": [
+        "../projects/admin-ui-angular-service-dashboard/src/*"
+      ],
+      "admin-ui-angular-event-management": [
+        "../projects/admin-ui-angular-event-management/src/public-api"
+      ],
+      "admin-ui-angular-event-management/*": [
+        "../projects/admin-ui-angular-event-management/src/*"
+      ]
+    },
+    "baseUrl": "./"
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

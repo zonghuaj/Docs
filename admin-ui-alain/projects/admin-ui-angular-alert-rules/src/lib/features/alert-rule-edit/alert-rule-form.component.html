@@ -1,0 +1,114 @@
+<form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+  <nz-card [nzBordered]="false" nzTitle="基础信息">
+    <nz-row nzGutter="16">
+      <nz-col nzLg="7" nzMd="24" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="serviceName">告警名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="name" placeholder="请输入规则名称">
+            <nz-form-explain *ngIf="(name.dirty || name.touched) && name.errors">
+              请输入规则名称
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col nzLg="7" nzMd="24" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="serviceName">告警等级</nz-form-label>
+          <nz-form-control>
+            <nz-select formControlName="level" [nzPlaceHolder]="'请选择运行环境'" [nzShowSearch]="true">
+              <nz-option nzLabel="高" nzValue="H"></nz-option>
+              <nz-option nzLabel="中" nzValue="M"></nz-option>
+              <nz-option nzLabel="低" nzValue="L"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="(name.dirty || name.touched) && name.errors">
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+
+      <nz-col nzLg="7" nzMd="24" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="serviceName">通知组</nz-form-label>
+          <nz-form-control>
+            <nz-select style="width: 100%" formControlName="receiveGroup" nzMode="multiple" nzPlaceHolder="选择用户组" nzMaxTagCount="3">
+              <nz-option *ngFor="let option of userGroup" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="(name.dirty || name.touched) && name.errors">
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </nz-card>
+
+  <nz-card [nzBordered]="false" [nzTitle]="ruleTtle">
+    <ng-template #ruleTtle>
+      <span>告警规则<i class="ml-5" nz-icon nzType="question-circle" nzTheme="outline"
+                   nz-tooltip nzTitle="当设置多项规则时，任意一条规则达到阙值将立刻产生告警。"></i></span>
+    </ng-template>
+
+    <nz-table #rtb formArrayName="rules" [nzNoResult]="''" [nzData]="[{}]" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th class="index">指标</th>
+          <th>阈值</th>
+          <th>持续时间(分)
+            <!--          <i class="ml-5" nz-icon nzType="question-circle" nzTheme="outline"-->
+            <!--                   nz-tooltip nzTitle="持续时间设置为0分钟时，指标达到阈值立刻告警。"></i>-->
+          </th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of rules.controls; let i = index" [formGroupName]="i">
+          <td class="index">
+            <nz-select class="key" formControlName="metric" (ngModelChange)="onMetricSelChanged($event, i)">
+              <nz-option *ngFor="let dx of INDEXES" [nzLabel]="dx.l" [nzValue]="dx.v"></nz-option>
+            </nz-select>
+          </td>
+          <td>
+            <nz-input-number formControlName="threshold" nz-input nzMin="0"></nz-input-number>
+          </td>
+          <td>
+            <nz-input-number formControlName="duration" nz-input nzMin="1"></nz-input-number>
+          </td>
+          <td>
+            <a (click)="removeRule(i)" [class.link-disable]="rules.controls.length <= 1">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <button class="mt-lg" nz-button nzType="primary" type="button" (click)="addRule()">添加</button>
+  </nz-card>
+
+  <nz-card [nzBordered]="false" nzTitle="绑定服务" *ngIf="services">
+    <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="updateSingleChecked()">
+      <nz-table #rtb [nzNoResult]="''" [nzData]="[{}]" [nzShowPagination]="false">
+        <thead>
+          <tr nz-row>
+            <th nz-col nzSpan="2">
+              <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [ngModelOptions]="{standalone: true}" [nzIndeterminate]="indeterminate"></label>
+            </th>
+            <th nz-col nzSpan="11">服务</th>
+            <th nz-col nzSpan="11">版本</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr nz-row *ngFor="let s of services; let i = index">
+            <td nz-col nzSpan="2">
+              <label nz-checkbox [(nzChecked)]="s.checked"></label></td>
+            <td nz-col nzSpan="11">
+              <span>{{s.serviceName}}</span>
+            </td>
+            <td nz-col nzSpan="11">
+              <span>{{s.versionName}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-checkbox-wrapper>
+  </nz-card>
+</form>

@@ -1,0 +1,13 @@
+<nz-card [nzBordered]="false">
+  <admin-ui-angular-service-create-form #serviceF (submit)="_submit($event)"></admin-ui-angular-service-create-form>
+
+  <div nz-row nzType="flex" nzJustify="center">
+    <button nz-button nzType="default" type="default" class="pl-lg pr-lg"
+            (click)="nzdrawer.close();">返回
+    </button>
+    <button nz-button nzType="primary" type="submit" class="pl-lg pr-lg"
+            [nzLoading]="loading"
+            (click)="serviceF.submitForm()">提交
+    </button>
+  </div>
+</nz-card>

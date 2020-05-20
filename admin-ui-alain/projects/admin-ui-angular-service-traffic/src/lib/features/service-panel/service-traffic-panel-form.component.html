@@ -1,0 +1,115 @@
+<form nz-form [formGroup]="form"
+      style="width: 400px;">
+  <nz-card nzTitle="入口路由" [nzBordered]="false" [nzExtra]="switcher1" *ngIf="allPorts.length > 0">
+    <se-container col="1" labelWidth="80">
+      <se label="网关" error="请选择网关">
+        <nz-select formControlName="gateway">
+          <nz-option *ngFor="let g of gateways" [nzValue]="g.name" [nzLabel]="g.name"></nz-option>
+        </nz-select>
+      </se>
+      <se label="域名" error="请输入正确的域名">
+        <nz-select formControlName="domains">
+          <nz-option *ngFor="let d of domainVals" [nzValue]="d" [nzLabel]="d"></nz-option>
+        </nz-select>
+      </se>
+      <se label="端口" error="请选择正确的端口">
+        <nz-select formControlName="appPorts">
+          <nz-option *ngFor="let p of allPorts" [nzValue]="p.port" [nzLabel]="'[' + p.protocol + '] ' + p.port"></nz-option>
+        </nz-select>
+      </se>
+      <se label="路径" error="请输入路径">
+        <input nz-input formControlName="prefix" placeholder="请输入路径">
+      </se>
+      <se label="路径重写" error="请输入要重写的路径">
+        <input nz-input formControlName="rewrite" placeholder="请输入">
+      </se>
+      <se error="" labelWidth="40">
+        <label nz-checkbox formControlName="corsEnable">
+          <span>支持跨域</span>
+        </label>
+      </se>
+      <se label="来源" error="请输入来源" *ngIf="corsEnable">
+        <input nz-input formControlName="corsSource" placeholder="请输入来源">
+      </se>
+      <se label="方法" error="请输入正确的请求方法" *ngIf="corsEnable">
+        <input nz-input formControlName="corsMethod" placeholder="请输入允许的请求方法，以逗号隔开">
+      </se>
+      <se label="请求头" error="请输入正确的请求头" *ngIf="corsEnable">
+        <input nz-input formControlName="corsHeader" placeholder="请输入允许的请求头，以逗号隔开">
+      </se>
+      <se label="时长" error="请输入过期时间" *ngIf="corsEnable">
+        <input nz-input formControlName="corsExpired" placeholder="请输入过期时间(yyyy-MM-dd)，如10天=10d">
+      </se>
+    </se-container>
+
+    <ng-template #switcher1>
+      <nz-switch formControlName="gatewayEnable" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+    </ng-template>
+  </nz-card>
+
+  <nz-card nzTitle="条件分配" [nzBordered]="false" [nzExtra]="switcher3" *ngIf="allPorts.length > 0">
+    <se-container col="1" labelWidth="80">
+      <se label="版本">
+        <nz-select formControlName="matchVersion">
+          <nz-option *ngFor="let v of versions"
+                     [nzValue]="v.name" [nzLabel]="v.name"></nz-option>
+        </nz-select>
+      </se>
+      <se label="匹配要求">
+        <nz-select formControlName="matchKey" (ngModelChange)="matchTypeChanged()">
+          <nz-option nzValue="headers" nzLabel="请求头 Headers"></nz-option>
+          <nz-option nzValue="uri" nzLabel="路径 Uri"></nz-option>
+          <nz-option nzValue="scheme" nzLabel="格式 Scheme"></nz-option>
+          <nz-option nzValue="method" nzLabel="方法 Method"></nz-option>
+          <nz-option nzValue="authority" nzLabel="鉴权 Authority"></nz-option>
+        </nz-select>
+      </se>
+      <se label="请求头" *ngIf="matchKey === 'headers'">
+        <input nz-input placeholder="输入要匹配的Header" formControlName="matchHeader">
+      </se>
+      <se label="匹配规则">
+        <nz-select formControlName="matchType">
+          <nz-option nzValue="exact" nzLabel="精确匹配"></nz-option>
+          <nz-option nzValue="prefix" nzLabel="前匹配"></nz-option>
+          <nz-option nzValue="regex" nzLabel="正则匹配"></nz-option>
+        </nz-select>
+      </se>
+      <se label="匹配值">
+        <input nz-input formControlName="matchVal" placeholder="输入匹配值">
+      </se>
+      <se *ngIf="matches.length > 0" labelWidth="0">
+        <nz-tag *ngFor="let m of matches; let i = index" nzMode="closeable"
+                (nzAfterClose)="removeMatch(i)">{{formatMatch(m)}}</nz-tag>
+      </se>
+      <se>
+        <button nz-button nzType="default" type="button" (click)="addMatch()">添加匹配</button>
+        <button nz-button nzType="default" type="button" (click)="addRule(matchVersion, matches)">添加规则</button>
+      </se>
+    </se-container>
+    <div *ngIf="rules.length > 0">
+      <div nz-row nzType="flex" class="rule-item" *ngFor="let r of rules; let i = index" nzAlign="middle">
+        <span nz-col nzSpan="4" class="rule-name">{{r.vname}}</span>
+        <div nz-col nzSpan="18" class="rule-matches">
+          <span *ngFor="let m of r.matches">{{formatMatch(m)}}<br/></span>
+        </div>
+        <span nz-col nzSpan="2" class="rule-delete" (click)="removeRule(i)"><i nz-icon nzType="close"></i></span>
+      </div>
+    </div>
+
+    <ng-template #switcher3>
+      <nz-switch formControlName="abTestEnable" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+    </ng-template>
+  </nz-card>
+
+  <nz-card nzTitle="流量分配" [nzBordered]="false" [nzExtra]="switcher2">
+    <se-container col="1" labelWidth="80">
+      <se *ngFor="let v of versions; let i = index" [label]="v.name" error="请输入百分比">
+        <nz-input-number class="width100" [nzMin]="0" [nzMax]="100" [formControlName]="'gray' + v.name"
+                         nzPlaceHolder="输入百分比" (ngModelChange)="onRateChanged(i, $event)"></nz-input-number>
+      </se>
+    </se-container>
+    <ng-template #switcher2>
+      <nz-switch formControlName="grayEnable" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+    </ng-template>
+  </nz-card>
+</form>

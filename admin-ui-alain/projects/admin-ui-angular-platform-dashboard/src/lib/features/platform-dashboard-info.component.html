@@ -1,0 +1,37 @@
+<nz-range-picker nzShowTime nzFormat="yy-MM-dd HH:mm:ss" name="times" [(ngModel)]="times" [nzRanges]="ranges"></nz-range-picker>
+
+<button nz-button type="button" class="ml-sm" nzType="primary" [nzLoading]="listLoading" (click)="setGraphData()">查询
+</button>
+
+<div nz-row nzGutter="16" class="mt-lg">
+  <zgrafna-container nz-col *ngFor="let d of items;first as isFirst" style="margin-top: 8px" [nzSpan]="d.span" [sac]="d">
+  </zgrafna-container>
+</div>
+
+<nz-card nzTitle="节点" [nzExtra]="search" class="mt-md">
+  <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)" [ps]="q.ps" [pi]="q.pi" [total]="totalCount" [page]="page">
+    <ng-template st-row="name" let-i>
+      <div class="wrap200 name">
+        {{i.name | ellipsis: 15}}
+      </div>
+    </ng-template>
+    <ng-template st-row="label" let-i>
+      <ul class="wrap200 nolist label-ul">
+        <li class="label-li" *ngFor="let l of i.labels">{{l | ellipsis: 30}}</li>
+      </ul>
+    </ng-template>
+    <ng-template st-row="ready" let-i>
+      <span>{{i.isReady ? '是' : '否'}}</span>
+    </ng-template>
+    <ng-template st-row="create" let-i>
+      <div style="width: 60px">{{dayDiffFormat(i.createAt)}}</div>
+    </ng-template>
+  </st>
+
+  <ng-template #search>
+    <input nz-input style="width: 160px;" [(ngModel)]="q.name" name="name" placeholder="输入节点名称">
+
+    <button nz-button type="button" class="ml-sm" nzType="primary" [nzLoading]="listLoading" (click)="getPodData()">搜索
+    </button>
+  </ng-template>
+</nz-card>

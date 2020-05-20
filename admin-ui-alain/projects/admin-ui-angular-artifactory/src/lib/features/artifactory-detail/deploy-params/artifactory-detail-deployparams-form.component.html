@@ -1,0 +1,82 @@
+<form #f nz-form [formGroup]="form" [nzLayout]="'vertical'" (ngSubmit)="submitForm()">
+  <nz-card nzTitle="系统资源" [nzBordered]="false">
+    <se-container col="1" labelWidth="160">
+      <se label="CPU" required>
+        <nz-select class="input-item" formControlName="cpu" nzPlaceHolder="请选择">
+          <nz-option *ngFor="let o of CPU_VALS" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="内存" required>
+        <nz-select class="input-item" formControlName="memory" nzPlaceHolder="请选择">
+          <nz-option *ngFor="let o of MEM_VALS" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+        </nz-select>
+      </se>
+    </se-container>
+  </nz-card>
+
+  <nz-card nzTitle="存储配置" [nzBordered]="false">
+    <se-container col="1" labelWidth="160">
+      <se label="挂载路径">
+        <input class="input-item" nz-input formControlName="volumePath" pattern="^(\/[\w^ ]+)+\/?$">
+        <se-error *ngIf="volumePath.dirty && volumePath.errors" style="color: red;">请填写正确的挂载路径</se-error>
+      </se>
+      <se label="挂载类型">
+        <nz-select class="input-item" nzPlaceHolder="请选择" formControlName="volumeType">
+          <nz-option *ngFor="let o of mountTypes" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+        </nz-select>
+      </se>
+      <se label="挂在存储上限">
+        <nz-select class="input-item" nzPlaceHolder="请选择" formControlName="volumeMax">
+          <nz-option *ngFor="let o of FS_VALS" [nzLabel]="o.label" [nzValue]="o.value"></nz-option>
+        </nz-select>
+      </se>
+    </se-container>
+  </nz-card>
+
+  <nz-card nzTitle="端口" [nzBordered]="false" [nzExtra]="add">
+    <nz-table #tb [nzData]="[{}]"
+              [nzShowPagination]="false" [nzFrontPagination]="false"
+              formArrayName="ports">
+      <thead>
+      <tr>
+        <th class="w200px">No.</th>
+        <th class="w200px">协议</th>
+        <th class="w400px">端口号</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of ports.controls; let i = index" [formGroupName]="i">
+        <td>{{i + 1}}</td>
+        <td>
+          <nz-select nzPlaceHolder="请选择" formControlName="type">
+            <nz-option nzLabel="HTTP" nzValue="http"></nz-option>
+            <nz-option nzLabel="TCP" nzValue="tcp"></nz-option>
+          </nz-select>
+        </td>
+        <td><input nz-input formControlName="number"></td>
+        <td><a style="color: red;" (click)="delPort(i)">刪除</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+
+    <ng-template #add>
+      <button nz-button type="button" nzType="primary" (click)="addPort()">添加</button>
+    </ng-template>
+  </nz-card>
+
+  <nz-card nzTitle="健康检查" [nzBordered]="false">
+    <se-container col="1" labelWidth="160">
+      <se label="访问路径" required>
+        <nz-select style="width: 120px" formControlName="healthMethod" nzPlaceHolder="请选择">
+          <nz-option nzLabel="GET" nzValue="get"></nz-option>
+          <nz-option nzLabel="POST" nzValue="post"></nz-option>
+          <nz-option nzLabel="PUT" nzValue="put"></nz-option>
+          <nz-option nzLabel="DELETE" nzValue="delete"></nz-option>
+        </nz-select>
+        <input class="ml-md " style="width: 400px" nz-input formControlName="healthPath" pattern="^(\/[\w^ ]+)+\/?$">
+        <se-error *ngIf="healthPath.dirty && healthPath.errors" style="color: red;">请填写正确的访问路径</se-error>
+      </se>
+    </se-container>
+  </nz-card>
+</form>

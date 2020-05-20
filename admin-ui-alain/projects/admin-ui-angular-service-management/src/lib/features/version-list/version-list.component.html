@@ -1,0 +1,117 @@
+<div *ngIf="!showList">
+  <h6 class="h6 pt-lg pb-md">
+    当前无可运行版本，<a [routerLink]="'/service/' + serviceId + '/version/create'">点击创建</a>
+  </h6>
+</div>
+
+<st #st *ngIf="showList" [columns]="columns" [page]="{show: false}"
+    [data]="data" [expand]="showDetail ? detail : null">
+  <ng-template st-row="status" let-i>
+    <div nz-row nzType="flex" nzAlign="middle">
+      <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+      <i *ngIf="i.status <= 0" nz-icon nzType="exclamation-circle" nzTheme="outline"
+         (click)="showDeployErrorModal(i)"
+         style="cursor: pointer;"></i>
+    </div>
+  </ng-template>
+  <ng-template st-row="replica" let-i>
+    <!--    <div nz-row nzType="flex" nzAlign="middle">-->
+    <!--      <nz-badge [nzText]="i.replicaPod">2/2</nz-badge>-->
+    <!--    </div>-->
+    <span>{{i.replicaPod}}</span>
+  </ng-template>
+  <ng-template st-row="name" let-i>
+    <span>{{i.version | ellipsis: 15}}</span>
+    <!--    <a (click)="goDetail(i)">{{('版本' + i.idx) | ellipsis: 15}}</a>-->
+  </ng-template>
+  <ng-template st-row="desc" let-i>
+    <div class="wrap200" >{{i.versionDesc}}</div>
+  </ng-template>
+  <ng-template st-row="operations" let-i>
+    <a (click)="editVersion(i)">编辑</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="showDeployModal(i)">部署</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="showRollbackModal(i)">回滚</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="showScaleModal(i)">伸缩</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="confirmStopVersion(i)">停止</a>
+    <nz-divider nzType="vertical"></nz-divider>
+    <a (click)="confirmDelete(i)">删除</a>
+  </ng-template>
+
+  <ng-template #detail let-i>
+    <!--  update add service 实例 -->
+    <sv-container class="mb-md" col="3" *ngIf="i.podDetail && i.podDetail.length>0">
+      <h5 class="h5 border-bottom-1 pb-sm">实例</h5>
+
+      <ng-container *ngFor="let j of i.podDetail">
+        <sv label="实例名称">{{j.name}}</sv>
+        <sv label="实例状态">{{getPodStatus(j.status)}}</sv>
+        <sv label="信息">{{j.message}}</sv>
+        <!--      <sv *ngIf="!j.messages"></sv>-->
+      </ng-container>
+    </sv-container>
+    <!--  update end;   -->
+    <sv-container class="mb-md" col="3" *ngIf="i.sourceType === 1 || i.sourceType === 3">
+      <h5 class="h5 border-bottom-1 pb-sm">代码配置</h5>
+      <sv label="git地址">{{i.gitUrl}}</sv>
+      <sv label="git分支">{{i.gitBrunch}}</sv>
+    </sv-container>
+
+    <sv-container class="mb-md" col="3" *ngIf="i.sourceType === 2">
+      <h5 class="h5 border-bottom-1 pb-sm">镜像配置</h5>
+      <sv label="镜像Tag">{{i.imageTag}}</sv>
+      <sv label="镜像地址">{{i.imageAddr}}</sv>
+    </sv-container>
+
+    <sv-container class="mb-md" col="3" *ngIf="i.sourceType === 1">
+      <h5 class="h5 border-bottom-1 pb-sm">构建配置</h5>
+      <sv label="运行环境">{{i.operatingEnv}}</sv>
+      <sv label="构建工具">{{i.buildType}}</sv>
+      <sv label="工程路径">{{i.packagePath}}</sv>
+      <sv label="目标文件">{{i.targetFile}}</sv>
+    </sv-container>
+
+    <sv-container class="mb-md" col="3">
+      <h5 class="h5 border-bottom-1 pb-sm">系统配置</h5>
+      <sv label="挂载路径">{{i.mountPath}}</sv>
+      <sv label="CPU上限">{{i.cpuLimit}}</sv>
+      <sv label="内存上限">{{i.memoryLimit}}</sv>
+      <sv label="挂载类型">{{i.mountType}}</sv>
+      <sv label="挂载存储上限">{{i.mountLimit}}</sv>
+      <sv label="环境变量">{{envParse(i.env)}}</sv>
+      <sv label="调用服务">{{i.dependencies}}</sv>
+    </sv-container>
+
+    <sv-container class="mb-md" col="3">
+      <h5 class="h5 border-bottom-1 pb-sm">运行配置</h5>
+      <sv label="JVM参数">{{i.jvmArgs}}</sv>
+      <sv label="运行参数">{{i.appArgs}}</sv>
+      <sv label="实例数量">{{i.replica}}</sv>
+    </sv-container>
+
+    <sv-container class="mb-md" col="3">
+      <h5 class="h5 border-bottom-1 pb-sm">部署</h5>
+      <sv label="部署地址">{{i.deployUrl}}</sv>
+    </sv-container>
+  </ng-template>
+</st>
+
+<ng-template #deployModal>
+  <p>请输入本次部署的备注信息，在之后的回滚中，你可以在部署列表中查看到这些信息。</p>
+  <input nz-input #deployRemark
+         placeholder="备注信息">
+</ng-template>
+
+<!--<ng-template #scaleModal>-->
+<!--    <nz-form-label>实例数量</nz-form-label>-->
+<!--  <nz-input-number (nzBlur)="checkResourceLimit()" #replicaNum nz-input></nz-input-number>-->
+<!--</ng-template>-->
+
+<nz-modal #scaleModal [(nzVisible)]="isScaleModelVisible" nzTitle="伸缩" (nzOnOk)="scaleVersion()" (nzOnCancel)="closeScale()">
+  <p>实例数量:</p>
+  <nz-input-number style="width: 40%" nz-input  [(ngModel)]="updateScaleModel.replicaNum" [nzMax]="maxReplicaNum"></nz-input-number>
+  <p> {{checkMsg}}</p>
+</nz-modal>

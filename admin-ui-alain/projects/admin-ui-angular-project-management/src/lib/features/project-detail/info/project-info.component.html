@@ -1,0 +1,45 @@
+<nz-card [nzBordered]="false" nzTitle="工程详情" class="mb-lg"
+         [nzExtra]="edit" [nzLoading]="loading">
+  <div *ngIf="project">
+    <sv-container col="2" title="项目基础信息">
+      <sv label="工程标识">{{project.projectName}}</sv>
+      <sv label="工程名称">{{project.projectName}}</sv>
+      <sv label="服务描述" class="pre">{{project.projectDesc}}</sv>
+    </sv-container>
+
+    <nz-divider></nz-divider>
+    <sv-container col="2" title="项目配额">
+      <sv label="CPU使用">{{project.cpuUsed}}</sv>
+      <sv label="CPU限额">{{project.cpuLimit}}</sv>
+      <sv label="内存使用">{{project.memoryUsed}}</sv>
+      <sv label="内存限额">{{project.memoryLimit}}</sv>
+<!--      <sv label="存储限额">{{project.storageLimit}}</sv>-->
+    </sv-container>
+
+    <nz-divider></nz-divider>
+    <sv-container  col="2" title="Docker 配置">
+      <div *ngFor="let item of project.harborInfo">
+        <sv label="仓库地址" col="1">{{item.addr}}</sv>
+        <sv label="用户名">{{item.username}}</sv>
+        <sv label="密码">{{item.password}}</sv>
+      </div>
+    </sv-container>
+
+    <nz-divider></nz-divider>
+    <sv-container col="2" title="APM配置">
+      <sv label="CPU配额">{{project.skywalkingCpu}}</sv>
+      <sv label="内存配额">{{project.skywalkingMemory}}</sv>
+      <sv label="ES存储地址" col="1">{{project.esAddress}}</sv>
+      <sv label="ES分片数" col="1">{{project.esShards}}</sv>
+      <sv label="ES副本数" col="1">{{project.esReplicas}}</sv>
+    </sv-container>
+  </div>
+
+  <ng-template #edit>
+    <div *ngIf="project">
+      <a [routerLink]="editUrl">编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+      <a (click)="confirmDelete()">删除</a>
+    </div>
+  </ng-template>
+</nz-card>

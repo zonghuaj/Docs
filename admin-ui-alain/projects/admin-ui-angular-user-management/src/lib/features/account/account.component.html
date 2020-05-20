@@ -1,0 +1,54 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card nzTitle="个人信息">
+  <nz-spin [nzSpinning]="userLoading">
+    <div nz-col nzSpan="8"></div>
+    <div class="main" *ngIf="user" nz-col nzSpan="8">
+      <div class="left">
+        <form nz-form nzLayout="vertical" #f="ngForm" (submit)="save()" se-container="1">
+          <se label="姓" error="请输入您的姓氏!">
+            <input nz-input [(ngModel)]="user.given_name" name="given_name" required nzFor="email" />
+          </se>
+          <se label="名字" error="请输入您的名字!">
+            <input nz-input [(ngModel)]="user.family_name" name="family_name" required/>
+          </se>
+          <se label="邮箱" error="请正确输入您的邮箱!">
+            <input nz-input type="email" [(ngModel)]="user.email" name="email" pattern="^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$" required />
+          </se>
+          <se label="联系电话" error="请正确输入您的联系电话!">
+            <input nz-input [(ngModel)]="user.phone_number" name="phone_number" pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$|^0\d{2,3}-?\d{7,8}$" required/>
+          </se>
+          <se>
+            <button nz-button nzType="primary" [disabled]="f.invalid">保存个人信息</button>
+          </se>
+        </form>
+      </div>
+    </div>
+  </nz-spin>
+</nz-card>
+
+<nz-card [nzBordered]="false" nzTitle="修改密码">
+  <nz-spin [nzSpinning]="userLoading">
+    <div nz-col nzSpan="8"></div>
+    <div class="main" *ngIf="user" nz-col nzSpan="8">
+      <div class="left">
+        <form nz-form nzLayout="vertical" #f="ngForm" (submit)="savePassword()" se-container="1">
+          <se label="旧密码" error="请输入旧密码">
+            <input nz-input [(ngModel)]="updatePassword.oldPassword"  name="oldPassword" type="password"  required />
+          </se>
+          <se label="新密码" error="请输入新密码">
+            <input nz-input [(ngModel)]="updatePassword.newPassword" (change)="validateNewPassword(f.invalid)" name="newPassword" type="password" required/>
+          </se>
+          <se label="确认新密码" error="请输入新密码">
+            <input nz-input type="email" [(ngModel)]="updatePassword.configNewPassword" (change)="validateNewPassword(f.invalid)" name="configNewPassword" type="password" required/>
+            <nz-form-explain *ngIf="passwordBoolean">
+              <font style="color: red;">{{passwordErr}}</font>
+            </nz-form-explain>
+          </se>
+          <se>
+            <button nz-button nzType="primary" [disabled]="f.invalid || canSubmit" >保存密码修改</button>
+          </se>
+        </form>
+      </div>
+    </div>
+  </nz-spin>
+</nz-card>

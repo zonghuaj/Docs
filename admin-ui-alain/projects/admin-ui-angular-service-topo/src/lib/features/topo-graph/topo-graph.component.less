@@ -1,0 +1,51 @@
+.micro-topo-chart {
+  height: 100%;
+  width: 100%;
+
+  .node-name {
+    cursor: move;
+    font-size: 14px;
+    fill: #ddd;
+  }
+
+  .link {
+    stroke-linecap: round;
+    stroke-width: 1.3px;
+    fill: none;
+    animation: dash 1s linear infinite;
+  }
+
+  @keyframes dash {
+    from {
+      stroke-dashoffset: 20;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .node-text {
+    font-family: "Lato", "Source Han Sans CN", "Microsoft YaHei", sans-serif;
+    fill: #ddd;
+    font-size: 11px;
+    opacity: 0.8;
+  }
+
+  .link-text {
+    font-family: "Lato", "Source Han Sans CN", "Microsoft YaHei", sans-serif;
+    fill: #ddd;
+    font-size: 11px;
+    opacity: 0.8;
+  }
+
+  .node {
+    cursor: move;
+    fill: #333840;
+    stroke-width: 0;
+  }
+
+  .link-node {
+    stroke-width: 6px;
+    stroke: rgba(255, 255, 255, 0);
+  }
+}

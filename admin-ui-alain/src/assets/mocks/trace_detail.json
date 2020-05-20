@@ -1,0 +1,270 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149397,
+          "endTime": 1559695149431,
+          "endpointName": "/contract/getDetail",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://contract.micropaas.ies/contract/getDetail"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149398,
+          "endTime": 1559695149428,
+          "endpointName": "ac.oa.cux.oracle.web.controller.CuxContractDetailController.getContractDetail(ac.oa.cux.oracle.web.indto.InContractGetDetailDTO)",
+          "type": "Local",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 2,
+          "parentSpanId": 1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149399,
+          "endTime": 1559695149400,
+          "endpointName": "Mysql/JDBI/PreparedStatement/execute",
+          "type": "Exit",
+          "peer": "192.168.1.239:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "sql"
+            },
+            {
+              "key": "db.instance",
+              "value": "newhnht"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT okc_header_id,CONTRACT_NUMBER,CONTRACT_NAME,ORG_ID,CONTRACT_CATEGORY,CONTRACT_TYPE,CONTRACT_INTENTION,MAJOR_FLAG,VERSION_NUM,SIGN_LOCATION,GLOBAL_FLAG,CONTRACT_STATUS,CURRENCY_CODE,CONTRACT_AMOUNT,CONTRACT_AMOUNT_NOTAX,CONTRACT_ORIG_AMOUNT,CONTRACT_ORIG_AMOUNT_NOTAX,RESPONSIBLE_PERSON_ID,RESPONSIBLE_DEPT_CODE,PROJ_SPECIAL_PERSON_ID,EXECUTE_DEPT_CODE,AGENT_ID,AGENT_LEVEL,COMMENTS,RELATED_CONTRACT_NUMBER,OTHERS_CONTRACT_NUM,AUTHORIZED_FILE_NUMBER,SHIP_TO_LOCATION_ID,BILL_TO_LOCATION_ID,PROJECT_ID,TASK_ID,PROJECT_TYPE_CODE,TEMPLATE_FLAG,SIGN_DATE,EFFECT_DATE,SIGN_COMMENTS,END_DATE,END_NNRM_DATE,END_STATUS,END_COMMENTS,CANCELL_DATE,DISCONTINUE_DATE,FINAL_CLOSE_DATE,COMPLETE_DATE,CONC_SIGN_PERSON_ID,GEN_PO_RESULT,OBJECT_VERSION_NUMBER,CONC_CHANGING_FLAG,TECH_TERMS_FLAG,LINE_TYPE,PROJECT_TYPE,PA_CATEGORY_ATTRIBUTE8,PA_CATEGORY_ATTRIBUTE12,PROJ_DEPARTMENT_CODE,PROJ_SUB_DEPARTMENT_CODE,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE,LAST_UPDATE_LOGIN,ATTRIBUTE_CATEGORY,ATTRIBUTE1,ATTRIBUTE2,ATTRIBUTE3,ATTRIBUTE4,ATTRIBUTE5,ATTRIBUTE6,ATTRIBUTE7,ATTRIBUTE8,ATTRIBUTE9,ATTRIBUTE10,ATTRIBUTE11,ATTRIBUTE12,ATTRIBUTE13,ATTRIBUTE14,ATTRIBUTE15,CANCEL_RESON,APPEND_OKC_FLAG,SUSPEND_STATUS,RESUME_STATUS,RESUME_DATE,BUY_METHOD,IS_SIGN_AUTHORIZED,OKC_PERFORMANCE_TIME,BUY_TYPE,DISPUTE_RESOLUTION,DISPUTE_SETTLEMENT,ESTIMATE_TOTAL,FLOATING_PROPORTION,AGREEMENT_EXPIRY_DATE,CONTRACT_CATEGORY_TAG,CONTRACT_PRINT_CODE,WARRANTY,ORDER_TYPE,WF_ITEM_TYPE,WF_ITEM_KEY,END_WF_ITEM_TYPE,END_WF_ITEM_KEY,SUSPEND_WF_ITEM_TYPE,SUSPEND_WF_ITEM_KEY,RESUME_WF_ITEM_TYPE,RESUME_WF_ITEM_KEY,EFFECT_SYSTEM_DATE,TYPES_OF_DEBT,LOAN_PERIOD,CONTRACT_INTEREST_RATE,GO_UP_DOWN,RANGEA,OTHER_CHARGES_RATES,COMPOSITE_INTEREST_RATE,GUARANTEE_TYPE,GUARANTEE,GUARANTEE_AMOUNT,PLEDGE,TYPES_OF_LOANS,LOAN_UNIT,UNIT_OF_ACCOUNT,TYPES_OF_ENTERPRISES,USE_ITEM,LOAN_DAY,DUE_DATE,REPORT_SUBJECT,DEBT_COMMENTS,ARRANGE_MODE FROM cux_okc_headers_all WHERE okc_header_id=?"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 3,
+          "parentSpanId": 1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149402,
+          "endTime": 1559695149403,
+          "endpointName": "Mysql/JDBI/PreparedStatement/execute",
+          "type": "Exit",
+          "peer": "192.168.1.239:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "sql"
+            },
+            {
+              "key": "db.instance",
+              "value": "newhnht"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT  OKC_CONTACT_ID,OKC_HEADER_ID,VERSION_NUM,ROLE_CODE,SOURCE_ID,SOURCE_TABLE,CONTACT_NAME,CONTACT_PHONE,PAYEE_BANKS,BANK_NUMBER,BANK_NAME,BANK_ACCOUNT,STATE,CITY,PURCHASING_TYPE,FAX,TAX,LOCATIONS,OBJECT_VERSION_NUMBER,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE,LAST_UPDATE_LOGIN,ATTRIBUTE_CATEGORY,ATTRIBUTE1,ATTRIBUTE2,ATTRIBUTE3,ATTRIBUTE4,ATTRIBUTE5,ATTRIBUTE6,ATTRIBUTE7,ATTRIBUTE8,ATTRIBUTE9,ATTRIBUTE10,ATTRIBUTE11,ATTRIBUTE12,ATTRIBUTE13,ATTRIBUTE14,ATTRIBUTE15  FROM cux_okc_contacts \n \n WHERE OKC_HEADER_ID = ?"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 4,
+          "parentSpanId": 1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149404,
+          "endTime": 1559695149405,
+          "endpointName": "Mysql/JDBI/PreparedStatement/execute",
+          "type": "Exit",
+          "peer": "192.168.1.239:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "sql"
+            },
+            {
+              "key": "db.instance",
+              "value": "newhnht"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT  OKC_LINE_ID,OKC_HEADER_ID,LINE_NUM,LINE_TYPE_ID,VERSION_NUM,INVENTORY_ITEM_ID,ITEM_NUMBER,ITEM_DESCRIPTION,ITEM_UOM,QUANTITY,CHANGE_QUANTITY,UNIT_PRICE,TAX_UNIT_PRICE,TAX,BASE_UNIT_PRICE,ARRIVAL_DATE,START_WORK_DATE,COMPLETED_DATE,SHIP_TO_LOCATION,ORG_ID,COMMENTS,PROJECT_ID,TASK_ID,EXPENDITURE_TYPE_ID,REQUISITION_HEADER_ID,REQUISITION_LINE_ID,PO_HEADER_ID,PO_LINE_ID,REQUISITION_COMMENTS,AUCTION_HEADER_ID,AUCTION_LINE_NUM,AUCTION_COMMENTS,ACCOUNT_ID,ITEM_CHARACTER,BRAND_TRADER,USED_PERSON_ID,USED_PERSON_NAME,PACK_DETAIL_ID,SHIP_ALERT_DAY,OBJECT_VERSION_NUMBER,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE,LAST_UPDATE_LOGIN,ATTRIBUTE_CATEGORY,ATTRIBUTE1,ATTRIBUTE2,ATTRIBUTE3,ATTRIBUTE4,ATTRIBUTE5,ATTRIBUTE6,ATTRIBUTE7,ATTRIBUTE8,ATTRIBUTE9,ATTRIBUTE10,ATTRIBUTE11,ATTRIBUTE12,ATTRIBUTE13,ATTRIBUTE14,itemGg,DEPT_CODE,ACCOUNT,CHILD_ACCOUNT,ESTIMATE_TOTAL,NO_TAX_ESTIMATE_TOTAL,CHANGE_TAX  FROM cux_okc_lines_all \n \n WHERE OKC_HEADER_ID = ? ORDER BY LINE_NUM ASC"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 5,
+          "parentSpanId": 1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149406,
+          "endTime": 1559695149406,
+          "endpointName": "Mysql/JDBI/PreparedStatement/execute",
+          "type": "Exit",
+          "peer": "192.168.1.239:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "sql"
+            },
+            {
+              "key": "db.instance",
+              "value": "newhnht"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT  TERM_ID,OKC_HEADER_ID,LINE_NUM,VERSION_NUM,CLAUSE_TYPES,PAYMENT_WAY,PAYMENT_PERCENT,PAYMENT_AMOUNT,SCHEDULE_PAYMENT_DATE,PROJECT_ID,TASK_ID,COMMENTS,OBJECT_VERSION_NUMBER,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE,LAST_UPDATE_LOGIN,ATTRIBUTE_CATEGORY,ATTRIBUTE1,ATTRIBUTE2,ATTRIBUTE3,ATTRIBUTE4,ATTRIBUTE5,ATTRIBUTE6,ATTRIBUTE7,ATTRIBUTE8,ATTRIBUTE9,ATTRIBUTE10,ATTRIBUTE11,ATTRIBUTE12,ATTRIBUTE13,ATTRIBUTE14,ATTRIBUTE15,TAX,NORATECONTRACTAMOUNT  FROM cux_okc_payment_terms \n \n WHERE OKC_HEADER_ID = ? ORDER BY LINE_NUM DESC"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 6,
+          "parentSpanId": 1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149411,
+          "endTime": 1559695149412,
+          "endpointName": "Mysql/JDBI/PreparedStatement/execute",
+          "type": "Exit",
+          "peer": "192.168.1.239:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "sql"
+            },
+            {
+              "key": "db.instance",
+              "value": "newhnht"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT  CLAUSE_ID,OKC_HEADER_ID,VERSION_NUM,LINE_NUM,SERIAL_NUMBER,CLAUSE_TITLE,CLAUSE_CONTENT,OBJECT_VERSION_NUMBER,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE,LAST_UPDATE_LOGIN,ATTRIBUTE_CATEGORY,ATTRIBUTE1,ATTRIBUTE2,ATTRIBUTE3,ATTRIBUTE4,ATTRIBUTE5,ATTRIBUTE6,ATTRIBUTE7,ATTRIBUTE8,ATTRIBUTE9,ATTRIBUTE10,ATTRIBUTE11,ATTRIBUTE12,ATTRIBUTE13,ATTRIBUTE14,ATTRIBUTE15,NEED_MAINTAIN,UPDATE_STATE  FROM cux_okc_contract_clauses \n \n WHERE OKC_HEADER_ID = ?"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 7,
+          "parentSpanId": 1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149413,
+          "endTime": 1559695149422,
+          "endpointName": "Mysql/JDBI/PreparedStatement/execute",
+          "type": "Exit",
+          "peer": "192.168.1.239:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "sql"
+            },
+            {
+              "key": "db.instance",
+              "value": "newhnht"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT  attachment_id,ATTACHMENT_NAME,ATTACHMENT_TYPE,ATTACHMENT_CONTENT,FILE_NAME,CREATE_PERSON,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE,LAST_UPDATE_LOGIN,ATTRIBUTE_CATEGORY,ATTRIBUTE1,ATTRIBUTE2,ATTRIBUTE3,ATTRIBUTE4,ATTRIBUTE5,ATTRIBUTE6,ATTRIBUTE7,ATTRIBUTE8,ATTRIBUTE9,ATTRIBUTE10,ATTRIBUTE11,ATTRIBUTE12,ATTRIBUTE13,ATTRIBUTE14,ATTRIBUTE15,BILL_ID,SOURCE_TYPE  FROM cux_okc_attachment \n \n WHERE bill_id = ? AND SOURCE_TYPE = ?"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "108.48.15596951493970035",
+          "segmentId": "108.48.15596951493970034",
+          "spanId": 8,
+          "parentSpanId": 1,
+          "refs": [],
+          "serviceCode": "contractbackend",
+          "startTime": 1559695149423,
+          "endTime": 1559695149424,
+          "endpointName": "Mysql/JDBI/PreparedStatement/execute",
+          "type": "Exit",
+          "peer": "192.168.1.239:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "sql"
+            },
+            {
+              "key": "db.instance",
+              "value": "newhnht"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT  OKC_CHANGE_ID,OKC_HEADER_ID,VERSION_NUM,CHANGE_NUMBER,CHANGE_NAME,CHANGE_AMOUNT,STATUS,RESPONSIBLE_PERSON_ID,CHANGE_CONTENT,CHANGE_ORG,COMMENTS,OBJECT_VERSION_NUMBER,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE,LAST_UPDATE_LOGIN,ATTRIBUTE_CATEGORY,ATTRIBUTE1,ATTRIBUTE2,ATTRIBUTE3,ATTRIBUTE4,ATTRIBUTE5,ATTRIBUTE6,ATTRIBUTE7,ATTRIBUTE8,ATTRIBUTE9,ATTRIBUTE10,ATTRIBUTE11,ATTRIBUTE12,ATTRIBUTE13,ATTRIBUTE14,ATTRIBUTE15  FROM cux_okc_contract_changes \n \n WHERE OKC_HEADER_ID = ?"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

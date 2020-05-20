@@ -1,0 +1,15 @@
+<nz-card [nzBordered]="true" nzTitle="租户列表">
+  <nz-row class="mb-md">
+    <input nz-input [(ngModel)]="params.tenantName" nzPlaceHolder="请输入租户名" style="width: 200px; margin-right: 10px;">
+    <button nz-button (click)="userSt.load(1,params)" [nzType]="'primary'">搜索</button>
+    <button nz-button (click)="openAdd()" [nzType]="'primary'">
+      <i nz-icon nzType="plus"></i>
+      <span>新建</span>
+    </button>
+  </nz-row>
+  <st #userSt [data]="url" [columns]="columns" [req]="req" [res]="res" [page]="stPage">
+    <ng-template st-row="tenantDesc" let-i>
+      <div class="ell" style="max-width: 200px">{{i.tenantDesc}}</div>
+    </ng-template>
+  </st>
+</nz-card>

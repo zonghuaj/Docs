@@ -1,0 +1,30 @@
+<nz-card [nzBordered]="false" nzTitle="" customCard>
+  <!--nz-card-tab>
+    <nz-tabset [nzTabBarExtraContent]="extraTemplate"
+      nzSize="large"
+      [(nzSelectedIndex)]="tabIndex"
+      (nzSelectChange)="onTabChanged($event.index)"
+    >
+      <nz-tab nzTitle="运行配置"></nz-tab>
+      <nz-tab nzTitle="部署配置"></nz-tab>
+    </!--nz-tabset>
+  </!--nz-card-tab>
+  <deploy-env *ngIf="tabIndex === 0" #deployBasic (dataToContainer)="getBasicData($event)" [stageForm] ="stageForm"></deploy-env>
+  <deploy-env-deploy *ngIf="tabIndex === 2" #deployDetail (dataToContainer)="getDetailData($event)" [stageForm] ="stageForm"></deploy-env-deploy-->
+  <deploy-env  #deployBasic [name]="name" (dataToContainer)="getBasicData($event)" [stageForm] ="stageForm"></deploy-env>
+
+  <ng-template #extraTemplate>
+    <button
+      nz-button
+      nzType="primary"
+      type="submit"
+      class="pl-lg pr-lg"
+      style="margin-right: 25px;"
+      [nzLoading]="false"
+      (click)="submitF()"
+    >
+      保存
+    </button>
+  </ng-template>
+
+</nz-card>

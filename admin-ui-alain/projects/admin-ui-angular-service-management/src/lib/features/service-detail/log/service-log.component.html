@@ -1,0 +1,46 @@
+<div>
+  <div style="padding-bottom: 16px">
+    <span style="padding-right: 8px">服务实例</span>
+    <nz-select nzSize="small" style="width: 200px;" [(ngModel)]="selectedReplica.pod" class="flex-1 mr-md"
+               (ngModelChange)="onPodSelected($event)">
+      <nz-option *ngFor="let p of replicas.podNames" [nzLabel]="p" [nzValue]="p"></nz-option>
+    </nz-select>
+
+    <span style="padding-right: 8px; padding-left: 8px">容器</span>
+    <nz-select nzSize="small" style="width: 150px;" [(ngModel)]="selectedReplica.container" class="flex-1 mr-md">
+      <nz-option *ngFor="let c of replicas.containerNames" [nzLabel]="c" [nzValue]="c"></nz-option>
+    </nz-select>
+    <!-- (ngModelChange)="toVersion($event)" -->
+    <span>的日志：</span>
+  </div>
+
+  <div style="padding-bottom: 8px">
+    <button nz-button nzType="default" (click)="toggleAutoLoading()"
+            [disabled]="replicas.podNames.length === 0">
+      <i nz-icon type="{{isAutoLoading ? 'pause' : 'file-sync'}}"></i>
+      {{isAutoLoading ? '停止刷新' : '自动刷新'}}
+    </button>
+    <button nz-button nzType="default" (click)="downloadLog()"
+            [disabled]="logs.length === 0">
+      <i nz-icon type="download"></i>下载
+    </button>
+
+    <a *ngIf="!!this.servName" (click)="goLogsDetail()" style="float: right; line-height: 30px">查看全部日志</a>
+    <!--  <i style="padding-left: 12px" *ngIf="isRequesting" nz-icon nzType="loading" nzTheme="outline"></i>-->
+  </div>
+
+  <div class="lwrapper">
+    <log-console [logs]="logs" [scroll]="isAutoLoading"></log-console>
+    <div class="error" *ngIf="poderr">
+      <div style="margin-top: 24px; margin-left: 24px">
+        <p>当前无法连接到该实例，请检查当前实例或容器的运行状态。</p>
+        <p>可能的原因：<br/>
+          - 服务未创建版本 <br/>
+          - 版本未成功运行 <br/>
+          - 容器无法连接或其他原因
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>

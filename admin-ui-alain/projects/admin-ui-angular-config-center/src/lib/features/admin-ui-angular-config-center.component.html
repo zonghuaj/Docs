@@ -1,0 +1,172 @@
+<cds-breadcrumb></cds-breadcrumb>
+<nz-card [nzBordered]="false">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="submitFilter()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">配置名称查询</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.name" name="name" placeholder="请输入" id="name">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col>
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="41" [nzType]="'primary'" (click)="showConfigMapModal()" class="mx-sm">新增</button>
+      </div>
+    </div>
+  </form>
+  <nz-table #editJenkinsfileTable [nzData]="configMapList" [nzPageSize]="5">
+    <thead>
+      <tr>
+        <th nzWidth="15%">配置集名称</th>
+        <th nzWidth="55%" ngClass="ell2">配置内容概览</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of editJenkinsfileTable.data">
+        <td>
+          <ng-container *ngIf="!configEditCache[data.metadata.name].edit; else configMapInputTpl">
+            {{ data.metadata.name }}
+          </ng-container>
+          <ng-template #configMapInputTpl>
+            <input type="text" nz-input [(ngModel)]="configEditCache[data.metadata.name].data.name" />
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="!configEditCache[data.metadata.name].edit; else contentInputTpl">
+            {{ data2Json(data.data) | ellipsis: 60 }}
+          </ng-container>
+          <ng-template #contentInputTpl>
+            <textarea nz-input [nzAutosize]="{ minRows: 2, maxRows: 6 }" [(ngModel)]="configEditCache[data.metadata.name].data.data"></textarea>
+          </ng-template>
+        </td>
+        <td>
+          <div class="editable-row-operations">
+            <ng-container>
+              <a (click)="startJenkinsEdit(data)">编辑</a>&nbsp;<a nz-popconfirm nzTitle="确定删除这条记录么？" (nzOnConfirm)="delConfigMap(data.metadata.name)">删除</a>
+            </ng-container>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal nzWidth="1000" [(nzVisible)]="isEditConfigMapVisible" nzTitle="编辑配置文件" (nzOnCancel)="edithandleConfigCancel()" (nzOnOk)="saveConfigEdit(editName)">
+    <!--    <form nz-form>-->
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-label>配置集名称</nz-form-label>
+      </div>
+      <div nz-col [nzSpan]="16"></div>
+      <div nz-col [nzSpan]="2"></div>
+
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <input nz-input readonly disabled [(ngModel)]="updateConfigMapName">
+      </div>
+      <div nz-col [nzSpan]="2"></div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="6">
+        <nz-form-label nzFor="email">配置项名称</nz-form-label>
+      </div>
+      <div nz-col [nzSpan]="16">
+        <nz-form-label nzFor="email">配置项内容</nz-form-label>
+      </div>
+      <div nz-col [nzSpan]="2"></div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngFor="let item of updateConfigMapDatakeys">
+      <div nz-col [nzSpan]="6">
+        <input nz-input [(ngModel)]="item.key">
+      </div>
+      <div nz-col [nzSpan]="16">
+        <textarea style="height: 200px" nz-input [(ngModel)]="item.value"></textarea>
+      </div>
+      <div nz-col [nzSpan]="2">
+        <button nz-button style="border: #FFFFFF" (click)="deleteUpdateItem(item)"><i nz-icon nzType="minus-circle"
+                                                                                      nzTheme="outline"></i>
+        </button>
+      </div>
+      <br/>
+      <div nz-col [nzSpan]="24">
+        <hr style=" height:1px;border:none;border-top:1px solid #D9D9D9;" />
+      </div>
+    </div>
+    <button nz-button nzType="primary" (click)="addUpdateConfigItem()">添加配置项</button>
+    <!--    </form>-->
+  </nz-modal>
+  <!--  <button nz-button [nzType]="'dashed'" (click)="showJenkinsModal()" nzBlock class="mt-md">-->
+  <!--    <i nz-icon nzType="plus"></i>-->
+  <!--    <span>新建模板</span>-->
+  <!--  </button>-->
+  <nz-modal nzWidth="1000" nzHeight="1000" nzTitle="添加配置文件"
+            [(nzVisible)]="isAddConfigMapVisible" (nzOnCancel)="addhandleConfigMapCancel()" (nzOnOk)="createConfigMap()"
+            [nzOkDisabled]="!enableSubmit">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="5">
+        <nz-form-label>
+          <label class="ant-form-item-required">配置集名称</label>
+        </nz-form-label>
+      </div>
+      <div nz-col [nzSpan]="16"></div>
+      <div nz-col [nzSpan]="3"></div>
+    </div>
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="12">
+        <input nz-input [class.error-bd]="configMapName && !nameValid" [(ngModel)]="configMapName">
+      </div>
+      <!--      <div nz-col [nzSpan]="16">-->
+      <!--        <button nz-button nzType="primary" (click)="addConfigItem()">添加配置项</button>-->
+      <!--      </div>-->
+      <div nz-col [nzSpan]="3"></div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngIf="configMapName && !nameValid">
+      <div nz-col [nzSpan]="12">
+        <nz-form-explain style="color: #f5222d">
+          {{namePlaceHolder}}
+        </nz-form-explain>
+      </div>
+      <!--      <div nz-col [nzSpan]="16">-->
+      <!--        <button nz-button nzType="primary" (click)="addConfigItem()">添加配置项</button>-->
+      <!--      </div>-->
+      <div nz-col [nzSpan]="3"></div>
+    </div>
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="5">
+        <nz-form-label>配置项名称</nz-form-label>
+      </div>
+      <div nz-col [nzSpan]="16">
+        <nz-form-label>配置项内容</nz-form-label>
+      </div>
+      <div nz-col [nzSpan]="3"></div>
+    </div>
+    <div nz-row [nzGutter]="24" *ngFor="let item of newConfigItem; let  i = index">
+
+      <div nz-col [nzSpan]="5">
+        <input nz-input [(ngModel)]="item.key">
+      </div>
+      <div nz-col [nzSpan]="16">
+        <textarea style="height: 200px" nz-input [(ngModel)]="item.value"></textarea>
+      </div>
+      <div nz-col [nzSpan]="3">
+        <button nz-button style="border: #FFFFFF" type="button" (click)="deleteAdddateItem(item)">
+          <i nz-icon nzType="minus-circle" nzTheme="outline"></i>
+        </button>
+        <!--        <button nz-button style="border: #FFFFFF" type="button" (click)="addConfigItem()"><i nz-icon nzType="plus-circle" nzTheme="outline"></i>-->
+        <!--        </button>-->
+      </div>
+      <div nz-col [nzSpan]="24">
+        <hr style=" height:1px;border:none;border-top:1px solid #D9D9D9;" />
+      </div>
+      <br/>
+    </div>
+    <button nz-button nzType="primary" (click)="addConfigItem()">添加配置项</button>
+    <!--    <p>配置名称</p>-->
+    <!--    <input nz-input placeholder="如: java-springboot" [(ngModel)]="configMapName"/>-->
+    <!--    <p>配置内容</p>-->
+    <!--    <textarea rows="16"  nz-input [(ngModel)]="configMapData"></textarea>-->
+  </nz-modal>
+</nz-card>
